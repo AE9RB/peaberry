@@ -1,0 +1,14 @@
+The Twenty-First Century Amateur Radio Project: Peaberry SDR
+
+The project was built with PSoC Creator 2.0 (available free, as in beer):
+http://www.cypress.com/
+
+It is normal to get errors about missing files until you have built
+the project for the first time.  This is because the generated files
+have been excluded from the git repository.
+
+Schematic:
+https://github.com/ham21/peaberry/raw/master/schematic.pdf
+
+This is a work in progress.  If you build the hardware today then you'll
+have to wait for finished PSoC code before the device is useful.

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="Transmit" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="KEY_0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSE" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="XRX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SPKR_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TX_PWR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="AUDIO_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="AMuxHw_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Status_Reg_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="DOUT" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="I2C1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="VirtualMux_SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="VirtualMux_SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="VirtualMux_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_udb" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_ff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="VirtualMux_CLOCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="BusClock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="I2C_FF" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="OneTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Bufoe_SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="I2C_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Bufoe_SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="I2C1_XCFG" address="0x49C8" bitWidth="8" desc="Extended Configuration Register: I2C_XCFG">
+      <field name="csr_clk_en" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="i2c_on" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="ready_to_sleep" from="5" to="5" access="R" resetVal="" desc="" />
+      <field name="force_nack" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="hw_addr_en" from="0" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C1_ADDR" address="0x49CA" bitWidth="8" desc="Slave Adddress Register: I2C_ADR">
+      <field name="slave_address" from="6" to="0" access="RW" resetVal="" desc="This register holds the slave's 7-bit address." />
+    </register>
+    <register name="I2C1_CFG" address="0x49D6" bitWidth="8" desc="Configuration Register: I2C_CFG">
+      <field name="sio_select" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="pselect" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="bus_error_ie" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="stop_ie" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="clock_rate" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="en_mstr" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="en_slave" from="0" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C1_CSR" address="0x49D7" bitWidth="8" desc="Control and Status Register: I2C_CSR">
+      <field name="bus_error" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="lost_arb" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="stop_status" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="ack" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="address" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="transmit" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="lrb" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="byte_complete" from="0" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C1_DATA" address="0x49D8" bitWidth="8" desc="Data Register: I2C_D">
+      <field name="data" from="7" to="0" access="RW" resetVal="" desc="This register provides read/write access to the Shift register." />
+    </register>
+    <register name="I2C1_MCSR" address="0x49D9" bitWidth="8" desc="Master Control and Status Register: I2C_MCSR">
+      <field name="stop_gen" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="bus_busy" from="3" to="3" access="R" resetVal="" desc="" />
+      <field name="master_mode" from="2" to="2" access="R" resetVal="" desc="" />
+      <field name="restart_gen" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="start_gen" from="0" to="0" access="RW" resetVal="" desc="" />
+    </register>
+  </block>
+  <block name="USBFS" BASE="0x0" SIZE="0x0" desc="USBFS" visible="true">
+    <block name="bus_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep_0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="arb_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="USB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="sof_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Dp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="dp_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="VBUS" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Dm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="USBFS_EP0_DR0_REG" address="0x6000" bitWidth="8" desc="bmRequestType" />
+    <register name="USBFS_EP0_DR1_REG" address="0x6001" bitWidth="8" desc="bRequest" />
+    <register name="USBFS_EP0_DR2_REG" address="0x6002" bitWidth="8" desc="wValueLo" />
+    <register name="USBFS_EP0_DR3_REG" address="0x6003" bitWidth="8" desc="wValueHi" />
+    <register name="USBFS_EP0_DR4_REG" address="0x6004" bitWidth="8" desc="wIndexLo" />
+    <register name="USBFS_EP0_DR5_REG" address="0x6005" bitWidth="8" desc="wIndexHi" />
+    <register name="USBFS_EP0_DR6_REG" address="0x6006" bitWidth="8" desc="lengthLo" />
+    <register name="USBFS_EP0_DR7_REG" address="0x6007" bitWidth="8" desc="lengthHi" />
+    <register name="USBFS_SIE_EP1_CR0_REG" address="0x600E" bitWidth="8" desc="The Endpoint1 Control Register" />
+    <register name="USBFS_SIE_EP2_CR0_REG" address="0x601E" bitWidth="8" desc="The Endpoint2 Control Register" />
+    <register name="USBFS_SIE_EP3_CR0_REG" address="0x602E" bitWidth="8" desc="The Endpoint3 Control Register" />
+    <register name="USBFS_SIE_EP4_CR0_REG" address="0x603E" bitWidth="8" desc="The Endpoint4 Control Register" />
+    <register name="USBFS_SIE_EP5_CR0_REG" address="0x604E" bitWidth="8" desc="The Endpoint5 Control Register" />
+    <register name="USBFS_SIE_EP6_CR0_REG" address="0x605E" bitWidth="8" desc="The Endpoint6 Control Register" />
+    <register name="USBFS_SIE_EP7_CR0_REG" address="0x606E" bitWidth="8" desc="The Endpoint7 Control Register" />
+    <register name="USBFS_SIE_EP8_CR0_REG" address="0x607E" bitWidth="8" desc="The Endpoint8 Control Register" />
+  </block>
+  <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="LRCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  </block>
+  <block name="QSC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="AUDIO_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Microphone" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="DSM4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ADC_Vssa_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    </block>
+    <block name="cy_analog_virtualmux_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ADC_Vssa_2" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    </block>
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="AMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Ext_CP_Clk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="DEC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  </block>
+  <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="RX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="TX_STATUS_REG" address="0x6466" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
+      <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+      <field name="RX_ENBL" from="1" to="1" access="RW" resetVal="" desc="Enables Rx direction. This bit is applicable only if Rx direction presents for the component">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+      <field name="TX_ENBL" from="0" to="0" access="RW" resetVal="" desc="Enables Tx direction. This bit is applicable only if Tx direction presents for the component">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+    </register>
+  </block>
+  <block name="DIN" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="MIC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+</blockRegMap>
