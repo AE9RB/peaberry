@@ -8,7 +8,7 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3245PVI-150</Device>
+          <Device>CY8C3445PVI-090</Device>
           <Vendor>Cypress</Vendor>
           <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -814,21 +814,6 @@
               <FilePath>.\Generated_Source\PSoC3\SPKR_R_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_VBUS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>QSC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
@@ -918,6 +903,61 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\XTX_aliases.h</FilePath>
             </File>
+            <File>
+              <FileName>USBFS_VBUS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep4_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep4_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep5_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep5_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep2_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep2_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep3_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep3_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -928,7 +968,7 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3245PVI-150</Device>
+          <Device>CY8C3445PVI-090</Device>
           <Vendor>Cypress</Vendor>
           <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -1734,21 +1774,6 @@
               <FilePath>.\Generated_Source\PSoC3\SPKR_R_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_VBUS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>QSC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
@@ -1837,6 +1862,61 @@
               <FileName>XTX_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\XTX_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep4_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep4_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep5_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep5_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep2_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep2_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep3_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_ep3_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.h</FilePath>
             </File>
           </Files>
         </Group>
