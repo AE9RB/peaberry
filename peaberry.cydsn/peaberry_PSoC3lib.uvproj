@@ -634,31 +634,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>I2C1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_BOOT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_BOOT.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_INT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_INT.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_PM.c</FilePath>
-            </File>
-            <File>
               <FileName>MIC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\MIC_aliases.h</FilePath>
@@ -957,6 +932,31 @@
               <FileName>USBFS_ep3_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_BOOT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_BOOT.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_INT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_INT.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1594,31 +1594,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>I2C1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_BOOT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_BOOT.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_INT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_INT.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C1_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\I2C1_PM.c</FilePath>
-            </File>
-            <File>
               <FileName>MIC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\MIC_aliases.h</FilePath>
@@ -1917,6 +1892,31 @@
               <FileName>USBFS_ep3_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep3_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_BOOT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_BOOT.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_INT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_INT.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
           </Files>
         </Group>

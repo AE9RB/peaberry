@@ -21,7 +21,7 @@
   <block name="DOUT" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="I2C1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+  <block name="I2C" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="VirtualMux_SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="VirtualMux_SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="VirtualMux_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -37,17 +37,17 @@
     <block name="Bufoe_SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="I2C_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="Bufoe_SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <register name="I2C1_XCFG" address="0x49C8" bitWidth="8" desc="Extended Configuration Register: I2C_XCFG">
+    <register name="I2C_XCFG" address="0x49C8" bitWidth="8" desc="Extended Configuration Register: I2C_XCFG">
       <field name="csr_clk_en" from="7" to="7" access="RW" resetVal="" desc="" />
       <field name="i2c_on" from="6" to="6" access="RW" resetVal="" desc="" />
       <field name="ready_to_sleep" from="5" to="5" access="R" resetVal="" desc="" />
       <field name="force_nack" from="4" to="4" access="RW" resetVal="" desc="" />
       <field name="hw_addr_en" from="0" to="0" access="RW" resetVal="" desc="" />
     </register>
-    <register name="I2C1_ADDR" address="0x49CA" bitWidth="8" desc="Slave Adddress Register: I2C_ADR">
+    <register name="I2C_ADDR" address="0x49CA" bitWidth="8" desc="Slave Adddress Register: I2C_ADR">
       <field name="slave_address" from="6" to="0" access="RW" resetVal="" desc="This register holds the slave's 7-bit address." />
     </register>
-    <register name="I2C1_CFG" address="0x49D6" bitWidth="8" desc="Configuration Register: I2C_CFG">
+    <register name="I2C_CFG" address="0x49D6" bitWidth="8" desc="Configuration Register: I2C_CFG">
       <field name="sio_select" from="7" to="7" access="RW" resetVal="" desc="" />
       <field name="pselect" from="6" to="6" access="RW" resetVal="" desc="" />
       <field name="bus_error_ie" from="5" to="5" access="RW" resetVal="" desc="" />
@@ -56,7 +56,7 @@
       <field name="en_mstr" from="1" to="1" access="RW" resetVal="" desc="" />
       <field name="en_slave" from="0" to="0" access="RW" resetVal="" desc="" />
     </register>
-    <register name="I2C1_CSR" address="0x49D7" bitWidth="8" desc="Control and Status Register: I2C_CSR">
+    <register name="I2C_CSR" address="0x49D7" bitWidth="8" desc="Control and Status Register: I2C_CSR">
       <field name="bus_error" from="7" to="7" access="RW" resetVal="" desc="" />
       <field name="lost_arb" from="6" to="6" access="RW" resetVal="" desc="" />
       <field name="stop_status" from="5" to="5" access="RW" resetVal="" desc="" />
@@ -66,10 +66,10 @@
       <field name="lrb" from="1" to="1" access="RW" resetVal="" desc="" />
       <field name="byte_complete" from="0" to="0" access="RW" resetVal="" desc="" />
     </register>
-    <register name="I2C1_DATA" address="0x49D8" bitWidth="8" desc="Data Register: I2C_D">
+    <register name="I2C_DATA" address="0x49D8" bitWidth="8" desc="Data Register: I2C_D">
       <field name="data" from="7" to="0" access="RW" resetVal="" desc="This register provides read/write access to the Shift register." />
     </register>
-    <register name="I2C1_MCSR" address="0x49D9" bitWidth="8" desc="Master Control and Status Register: I2C_MCSR">
+    <register name="I2C_MCSR" address="0x49D9" bitWidth="8" desc="Master Control and Status Register: I2C_MCSR">
       <field name="stop_gen" from="4" to="4" access="RW" resetVal="" desc="" />
       <field name="bus_busy" from="3" to="3" access="R" resetVal="" desc="" />
       <field name="master_mode" from="2" to="2" access="R" resetVal="" desc="" />
@@ -154,22 +154,7 @@
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6462" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
-        <value name="NO_UNDERFLOW" value="0" desc="" />
-        <value name="UNDERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="RX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
+    <register name="RX_STATUS_REG" address="0x6462" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="EMPTY" value="0" desc="" />
@@ -184,7 +169,22 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6472" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
