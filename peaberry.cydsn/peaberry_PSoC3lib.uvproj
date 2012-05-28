@@ -958,6 +958,36 @@
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
+            <File>
+              <FileName>RxI2S_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>Clock_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Clock_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>Clock_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Clock_1.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1917,6 +1947,36 @@
               <FileName>I2C_PM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>Clock_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Clock_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>Clock_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Clock_1.h</FilePath>
             </File>
           </Files>
         </Group>

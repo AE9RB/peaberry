@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
-  <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Transmit" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Status_Reg_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY_0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="SPKR_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QSE" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Status_Reg_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="AMuxHw_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TX_PWR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SPKR_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Transmit" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="RxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="RxI2S" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="XRX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="AMuxHw_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TX_PWR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSE" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="DOUT" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -114,15 +115,57 @@
   </block>
   <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="LRCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Clock_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="RX_STATUS_REG" address="0x6462" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x6472" bitWidth="8" desc="">
+      <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+      <field name="RX_ENBL" from="1" to="1" access="RW" resetVal="" desc="Enables Rx direction. This bit is applicable only if Rx direction presents for the component">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+      <field name="TX_ENBL" from="0" to="0" access="RW" resetVal="" desc="Enables Tx direction. This bit is applicable only if Tx direction presents for the component">
+        <value name="ENABLED" value="1" desc="" />
+        <value name="DISABLED" value="0" desc="" />
+      </field>
+    </register>
   </block>
-  <block name="QSC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="XRX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="MIC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Microphone" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -153,52 +196,11 @@
     <block name="Clock_VirtualMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
-  <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="RX_STATUS_REG" address="0x6462" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
-        <value name="NO_OVERFLOW" value="0" desc="" />
-        <value name="OVERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="TX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
-        <value name="NO_UNDERFLOW" value="0" desc="" />
-        <value name="UNDERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
-      <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
-        <value name="ENABLED" value="1" desc="" />
-        <value name="DISABLED" value="0" desc="" />
-      </field>
-      <field name="RX_ENBL" from="1" to="1" access="RW" resetVal="" desc="Enables Rx direction. This bit is applicable only if Rx direction presents for the component">
-        <value name="ENABLED" value="1" desc="" />
-        <value name="DISABLED" value="0" desc="" />
-      </field>
-      <field name="TX_ENBL" from="0" to="0" access="RW" resetVal="" desc="Enables Tx direction. This bit is applicable only if Tx direction presents for the component">
-        <value name="ENABLED" value="1" desc="" />
-        <value name="DISABLED" value="0" desc="" />
-      </field>
-    </register>
+  <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="DIN" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="MIC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
 </blockRegMap>
