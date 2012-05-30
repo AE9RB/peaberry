@@ -634,36 +634,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>MIC_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\MIC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SCK.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK.c</FilePath>
-            </File>
-            <File>
-              <FileName>SCK.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK.h</FilePath>
-            </File>
-            <File>
-              <FileName>SCK_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_3.c</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_3.h</FilePath>
-            </File>
-            <File>
               <FileName>QSD_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSD_aliases.h</FilePath>
@@ -754,104 +724,9 @@
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
             </File>
             <File>
-              <FileName>Clock_24.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_24.c</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIN.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN.c</FilePath>
-            </File>
-            <File>
-              <FileName>DIN.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIN_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR_L_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR_L_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR_R_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR_R_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>QSC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR.c</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR.h</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L.c</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R.c</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>XRX.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX.c</FilePath>
-            </File>
-            <File>
-              <FileName>XRX.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX.h</FilePath>
-            </File>
-            <File>
-              <FileName>XRX_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX_aliases.h</FilePath>
             </File>
             <File>
               <FileName>Transmit.c</FileName>
@@ -862,21 +737,6 @@
               <FileName>Transmit.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Transmit.h</FilePath>
-            </File>
-            <File>
-              <FileName>XTX.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX.c</FilePath>
-            </File>
-            <File>
-              <FileName>XTX.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX.h</FilePath>
-            </File>
-            <File>
-              <FileName>XTX_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX_aliases.h</FilePath>
             </File>
             <File>
               <FileName>USBFS_VBUS.c</FileName>
@@ -959,16 +819,6 @@
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
             <File>
-              <FileName>RxI2S_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>RxI2S_done_isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
@@ -979,14 +829,34 @@
               <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
             </File>
             <File>
-              <FileName>Clock_1.c</FileName>
+              <FileName>RxI2S_Buff_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_1.c</FilePath>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.c</FilePath>
             </File>
             <File>
-              <FileName>Clock_1.h</FileName>
+              <FileName>RxI2S_Buff_dma.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_1.h</FilePath>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Swap_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Swap_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Stage_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Stage_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1624,36 +1494,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>MIC_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\MIC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SCK.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK.c</FilePath>
-            </File>
-            <File>
-              <FileName>SCK.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK.h</FilePath>
-            </File>
-            <File>
-              <FileName>SCK_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SCK_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_3.c</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_3.h</FilePath>
-            </File>
-            <File>
               <FileName>QSD_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSD_aliases.h</FilePath>
@@ -1744,104 +1584,9 @@
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
             </File>
             <File>
-              <FileName>Clock_24.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_24.c</FilePath>
-            </File>
-            <File>
-              <FileName>Clock_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIN.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN.c</FilePath>
-            </File>
-            <File>
-              <FileName>DIN.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIN_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\DIN_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR_L_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR_L_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR_R_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR_R_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>QSC_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR.c</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR.h</FilePath>
-            </File>
-            <File>
-              <FileName>TX_PWR_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TX_PWR_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L.c</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_L_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_L_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R.c</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R.h</FilePath>
-            </File>
-            <File>
-              <FileName>AUDIO_R_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\AUDIO_R_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>XRX.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX.c</FilePath>
-            </File>
-            <File>
-              <FileName>XRX.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX.h</FilePath>
-            </File>
-            <File>
-              <FileName>XRX_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XRX_aliases.h</FilePath>
             </File>
             <File>
               <FileName>Transmit.c</FileName>
@@ -1852,21 +1597,6 @@
               <FileName>Transmit.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Transmit.h</FilePath>
-            </File>
-            <File>
-              <FileName>XTX.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX.c</FilePath>
-            </File>
-            <File>
-              <FileName>XTX.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX.h</FilePath>
-            </File>
-            <File>
-              <FileName>XTX_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\XTX_aliases.h</FilePath>
             </File>
             <File>
               <FileName>USBFS_VBUS.c</FileName>
@@ -1949,16 +1679,6 @@
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
             <File>
-              <FileName>RxI2S_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>RxI2S_done_isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
@@ -1969,14 +1689,34 @@
               <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
             </File>
             <File>
-              <FileName>Clock_1.c</FileName>
+              <FileName>RxI2S_Buff_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_1.c</FilePath>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.c</FilePath>
             </File>
             <File>
-              <FileName>Clock_1.h</FileName>
+              <FileName>RxI2S_Buff_dma.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Clock_1.h</FilePath>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Swap_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Swap_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Stage_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>RxI2S_Stage_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
             </File>
           </Files>
         </Group>
