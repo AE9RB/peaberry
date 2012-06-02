@@ -474,36 +474,6 @@
               <FilePath>.\Generated_Source\PSoC3\project.h</FilePath>
             </File>
             <File>
-              <FileName>scl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl.c</FilePath>
-            </File>
-            <File>
-              <FileName>scl.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl.h</FilePath>
-            </File>
-            <File>
-              <FileName>scl_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>sda.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda.c</FilePath>
-            </File>
-            <File>
-              <FileName>sda.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda.h</FilePath>
-            </File>
-            <File>
-              <FileName>sda_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS.c</FilePath>
@@ -634,56 +604,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>QSD_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSD_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>QSE_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSE_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0.c</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Status_Reg_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Status_Reg_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Status_Reg_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Status_Reg_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>Microphone.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\Microphone.c</FilePath>
@@ -722,21 +642,6 @@
               <FileName>Microphone_AMux.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
-            </File>
-            <File>
-              <FileName>QSC_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Transmit.c</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Transmit.h</FilePath>
             </File>
             <File>
               <FileName>USBFS_VBUS.c</FileName>
@@ -857,6 +762,26 @@
               <FileName>RxI2S_Stage_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
+            </File>
+            <File>
+              <FileName>KEY.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\KEY.c</FilePath>
+            </File>
+            <File>
+              <FileName>KEY.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1334,36 +1259,6 @@
               <FilePath>.\Generated_Source\PSoC3\project.h</FilePath>
             </File>
             <File>
-              <FileName>scl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl.c</FilePath>
-            </File>
-            <File>
-              <FileName>scl.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl.h</FilePath>
-            </File>
-            <File>
-              <FileName>scl_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\scl_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>sda.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda.c</FilePath>
-            </File>
-            <File>
-              <FileName>sda.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda.h</FilePath>
-            </File>
-            <File>
-              <FileName>sda_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\sda_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS.c</FilePath>
@@ -1494,56 +1389,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>QSD_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSD_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>QSE_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSE_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0.c</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_0_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_0_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Status_Reg_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Status_Reg_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Status_Reg_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Status_Reg_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_1_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Key_1_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>Microphone.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\Microphone.c</FilePath>
@@ -1582,21 +1427,6 @@
               <FileName>Microphone_AMux.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
-            </File>
-            <File>
-              <FileName>QSC_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\QSC_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Transmit.c</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Transmit.h</FilePath>
             </File>
             <File>
               <FileName>USBFS_VBUS.c</FileName>
@@ -1717,6 +1547,26 @@
               <FileName>RxI2S_Stage_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
+            </File>
+            <File>
+              <FileName>KEY.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\KEY.c</FilePath>
+            </File>
+            <File>
+              <FileName>KEY.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
             </File>
           </Files>
         </Group>

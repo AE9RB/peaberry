@@ -1,13 +1,13 @@
-Loading plugins phase: Elapsed time ==> 0s.171ms
-Initializing data phase: Elapsed time ==> 2s.750ms
+Loading plugins phase: Elapsed time ==> 0s.203ms
+Initializing data phase: Elapsed time ==> 2s.828ms
 <CYPRESSTAG name="CyDsfit arguments...">
 cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p Z:\Engineering\peaberry\peaberry.cydsn\peaberry.cyprj -d CY8C3445PVI-090 -s Z:\Engineering\peaberry\peaberry.cydsn\Generated_Source\PSoC3 -w 0 -- -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE</CYPRESSTAG>
 <CYPRESSTAG name="Design elaboration results...">
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 6s.468ms
+Elaboration phase: Elapsed time ==> 8s.093ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.171ms
+HDL generation phase: Elapsed time ==> 0s.140ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -41,7 +41,7 @@ Options  :    -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE -ya -.fftprj=Z:\Engine
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Wed May 30 01:51:35 2012
+Fri Jun 01 21:10:55 2012
 
 
 ======================================================================
@@ -51,7 +51,7 @@ Options  :    -yv2 -q10 peaberry.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-Wed May 30 01:51:35 2012
+Fri Jun 01 21:10:55 2012
 
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\OneTerminal\OneTerminal.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
@@ -66,6 +66,8 @@ Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\wa
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\cy_vref_v1_50\cy_vref_v1_50.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\cydff_v1_20\cydff_v1_20.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\mux_v1_10\mux_v1_10.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\and_v1_0\and_v1_0.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\CyControlReg_v1_60\CyControlReg_v1_60.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\lib\common\cypress.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\CyStatusReg_v1_60\CyStatusReg_v1_60.v'
@@ -109,7 +111,7 @@ Options  :    -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE -ya -.fftprj=Z:\Engine
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Wed May 30 01:51:36 2012
+Fri Jun 01 21:10:56 2012
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -134,6 +136,8 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\conte
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_vref_v1_50\cy_vref_v1_50.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cydff_v1_20\cydff_v1_20.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\mux_v1_10\mux_v1_10.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\and_v1_0\and_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyControlReg_v1_60\CyControlReg_v1_60.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyStatusReg_v1_60\CyStatusReg_v1_60.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\AMuxHw_v1_50\AMuxHw_v1_50.v'.
@@ -150,7 +154,7 @@ Options  :    -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE -ya -.fftprj=Z:\Engine
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Wed May 30 01:51:37 2012
+Fri Jun 01 21:11:01 2012
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -175,6 +179,8 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\conte
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_vref_v1_50\cy_vref_v1_50.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cydff_v1_20\cydff_v1_20.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\mux_v1_10\mux_v1_10.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\and_v1_0\and_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyControlReg_v1_60\CyControlReg_v1_60.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyStatusReg_v1_60\CyStatusReg_v1_60.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\AMuxHw_v1_50\AMuxHw_v1_50.v'.
@@ -187,25 +193,23 @@ Detecting unused logic.
 ----------------------------------------------------------
     User names
 	\I2C:Net_767\
-	Net_1392
+	Net_3358
 	\I2C:Net_847\
-	Net_1393
+	Net_3359
 	\I2C:Net_875\
-	Net_1770
-	Net_1771
-	Net_1769
+	Net_3349
+	Net_3350
+	Net_3348
 	\Microphone:Net_482\
 	\Microphone:Net_481\
-	Net_1714
-	Net_1715
-	Net_1716
-	Net_1717
-	Net_1718
-	Net_1719
-	Net_1720
+	Net_3452
+	Net_3453
+	Net_3454
+	Net_3455
+	Net_3456
 
 
-Deleted 17 User equations/components.
+Deleted 15 User equations/components.
 Deleted 0 Synthesized equations/components.
 
 ------------------------------------------------------
@@ -242,6 +246,7 @@ Aliasing \Microphone:Net_486\ to zero
 Aliasing tmpOE__MIC_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__DIN_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing \QuadSampGenerator_1:tmp__cydff_4_clk\ to \QuadSampGenerator_1:tmp__cydff_3_clk\
+Aliasing Net_3337 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__AUDIO_L_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__QSC_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__XRX_net_0 to \USBFS:tmpOE__Dm_net_0\
@@ -251,14 +256,14 @@ Aliasing tmpOE__SPKR_L_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__SPKR_R_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__QSD_net_1 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__QSD_net_0 to \USBFS:tmpOE__Dm_net_0\
-Aliasing \Transmit:clk\ to zero
-Aliasing \Transmit:rst\ to zero
+Aliasing \Control:clk\ to zero
+Aliasing \Control:rst\ to zero
 Aliasing tmpOE__XTX_net_0 to \USBFS:tmpOE__Dm_net_0\
-Aliasing tmpOE__KEY_0_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__KEY_1_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__SCK_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__TX_PWR_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing tmpOE__AUDIO_R_net_0 to \USBFS:tmpOE__Dm_net_0\
+Aliasing tmpOE__KEY_0_net_0 to \USBFS:tmpOE__Dm_net_0\
 Aliasing \I2S:rx_state_2\\D\ to zero
 Removing Lhs of wire \USBFS:tmpOE__VBUS_net_0\[41] = \USBFS:tmpOE__Dm_net_0\[34]
 Removing Lhs of wire \USBFS:tmpOE__Dp_net_0\[47] = \USBFS:tmpOE__Dm_net_0\[34]
@@ -270,9 +275,9 @@ Removing Lhs of wire \I2C:tmpOE__Bufoe_SCL_net_0\[75] = \USBFS:tmpOE__Dm_net_0\[
 Removing Lhs of wire \I2C:Net_748\[77] = \USBFS:tmpOE__Dm_net_0\[34]
 Removing Lhs of wire \I2C:Net_697\[79] = \I2C:Net_643_2\[67]
 Removing Rhs of wire tmpOE__LRCK_net_0[88] = \USBFS:tmpOE__Dm_net_0\[34]
-Removing Rhs of wire Net_454[89] = \I2S:channel\[142]
+Removing Rhs of wire Net_3347[89] = \I2S:channel\[142]
 Removing Lhs of wire tmpOE__BCK_net_0[95] = tmpOE__LRCK_net_0[88]
-Removing Rhs of wire Net_455[96] = \I2S:count_0\[141]
+Removing Rhs of wire Net_3346[96] = \I2S:count_0\[141]
 Removing Lhs of wire tmpOE__DOUT_net_0[102] = tmpOE__LRCK_net_0[88]
 Removing Lhs of wire tmpOE__SCL_net_0[108] = tmpOE__LRCK_net_0[88]
 Removing Lhs of wire tmpOE__SDA_net_0[113] = tmpOE__LRCK_net_0[88]
@@ -302,7 +307,7 @@ Removing Rhs of wire \I2S:rx_f1_load\[213] = \I2S:rx_state_2\[214]
 Removing Lhs of wire \I2S:rx_dp_addr_2\[220] = zero[35]
 Removing Lhs of wire \I2S:rx_dp_addr_1\[221] = zero[35]
 Removing Lhs of wire \I2S:rx_dp_addr_0\[222] = \I2S:rx_state_0\[218]
-Removing Lhs of wire \Microphone:Net_488\[268] = Net_1767[118]
+Removing Lhs of wire \Microphone:Net_488\[268] = Net_3343[118]
 Removing Rhs of wire \Microphone:aclock\[272] = \Microphone:Net_478\[288]
 Removing Rhs of wire \Microphone:mod_dat_3\[273] = \Microphone:Net_471_3\[289]
 Removing Rhs of wire \Microphone:mod_dat_2\[274] = \Microphone:Net_471_2\[290]
@@ -313,35 +318,42 @@ Removing Lhs of wire \Microphone:Net_485\[285] = zero[35]
 Removing Lhs of wire \Microphone:Net_486\[286] = zero[35]
 Removing Lhs of wire tmpOE__MIC_net_0[312] = tmpOE__LRCK_net_0[88]
 Removing Lhs of wire tmpOE__DIN_net_0[318] = tmpOE__LRCK_net_0[88]
-Removing Rhs of wire Net_475_1[324] = \QuadSampGenerator_1:tmp__cydff_3_reg\[327]
-Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_3_clk\[325] = Net_477[326]
-Removing Rhs of wire Net_476_0[328] = \QuadSampGenerator_1:tmp__cydff_4_reg\[331]
-Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_4_clk\[330] = Net_477[326]
-Removing Lhs of wire tmpOE__AUDIO_L_net_0[334] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__QSC_net_0[341] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__XRX_net_0[346] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__QSE_net_1[353] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__QSE_net_0[354] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__SPKR_L_net_0[362] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__SPKR_R_net_0[369] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__QSD_net_1[376] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__QSD_net_0[377] = tmpOE__LRCK_net_0[88]
-Removing Rhs of wire Net_1736[384] = \Transmit:control_0\[385]
-Removing Lhs of wire \Transmit:clk\[400] = zero[35]
-Removing Lhs of wire \Transmit:rst\[401] = zero[35]
-Removing Lhs of wire tmpOE__XTX_net_0[404] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__KEY_0_net_0[410] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__KEY_1_net_0[419] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__SCK_net_0[425] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__TX_PWR_net_0[433] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire tmpOE__AUDIO_R_net_0[442] = tmpOE__LRCK_net_0[88]
-Removing Lhs of wire Net_456D[460] = \I2S:tx_data_out\[164]
-Removing Lhs of wire \I2S:rx_state_2\\D\[462] = zero[35]
-Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_3_reg\\D\[467] = Net_476_0[328]
-Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_4_reg\\D\[468] = Net_476_1[323]
+Removing Rhs of wire \QuadSampGenerator_1:Net_465\[324] = \QuadSampGenerator_1:tmp__cydff_3_reg\[327]
+Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_3_clk\[325] = Net_3363[326]
+Removing Rhs of wire \QuadSampGenerator_1:Net_364\[328] = \QuadSampGenerator_1:tmp__cydff_4_reg\[331]
+Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_4_clk\[330] = Net_3363[326]
+Removing Rhs of wire Net_3365[333] = \Control:control_1\[401]
+Removing Rhs of wire \QuadSampGenerator_1:Net_431\[334] = \QuadSampGenerator_1:mux_1:tmp__mux_1_reg\[332]
+Removing Rhs of wire Net_1736[336] = \Control:control_0\[400]
+Removing Rhs of wire \QuadSampGenerator_1:Net_456\[337] = \QuadSampGenerator_1:mux_3:tmp__mux_3_reg\[344]
+Removing Rhs of wire Net_3366[339] = \Control:control_2\[402]
+Removing Rhs of wire \QuadSampGenerator_1:Net_421\[340] = \QuadSampGenerator_1:mux_4:tmp__mux_4_reg\[338]
+Removing Lhs of wire Net_3337[342] = tmpOE__LRCK_net_0[88]
+Removing Rhs of wire \QuadSampGenerator_1:Net_425\[346] = \QuadSampGenerator_1:mux_2:tmp__mux_2_reg\[345]
+Removing Lhs of wire tmpOE__AUDIO_L_net_0[350] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__QSC_net_0[357] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__XRX_net_0[362] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__QSE_net_1[369] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__QSE_net_0[370] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__SPKR_L_net_0[378] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__SPKR_R_net_0[385] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__QSD_net_1[392] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__QSD_net_0[393] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire \Control:clk\[413] = zero[35]
+Removing Lhs of wire \Control:rst\[414] = zero[35]
+Removing Lhs of wire tmpOE__XTX_net_0[417] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__KEY_1_net_0[427] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__SCK_net_0[433] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__TX_PWR_net_0[441] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__AUDIO_R_net_0[450] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire tmpOE__KEY_0_net_0[463] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire Net_3338D[473] = \I2S:tx_data_out\[164]
+Removing Lhs of wire \I2S:rx_state_2\\D\[475] = zero[35]
+Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_3_reg\\D\[480] = \QuadSampGenerator_1:Net_364\[328]
+Removing Lhs of wire \QuadSampGenerator_1:tmp__cydff_4_reg\\D\[481] = \QuadSampGenerator_1:Net_162\[323]
 
 ------------------------------------------------------
-Aliased 0 equations, 79 wires.
+Aliased 0 equations, 86 wires.
 ------------------------------------------------------
 
 ----------------------------------------------------------
@@ -349,6 +361,9 @@ Circuit simplification
 ----------------------------------------------------------
 
 Substituting virtuals - pass 1:
+
+Note:  Expanding virtual equation for 'tmpOE__LRCK_net_0' (cost = 0):
+tmpOE__LRCK_net_0 <=  ('1') ;
 
 Note:  Expanding virtual equation for 'zero' (cost = 0):
 zero <=  ('0') ;
@@ -359,6 +374,28 @@ Note:  Expanding virtual equation for '\I2S:tx_status_0\' (cost = 1):
 Note:  Expanding virtual equation for '\I2S:rx_status_0\' (cost = 1):
 \I2S:rx_status_0\ <= ((\I2S:rx_f0_load\ and \I2S:rx_f0_full_stat\));
 
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_162\' (cost = 0):
+\QuadSampGenerator_1:Net_162\ <= (not \QuadSampGenerator_1:Net_465\);
+
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_466\' (cost = 0):
+\QuadSampGenerator_1:Net_466\ <= (not \QuadSampGenerator_1:Net_364\);
+
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_431\' (cost = 2):
+\QuadSampGenerator_1:Net_431\ <= ((not \QuadSampGenerator_1:Net_465\ and not Net_3365)
+	OR (\QuadSampGenerator_1:Net_364\ and Net_3365));
+
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_456\' (cost = 2):
+\QuadSampGenerator_1:Net_456\ <= ((not \QuadSampGenerator_1:Net_364\ and not Net_3366)
+	OR (\QuadSampGenerator_1:Net_465\ and Net_3366));
+
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_421\' (cost = 2):
+\QuadSampGenerator_1:Net_421\ <= ((not Net_3366 and \QuadSampGenerator_1:Net_465\)
+	OR (not \QuadSampGenerator_1:Net_364\ and Net_3366));
+
+Note:  Expanding virtual equation for '\QuadSampGenerator_1:Net_425\' (cost = 2):
+\QuadSampGenerator_1:Net_425\ <= ((not Net_3365 and \QuadSampGenerator_1:Net_364\)
+	OR (not \QuadSampGenerator_1:Net_465\ and Net_3365));
+
 
 Substituting virtuals - pass 2:
 
@@ -366,7 +403,7 @@ Substituting virtuals - pass 2:
 ----------------------------------------------------------
 Circuit simplification results:
 
-	Expanded 3 signals.
+	Expanded 10 signals.
 	Turned 0 signals into soft nodes.
 	Maximum default expansion cost was set at 3.
 ----------------------------------------------------------
@@ -375,7 +412,7 @@ Circuit simplification results:
 Alias Detection
 ------------------------------------------------------
 Aliasing \I2S:si_src_sel\\D\ to tmpOE__LRCK_net_0
-Removing Lhs of wire \I2S:si_src_sel\\D\[466] = tmpOE__LRCK_net_0[88]
+Removing Lhs of wire \I2S:si_src_sel\\D\[479] = tmpOE__LRCK_net_0[88]
 
 ------------------------------------------------------
 Aliased 0 equations, 1 wires.
@@ -408,14 +445,14 @@ CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\wa
 Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\2.0\PSoC Creator\warp\bin/warp.exe
 Warp Arguments : -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE -ya -.fftprj=Z:\Engineering\peaberry\peaberry.cydsn\peaberry.cyprj -dcpsoc3 peaberry.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 3s.109ms
+Warp synthesis phase: Elapsed time ==> 9s.312ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V2.0.0.828, Family: PSoC3, Started at: Wednesday, 30 May 2012 01:51:38
+cyp3fit: V2.0.0.828, Family: PSoC3, Started at: Friday, 01 June 2012 21:11:05
 Options: -yv2 -w 0 -v3 -ygs -q10 -o2 -.fftcfgtype=BE -ya -.fftprj=Z:\Engineering\peaberry\peaberry.cydsn\peaberry.cyprj -d CY8C3445PVI-090 peaberry.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.031ms
+Design parsing phase: Elapsed time ==> 0s.078ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -424,12 +461,12 @@ Design parsing phase: Elapsed time ==> 0s.031ms
 Removing unused cells resulting from optimization
     Removed unused cell/equation '\I2S:si_src_sel\:macrocell'
 Done removing unused cells.
-Assigning clock Clock_100 to clock ILO because it is a pass-through
+Assigning clock Clock_100 to clock BUS_CLK because it is a pass-through
 Assigning clock I2C_BusClock to clock BUS_CLK because it is a pass-through
 <CYPRESSTAG name="Global Clock Selection" icon="FILE_RPT_TECHM">
-    Digital Clock 0: Automatic-assigning  clock 'I2S_Clock'. Fanout=1, Signal=Net_459
-    Digital Clock 1: Automatic-assigning  clock 'Clock_1'. Fanout=1, Signal=Net_1456
-    Digital Clock 2: Automatic-assigning  clock 'Clock_24'. Fanout=1, Signal=Net_1767
+    Digital Clock 0: Automatic-assigning  clock 'I2S_Clock'. Fanout=1, Signal=Net_3335
+    Digital Clock 1: Automatic-assigning  clock 'SCK_Clock'. Fanout=1, Signal=Net_3311
+    Digital Clock 2: Automatic-assigning  clock 'Clock_24'. Fanout=1, Signal=Net_3343
     Digital Clock 3: Automatic-assigning  clock 'Microphone_Ext_CP_Clk'. Fanout=1, Signal=\Microphone:Net_487\
 </CYPRESSTAG>
 <CYPRESSTAG name="UDB Routed Clock Assignment">
@@ -456,6 +493,7 @@ Removing unused cells resulting from optimization
     Removed unused cell/equation '\I2S:tx_state_1\\D\:macrocell'
     Removed unused cell/equation '\I2S:tx_underflow_sticky\\D\:macrocell'
     Removed unused cell/equation '\I2S:txenable\\D\:macrocell'
+    Removed unused cell/equation '\QuadSampGenerator_1:Net_162\:macrocell'
     Removed unused cell/equation '__ZERO__:macrocell'
 Done removing unused cells.
 <CYPRESSTAG name="Duplicate Macrocell detection">
@@ -584,7 +622,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_455 ,
+            input => Net_3346 ,
             pad => BCK(0)_PAD );
         Properties:
         {
@@ -622,7 +660,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_456 ,
+            input => Net_3338 ,
             pad => DIN(0)_PAD );
         Properties:
         {
@@ -660,7 +698,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            fb => Net_460 ,
+            fb => Net_3345 ,
             pad => DOUT(0)_PAD );
         Properties:
         {
@@ -698,7 +736,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            fb => Net_1446 ,
+            fb => Net_3315 ,
             pad => KEY_0(0)_PAD );
         Properties:
         {
@@ -736,7 +774,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            fb => Net_1447 ,
+            fb => Net_3314 ,
             pad => KEY_1(0)_PAD );
         Properties:
         {
@@ -774,7 +812,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_454 ,
+            input => Net_3347 ,
             pad => LRCK(0)_PAD );
         Properties:
         {
@@ -812,7 +850,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            analog_term => Net_469 ,
+            analog_term => Net_3339 ,
             pad => MIC(0)_PAD );
         Properties:
         {
@@ -850,7 +888,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            fb => Net_477 ,
+            fb => Net_3363 ,
             pad => QSC(0)_PAD );
         Properties:
         {
@@ -888,7 +926,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_476_1 ,
+            input => Net_3332_0 ,
             pad => QSD(0)_PAD );
         Properties:
         {
@@ -926,7 +964,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_476_0 ,
+            input => Net_3332_1 ,
             pad => QSD(1)_PAD );
         Properties:
         {
@@ -961,10 +999,10 @@ Design Equations
             SIO Vtrip: MULTIPLIER_0_5
             SIO RefSel: VCC_IO
             Required Capabilitites: DIGITAL
-            Initial Value: 0
+            Initial Value: 1
             IO Voltage: 0
         PORT MAP (
-            input => Net_475_1 ,
+            input => Net_3333_0 ,
             pad => QSE(0)_PAD );
         Properties:
         {
@@ -999,10 +1037,10 @@ Design Equations
             SIO Vtrip: MULTIPLIER_0_5
             SIO RefSel: VCC_IO
             Required Capabilitites: DIGITAL
-            Initial Value: 0
+            Initial Value: 1
             IO Voltage: 0
         PORT MAP (
-            input => Net_475_0 ,
+            input => Net_3333_1 ,
             pad => QSE(1)_PAD );
         Properties:
         {
@@ -1040,7 +1078,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            input => Net_1456_local ,
+            input => Net_3311_local ,
             pad => SCK(0)_PAD );
         Properties:
         {
@@ -1156,7 +1194,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            analog_term => Net_1727 ,
+            analog_term => Net_3310 ,
             pad => SPKR_L(0)_PAD );
         Properties:
         {
@@ -1194,7 +1232,7 @@ Design Equations
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            analog_term => Net_1728 ,
+            analog_term => Net_3309 ,
             pad => SPKR_R(0)_PAD );
         Properties:
         {
@@ -1242,14 +1280,14 @@ Design Equations
         Attributes:
             In Group/Port: True
             In Sync Option: AUTO
-            Out Sync Option: NOSYNC
+            Out Sync Option: SYNC
             Interrupt generated: False
             Interrupt mode: NONE
-            Drive mode: RES_PULL_UP
+            Drive mode: RES_PULL_UP_DOWN
             VTrip: EITHER
-            Slew: FAST
+            Slew: SLOW
             Input Sync needed: False
-            Output Sync needed: False
+            Output Sync needed: True
             SC shield enabled: False
             POR State: ANY
             LCD Mode: COMMON
@@ -1283,9 +1321,9 @@ Design Equations
             Out Sync Option: NOSYNC
             Interrupt generated: False
             Interrupt mode: NONE
-            Drive mode: RES_PULL_UP
+            Drive mode: RES_PULL_UP_DOWN
             VTrip: EITHER
-            Slew: FAST
+            Slew: SLOW
             Input Sync needed: False
             Output Sync needed: False
             SC shield enabled: False
@@ -1443,79 +1481,79 @@ Design Equations
         );
         Output = Net_1745 (fanout=3)
 
-    MacroCell: Name=Net_454, Mode=(D-Register)
-        Total # of inputs        : 2
-        Total # of product terms : 1
-        List of special equations: 
-            Clock  = (Net_459) => Global
+    MacroCell: Name=Net_3332_0, Mode=(Combinatorial)
+        Total # of inputs        : 3
+        Total # of product terms : 2
             Clock Enable: True
-        Main Equation            : 1 pterm
+        Main Equation            : 2 pterms
         (
-              !\I2S:reset\ * !\I2S:count_6\
+              !\QuadSampGenerator_1:Net_465\ * Net_3365
+            + \QuadSampGenerator_1:Net_364\ * !Net_3365
         );
-        Output = Net_454 (fanout=1)
+        Output = Net_3332_0 (fanout=1)
 
-    MacroCell: Name=Net_456, Mode=(D-Register)
+    MacroCell: Name=Net_3332_1, Mode=(Combinatorial)
+        Total # of inputs        : 3
+        Total # of product terms : 2
+            Clock Enable: True
+        Main Equation            : 2 pterms
+        (
+              !\QuadSampGenerator_1:Net_465\ * !Net_3365
+            + \QuadSampGenerator_1:Net_364\ * Net_3365
+        );
+        Output = Net_3332_1 (fanout=1)
+
+    MacroCell: Name=Net_3333_0, Mode=(Combinatorial)
+        Total # of inputs        : 4
+        Total # of product terms : 2
+            Clock Enable: True
+        Main Equation            : 2 pterms
+        (
+              \QuadSampGenerator_1:Net_465\ * Net_1736 * !Net_3366
+            + !\QuadSampGenerator_1:Net_364\ * Net_1736 * Net_3366
+        );
+        Output = Net_3333_0 (fanout=1)
+
+    MacroCell: Name=Net_3333_1, Mode=(Combinatorial)
+        Total # of inputs        : 4
+        Total # of product terms : 2
+            Clock Enable: True
+        Main Equation            : 2 pterms
+        (
+              \QuadSampGenerator_1:Net_465\ * Net_1736 * Net_3366
+            + !\QuadSampGenerator_1:Net_364\ * Net_1736 * !Net_3366
+        );
+        Output = Net_3333_1 (fanout=1)
+
+    MacroCell: Name=Net_3338, Mode=(D-Register)
         Total # of inputs        : 1
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         (
               \I2S:tx_data_out\
         );
-        Output = Net_456 (fanout=1)
+        Output = Net_3338 (fanout=1)
 
-    MacroCell: Name=Net_475_0, Mode=(Combinatorial)
-        Total # of inputs        : 1
-        Total # of product terms : 1
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              !Net_476_0
-        );
-        Output = Net_475_0 (fanout=1)
-
-    MacroCell: Name=Net_475_1, Mode=(D-Register)
-        Total # of inputs        : 1
+    MacroCell: Name=Net_3347, Mode=(D-Register)
+        Total # of inputs        : 2
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_477)
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              Net_476_0
+              !\I2S:reset\ * !\I2S:count_6\
         );
-        Output = Net_475_1 (fanout=3)
-
-    MacroCell: Name=Net_476_0, Mode=(D-Register)
-        Total # of inputs        : 1
-        Total # of product terms : 1
-        List of special equations: 
-            Clock  = (Net_477)
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              !Net_475_1
-        );
-        Output = Net_476_0 (fanout=3)
-
-    MacroCell: Name=Net_476_1, Mode=(Combinatorial)
-        Total # of inputs        : 1
-        Total # of product terms : 1
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              !Net_475_1
-        );
-        Output = Net_476_1 (fanout=1)
+        Output = Net_3347 (fanout=1)
 
     MacroCell: Name=\I2S:reset\, Mode=(D-Register)
         Total # of inputs        : 1
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         (
@@ -1527,13 +1565,13 @@ Design Equations
         Total # of inputs        : 7
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
-              Net_455 * !\I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
+              Net_3346 * !\I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:rxenable\
-            + Net_455 * !\I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
+            + Net_3346 * !\I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:rxenable\
         );
         Output = \I2S:rx_f0_load\ (fanout=3)
@@ -1542,7 +1580,7 @@ Design Equations
         Total # of inputs        : 4
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
@@ -1555,11 +1593,11 @@ Design Equations
         Total # of inputs        : 2
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         !(
-              !Net_455 * \I2S:rxenable\
+              !Net_3346 * \I2S:rxenable\
         );
         Output = \I2S:rx_state_0\ (fanout=1)
 
@@ -1577,7 +1615,7 @@ Design Equations
         Total # of inputs        : 9
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
@@ -1594,11 +1632,11 @@ Design Equations
         Total # of inputs        : 7
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         !(
-              !Net_455 * \I2S:txenable\
+              !Net_3346 * \I2S:txenable\
             + \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * \I2S:count_1\ * 
               \I2S:txenable\
             + \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * \I2S:count_1\ * 
@@ -1610,13 +1648,13 @@ Design Equations
         Total # of inputs        : 7
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
-              Net_455 * \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
+              Net_3346 * \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
               \I2S:count_1\
-            + Net_455 * \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
+            + Net_3346 * \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
               \I2S:count_1\
             + !\I2S:txenable\
         );
@@ -1636,7 +1674,7 @@ Design Equations
         Total # of inputs        : 5
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
@@ -1650,19 +1688,43 @@ Design Equations
         Total # of inputs        : 10
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
-              !Net_455 * !\I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
+              !Net_3346 * !\I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
               !\I2S:count_4\ * !\I2S:count_3\ * !\I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:txenable\
-            + !Net_455 * \I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
+            + !Net_3346 * \I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
               !\I2S:count_4\ * !\I2S:count_3\ * !\I2S:count_2\ * 
               !\I2S:count_1\ * !\I2S:tx_underflow_sticky\ * !\I2S:txenable\
             + \I2S:tx_underflow_sticky\ * \I2S:txenable\
         );
         Output = \I2S:txenable\ (fanout=3)
+
+    MacroCell: Name=\QuadSampGenerator_1:Net_364\, Mode=(D-Register)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_3363)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\QuadSampGenerator_1:Net_465\
+        );
+        Output = \QuadSampGenerator_1:Net_364\ (fanout=5)
+
+    MacroCell: Name=\QuadSampGenerator_1:Net_465\, Mode=(D-Register)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_3363)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \QuadSampGenerator_1:Net_364\
+        );
+        Output = \QuadSampGenerator_1:Net_465\ (fanout=5)
 
     MacroCell: Name=__ONE__, Mode=(Combinatorial)
         Total # of inputs        : 0
@@ -1682,9 +1744,9 @@ Design Equations
 
     datapathcell: Name =\I2S:Rx:dpRx:u0\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             cs_addr_0 => \I2S:rx_state_0\ ,
-            route_si => Net_460_SYNCOUT ,
+            route_si => Net_3345_SYNCOUT ,
             f0_load => \I2S:rx_f0_load\ ,
             f0_bus_stat_comb => Net_1754 ,
             f0_blk_stat_comb => \I2S:rx_f0_full_stat\ );
@@ -1717,7 +1779,7 @@ Design Equations
 
     datapathcell: Name =\I2S:Tx:dpTx:u0\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             cs_addr_1 => \I2S:tx_state_1\ ,
             cs_addr_0 => \I2S:tx_state_0\ ,
             so_comb => \I2S:tx_data_out\ ,
@@ -1756,10 +1818,10 @@ Design Equations
     Status register listing
     ------------------------------------------------------------
 
-    statuscell: Name =\Status_Reg_1:sts_reg\
+    statuscell: Name =\KEY:sts_reg\
         PORT MAP (
-            status_1 => Net_1447_SYNCOUT ,
-            status_0 => Net_1446_SYNCOUT );
+            status_1 => Net_3314_SYNCOUT ,
+            status_0 => Net_3315_SYNCOUT );
         Properties:
         {
             cy_force_order = 1
@@ -1775,7 +1837,7 @@ Design Equations
 
     statusicell: Name =\I2S:Rx:RxStsReg\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             status_1 => Net_1754 ,
             status_0 => \I2S:rx_status_0\ );
         Properties:
@@ -1789,7 +1851,7 @@ Design Equations
 
     statusicell: Name =\I2S:Tx:TxStsReg\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             status_1 => \I2S:tx_status_1\ ,
             status_0 => \I2S:tx_status_0\ );
         Properties:
@@ -1809,24 +1871,24 @@ Design Equations
 
     synccell: Name =DOUT(0)_SYNC
         PORT MAP (
-            in => Net_460 ,
-            out => Net_460_SYNCOUT ,
+            in => Net_3345 ,
+            out => Net_3345_SYNCOUT ,
             clock => ClockBlock_BUS_CLK );
         Clock Polarity: Active High
         Clock Enable: True
 
     synccell: Name =KEY_0(0)_SYNC
         PORT MAP (
-            in => Net_1446 ,
-            out => Net_1446_SYNCOUT ,
+            in => Net_3315 ,
+            out => Net_3315_SYNCOUT ,
             clock => ClockBlock_BUS_CLK );
         Clock Polarity: Active High
         Clock Enable: True
 
     synccell: Name =KEY_1(0)_SYNC
         PORT MAP (
-            in => Net_1447 ,
-            out => Net_1447_SYNCOUT ,
+            in => Net_3314 ,
+            out => Net_3314_SYNCOUT ,
             clock => ClockBlock_BUS_CLK );
         Clock Polarity: Active High
         Clock Enable: True
@@ -1853,9 +1915,29 @@ Design Equations
     Control register listing
     ------------------------------------------------------------
 
+    controlcell: Name =\Control:ctrl_reg\
+        PORT MAP (
+            control_7 => \Control:control_7\ ,
+            control_6 => \Control:control_6\ ,
+            control_5 => \Control:control_5\ ,
+            control_4 => \Control:control_4\ ,
+            control_3 => \Control:control_3\ ,
+            control_2 => Net_3366 ,
+            control_1 => Net_3365 ,
+            control_0 => Net_1736 );
+        Properties:
+        {
+            cy_ctrl_mode_0 = "00000000"
+            cy_ctrl_mode_1 = "00000000"
+            cy_ext_reset = 0
+            cy_force_order = 1
+            cy_init_value = "00000000"
+        }
+        Clock Enable: True
+
     controlcell: Name =\I2S:SyncCtl:ControlReg\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             control_7 => \I2S:ctrl_7\ ,
             control_6 => \I2S:ctrl_6\ ,
             control_5 => \I2S:ctrl_5\ ,
@@ -1874,26 +1956,6 @@ Design Equations
         }
         Clock Polarity: Active High
         Clock Enable: True
-
-    controlcell: Name =\Transmit:ctrl_reg\
-        PORT MAP (
-            control_7 => \Transmit:control_7\ ,
-            control_6 => \Transmit:control_6\ ,
-            control_5 => \Transmit:control_5\ ,
-            control_4 => \Transmit:control_4\ ,
-            control_3 => \Transmit:control_3\ ,
-            control_2 => \Transmit:control_2\ ,
-            control_1 => \Transmit:control_1\ ,
-            control_0 => Net_1736 );
-        Properties:
-        {
-            cy_ctrl_mode_0 = "00000000"
-            cy_ctrl_mode_1 = "00000000"
-            cy_ext_reset = 0
-            cy_force_order = 1
-            cy_init_value = "00000000"
-        }
-        Clock Enable: True
     </CYPRESSTAG>
     <CYPRESSTAG name="Count7 listing">
 
@@ -1903,7 +1965,7 @@ Design Equations
 
     count7cell: Name =\I2S:BitCounter\
         PORT MAP (
-            clock => Net_459 ,
+            clock => Net_3335 ,
             enable => \I2S:ctrl_2\ ,
             count_6 => \I2S:count_6\ ,
             count_5 => \I2S:count_5\ ,
@@ -1911,7 +1973,7 @@ Design Equations
             count_3 => \I2S:count_3\ ,
             count_2 => \I2S:count_2\ ,
             count_1 => \I2S:count_1\ ,
-            count_0 => Net_455 );
+            count_0 => Net_3346 );
         Properties:
         {
             cy_alt_mode = 0
@@ -1933,7 +1995,7 @@ Design Equations
         PORT MAP (
             dmareq => Net_1801 ,
             termin => zero ,
-            termout => Net_1808 );
+            termout => Net_3307 );
         Properties:
         {
             drq_type = "10"
@@ -1944,7 +2006,7 @@ Design Equations
         PORT MAP (
             dmareq => Net_1754 ,
             termin => zero ,
-            termout => Net_1813 );
+            termout => Net_3306 );
         Properties:
         {
             drq_type = "10"
@@ -2014,7 +2076,7 @@ Design Equations
 
     interrupt: Name =RxI2S_done_isr
         PORT MAP (
-            interrupt => Net_1808 );
+            interrupt => Net_3307 );
         Properties:
         {
             int_type = "10"
@@ -2030,7 +2092,7 @@ Design Equations
 
     interrupt: Name =\Microphone:IRQ\
         PORT MAP (
-            interrupt => Net_472 );
+            interrupt => Net_3342 );
         Properties:
         {
             int_type = "10"
@@ -2102,7 +2164,7 @@ Design Equations
 
     interrupt: Name =\USBFS:sof_int\
         PORT MAP (
-            interrupt => Net_1 );
+            interrupt => Net_3360 );
         Properties:
         {
             int_type = "10"
@@ -2120,9 +2182,9 @@ Technology mapping summary
 Digital domain clock dividers :    4 :    4 :    8 :  50.00%
  Analog domain clock dividers :    0 :    4 :    4 :   0.00%
                          Pins :   31 :    0 :   31 : 100.00%
-                   Macrocells :   19 :  141 :  160 :  11.88%
-                Unique Pterms :   28 :  292 :  320 :   8.75%
-                 Total Pterms :   29 :      :      : 
+                   Macrocells :   21 :  139 :  160 :  13.13%
+                Unique Pterms :   35 :  285 :  320 :  10.94%
+                 Total Pterms :   35 :      :      : 
                Datapath Cells :    2 :   18 :   20 :  10.00%
                  Status Cells :    3 :   17 :   20 :  15.00%
          Control/Count7 Cells :    3 :   17 :   20 :  15.00%
@@ -2143,9 +2205,9 @@ Digital domain clock dividers :    4 :    4 :    8 :  50.00%
             EMIF Fixed Blocks :    0 :    1 :    1 :   0.00%
              LPF Fixed Blocks :    0 :    2 :    2 :   0.00%
 </CYPRESSTAG>
-Technology Mapping: Elapsed time ==> 1s.109ms
+Technology Mapping: Elapsed time ==> 1s.562ms
 Info: mpr.M0037: Unused pieces of the design have been optimized out. See the Tech mapping section of the report file for details. (App=cydsfit)
-Tech mapping phase: Elapsed time ==> 1s.375ms
+Tech mapping phase: Elapsed time ==> 1s.890ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 Initial Analog Placement Results:
@@ -2209,30 +2271,30 @@ Vref[6]@[FFB(Vref,6)]: \Microphone:ADC_Vssa_1:vRef_1\
 DSM[0]@[FFB(DSM,0)]: \Microphone:DSM4\
 USB[0]@[FFB(USB,0)]: \USBFS:USB\
 
-Analog Placement phase: Elapsed time ==> 0s.125ms
+Analog Placement phase: Elapsed time ==> 0s.140ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
 Log: apr.M0017: ============ VeraRouter Improve 1 OverUse=1 ============ (App=cydsfit)
-Net "Net_469" overuses wire "dsm0+ Wire"
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_A" overuses wire "dsm0+ Wire"
+Net "Net_3339" overuses wire "dsm0+ Wire"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_A" overuses wire "dsm0+ Wire"
 Log: apr.M0017: ============ VeraRouter Improve 2 OverUse=1 ============ (App=cydsfit)
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_A" overuses wire "amuxbusL"
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_B" overuses wire "amuxbusL"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_A" overuses wire "amuxbusL"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_B" overuses wire "amuxbusL"
 Log: apr.M0017: ============ VeraRouter Improve 3 OverUse=1 ============ (App=cydsfit)
-Net "Net_469" overuses wire "dsm0+ Wire"
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_A" overuses wire "dsm0+ Wire"
+Net "Net_3339" overuses wire "dsm0+ Wire"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_A" overuses wire "dsm0+ Wire"
 Log: apr.M0017: ============ VeraRouter Improve 4 OverUse=1 ============ (App=cydsfit)
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_A" overuses wire "amuxbusL"
-Net "AmuxEye::AMuxHw_1_Primitive_CYAMUXSIDE_B" overuses wire "amuxbusL"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_A" overuses wire "amuxbusL"
+Net "AmuxEye::SPKR_Primitive_CYAMUXSIDE_B" overuses wire "amuxbusL"
 Log: apr.M0017: ============ VeraRouter Improve 5 OverUse=1 ============ (App=cydsfit)
 ============ VeraRouter Final Answer Routes ============
-Connect Signal: Net_1728 => (GPIO P0[7] (119)) 
+Connect Signal: Net_3309 => (GPIO P0[7] (119)) 
 Route#018: 
   (GPIO P0[7] (119)) 
 Connect Signal: Net_1730 => (GPIO P2[4] (323)) 
 Route#019: 
   (GPIO P2[4] (323)) 
-Connect Signal: Net_1727 => (GPIO P0[6] (113)) 
+Connect Signal: Net_3310 => (GPIO P0[6] (113)) 
 Route#022: 
   (GPIO P0[6] (113)) 
 Connect Signal: Net_1729 => (GPIO P2[3] (318)) 
@@ -2244,7 +2306,7 @@ Route#026:
 Connect Signal: \Microphone:Net_690\ => (VRef Block Vssa (1037)) 
 Route#027: 
   (VRef Block Vssa (1037)) 
-Connect Signal: Net_469 => (GPIO P1[6] (405)) (dsm0+ (513)) 
+Connect Signal: Net_3339 => (GPIO P1[6] (405)) (dsm0+ (513)) 
 Route#046: 
   (dsm0+ (513)) [dsm0+ Wire [648]] 
     (DSM+ Sw__9a (507)) [DSM+ Sw__9b [202]] (DSM+ Sw__9c (508)##) [AGL[2] [607]] 
@@ -2263,7 +2325,7 @@ Route#033:
 Connect Signal: \Microphone:Net_677\ => (dsm0qtzref (535)) 
 Route#034: 
   (dsm0qtzref (535)) 
-Connect Mux: Amux::AMuxHw_1_Primitive_CYAMUXSIDE_A => { 
+Connect Mux: Amux::SPKR_Primitive_CYAMUXSIDE_A => { 
   (GPIO P0[7] (119)) } -->> {{  { 
   (GPIO P2[4] (323)) } }}
 Route#049: 
@@ -2275,7 +2337,7 @@ Route#049:
 Route#050: 
   (GPIO P2[4] Sw__1c (327)##) [GPIO P2[4] Sw__1b [125]] (GPIO P2[4] Sw__1a (326)) [GPIO P2[4] Wire [618]] 
     (GPIO P2[4] (323)) 
-Connect Mux: Amux::AMuxHw_1_Primitive_CYAMUXSIDE_B => { 
+Connect Mux: Amux::SPKR_Primitive_CYAMUXSIDE_B => { 
   (GPIO P0[6] (113)) } -->> {{  { 
   (GPIO P2[3] (318)) } }}
 Route#051: 
@@ -2296,7 +2358,7 @@ Route#029:
   (DSM- Sw__6c (528)##) [Vssa Wire Alt2 [651]] 
     (Vssa Wire Alt2 Sw (1039)) [Vssa Wire [708]] 
     (VRef Block Vssa (1037)) 
-Analog Routing phase: Elapsed time ==> 1s.484ms
+Analog Routing phase: Elapsed time ==> 1s.625ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="PLD Packing">
@@ -2313,9 +2375,9 @@ PLD Packing Summary
 
         PLD Resource Type :     Average/LAB
     =======================================
-                   Inputs :            6.50
-                   Pterms :            4.83
-               Macrocells :            3.17
+                   Inputs :            7.83
+                   Pterms :            5.83
+               Macrocells :            3.50
 </CYPRESSTAG>
 <CYPRESSTAG name="Packed PLD Contents">
 Packed PLD Contents not displayed at this verbose level.</CYPRESSTAG>
@@ -2327,13 +2389,13 @@ PLD Packing: Elapsed time ==> 0s.000ms
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.203ms
+Partitioning: Elapsed time ==> 0s.171ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Simulated Annealing">
-Annealing: Elapsed time ==> 0s.312ms
+Annealing: Elapsed time ==> 0s.265ms
 <CYPRESSTAG name="Simulated Annealing Results">
 The seed used for moves was 114161200.
-Inital cost was 854, final cost is 454 (46.84% improvement).</CYPRESSTAG>
+Inital cost was 878, final cost is 502 (42.82% improvement).</CYPRESSTAG>
 </CYPRESSTAG>
 <CYPRESSTAG name="Final Placement Summary">
 
@@ -2343,7 +2405,7 @@ Final Placement Summary
 
        Resource Type :      Count : Avg Inputs : Avg Outputs
     ========================================================
-                 UDB :          7 :       4.00 :       2.71
+                 UDB :          7 :       4.86 :       3.00
 <CYPRESSTAG name="Final Placement Details">
 <CYPRESSTAG name="Component Details">
 
@@ -2351,100 +2413,31 @@ Final Placement Summary
 Component Placement Details
 ------------------------------------------------------------
 UDB [UDB=(0,1)] contents:
-synccell: Name =KEY_0(0)_SYNC
+synccell: Name =KEY_1(0)_SYNC
     PORT MAP (
-        in => Net_1446 ,
-        out => Net_1446_SYNCOUT ,
+        in => Net_3314 ,
+        out => Net_3314_SYNCOUT ,
         clock => ClockBlock_BUS_CLK );
     Clock Polarity: Active High
     Clock Enable: True
 
-synccell: Name =KEY_1(0)_SYNC
+synccell: Name =KEY_0(0)_SYNC
     PORT MAP (
-        in => Net_1447 ,
-        out => Net_1447_SYNCOUT ,
+        in => Net_3315 ,
+        out => Net_3315_SYNCOUT ,
         clock => ClockBlock_BUS_CLK );
     Clock Polarity: Active High
     Clock Enable: True
 
 UDB [UDB=(0,2)] is empty.
-UDB [UDB=(0,3)] is empty.
-UDB [UDB=(0,4)] is empty.
-UDB [UDB=(0,5)] is empty.
-UDB [UDB=(1,1)] contents:
-statuscell: Name =\Status_Reg_1:sts_reg\
-    PORT MAP (
-        status_1 => Net_1447_SYNCOUT ,
-        status_0 => Net_1446_SYNCOUT );
-    Properties:
-    {
-        cy_force_order = 1
-        cy_md_select = "00000000"
-    }
-    Clock Enable: True
-
-UDB [UDB=(1,2)] is empty.
-UDB [UDB=(1,3)] is empty.
-UDB [UDB=(1,4)] is empty.
-UDB [UDB=(1,5)] is empty.
-UDB [UDB=(2,1)] is empty.
-UDB [UDB=(2,2)] is empty.
-UDB [UDB=(2,3)] is empty.
-UDB [UDB=(2,4)] contents:
-synccell: Name =SCL(0)_SYNC
-    PORT MAP (
-        in => \I2C:Net_854\ ,
-        out => \I2C:Net_854_SYNCOUT\ ,
-        clock => ClockBlock_BUS_CLK );
-    Clock Polarity: Active High
-    Clock Enable: True
-
-synccell: Name =DOUT(0)_SYNC
-    PORT MAP (
-        in => Net_460 ,
-        out => Net_460_SYNCOUT ,
-        clock => ClockBlock_BUS_CLK );
-    Clock Polarity: Active High
-    Clock Enable: True
-
-synccell: Name =SDA(0)_SYNC
-    PORT MAP (
-        in => \I2C:Net_855\ ,
-        out => \I2C:Net_855_SYNCOUT\ ,
-        clock => ClockBlock_BUS_CLK );
-    Clock Polarity: Active High
-    Clock Enable: True
-
-UDB [UDB=(2,5)] is empty.
-UDB [UDB=(3,1)] contents:
-controlcell: Name =\Transmit:ctrl_reg\
-    PORT MAP (
-        control_7 => \Transmit:control_7\ ,
-        control_6 => \Transmit:control_6\ ,
-        control_5 => \Transmit:control_5\ ,
-        control_4 => \Transmit:control_4\ ,
-        control_3 => \Transmit:control_3\ ,
-        control_2 => \Transmit:control_2\ ,
-        control_1 => \Transmit:control_1\ ,
-        control_0 => Net_1736 );
-    Properties:
-    {
-        cy_ctrl_mode_0 = "00000000"
-        cy_ctrl_mode_1 = "00000000"
-        cy_ext_reset = 0
-        cy_force_order = 1
-        cy_init_value = "00000000"
-    }
-    Clock Enable: True
-
-UDB [UDB=(3,2)] contents:
-LAB@[UDB=(3,2)][LB=0] #macrocells=4, #inputs=12, #pterms=8
+UDB [UDB=(0,3)] contents:
+LAB@[UDB=(0,3)][LB=0] #macrocells=4, #inputs=12, #pterms=8
 {
-    [McSlotId=0]:     MacroCell: Name=\I2S:rxenable\, Mode=(T-Register) @ [UDB=(3,2)][LB=0][MC=0]
+    [McSlotId=0]:     MacroCell: Name=\I2S:rxenable\, Mode=(T-Register) @ [UDB=(0,3)][LB=0][MC=0]
         Total # of inputs        : 9
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
@@ -2457,76 +2450,76 @@ LAB@[UDB=(3,2)][LB=0] #macrocells=4, #inputs=12, #pterms=8
         );
         Output = \I2S:rxenable\ (fanout=3)
 
-    [McSlotId=1]:     MacroCell: Name=\I2S:tx_state_1\, Mode=(D-Register) @ [UDB=(3,2)][LB=0][MC=1]
+    [McSlotId=1]:     MacroCell: Name=\I2S:tx_state_1\, Mode=(D-Register) @ [UDB=(0,3)][LB=0][MC=1]
         Total # of inputs        : 7
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
-              Net_455 * \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
+              Net_3346 * \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
               \I2S:count_1\
-            + Net_455 * \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
+            + Net_3346 * \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
               \I2S:count_1\
             + !\I2S:txenable\
         );
         Output = \I2S:tx_state_1\ (fanout=3)
 
-    [McSlotId=2]:     MacroCell: Name=\I2S:rx_state_0\, Mode=(D-Register) @ [UDB=(3,2)][LB=0][MC=2]
+    [McSlotId=2]:     MacroCell: Name=\I2S:rx_state_0\, Mode=(D-Register) @ [UDB=(0,3)][LB=0][MC=2]
         Total # of inputs        : 2
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         !(
-              !Net_455 * \I2S:rxenable\
+              !Net_3346 * \I2S:rxenable\
         );
         Output = \I2S:rx_state_0\ (fanout=1)
 
-    [McSlotId=3]:     MacroCell: Name=Net_454, Mode=(D-Register) @ [UDB=(3,2)][LB=0][MC=3]
+    [McSlotId=3]:     MacroCell: Name=Net_3347, Mode=(D-Register) @ [UDB=(0,3)][LB=0][MC=3]
         Total # of inputs        : 2
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         (
               !\I2S:reset\ * !\I2S:count_6\
         );
-        Output = Net_454 (fanout=1)
+        Output = Net_3347 (fanout=1)
 }
 
-LAB@[UDB=(3,2)][LB=1] #macrocells=4, #inputs=11, #pterms=8
+LAB@[UDB=(0,3)][LB=1] #macrocells=4, #inputs=11, #pterms=8
 {
-    [McSlotId=0]:     MacroCell: Name=\I2S:txenable\, Mode=(T-Register) @ [UDB=(3,2)][LB=1][MC=0]
+    [McSlotId=0]:     MacroCell: Name=\I2S:txenable\, Mode=(T-Register) @ [UDB=(0,3)][LB=1][MC=0]
         Total # of inputs        : 10
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         (
-              !Net_455 * !\I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
+              !Net_3346 * !\I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
               !\I2S:count_4\ * !\I2S:count_3\ * !\I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:txenable\
-            + !Net_455 * \I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
+            + !Net_3346 * \I2S:ctrl_0\ * !\I2S:count_6\ * !\I2S:count_5\ * 
               !\I2S:count_4\ * !\I2S:count_3\ * !\I2S:count_2\ * 
               !\I2S:count_1\ * !\I2S:tx_underflow_sticky\ * !\I2S:txenable\
             + \I2S:tx_underflow_sticky\ * \I2S:txenable\
         );
         Output = \I2S:txenable\ (fanout=3)
 
-    [McSlotId=1]:     MacroCell: Name=\I2S:tx_state_0\, Mode=(D-Register) @ [UDB=(3,2)][LB=1][MC=1]
+    [McSlotId=1]:     MacroCell: Name=\I2S:tx_state_0\, Mode=(D-Register) @ [UDB=(0,3)][LB=1][MC=1]
         Total # of inputs        : 7
         Total # of product terms : 3
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 3 pterms
         !(
-              !Net_455 * \I2S:txenable\
+              !Net_3346 * \I2S:txenable\
             + \I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * \I2S:count_1\ * 
               \I2S:txenable\
             + \I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * \I2S:count_1\ * 
@@ -2534,22 +2527,22 @@ LAB@[UDB=(3,2)][LB=1] #macrocells=4, #inputs=11, #pterms=8
         );
         Output = \I2S:tx_state_0\ (fanout=3)
 
-    [McSlotId=2]:     MacroCell: Name=\I2S:rx_f0_load\, Mode=(D-Register) @ [UDB=(3,2)][LB=1][MC=2]
+    [McSlotId=2]:     MacroCell: Name=\I2S:rx_f0_load\, Mode=(D-Register) @ [UDB=(0,3)][LB=1][MC=2]
         Total # of inputs        : 7
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
-              Net_455 * !\I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
+              Net_3346 * !\I2S:count_5\ * \I2S:count_3\ * \I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:rxenable\
-            + Net_455 * !\I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
+            + Net_3346 * !\I2S:count_4\ * \I2S:count_3\ * \I2S:count_2\ * 
               !\I2S:count_1\ * \I2S:rxenable\
         );
         Output = \I2S:rx_f0_load\ (fanout=3)
 
-    [McSlotId=3]:     MacroCell: Name=__ONE__, Mode=(Combinatorial) @ [UDB=(3,2)][LB=1][MC=3]
+    [McSlotId=3]:     MacroCell: Name=__ONE__, Mode=(Combinatorial) @ [UDB=(0,3)][LB=1][MC=3]
         Total # of inputs        : 0
         Total # of product terms : 0
             Clock Enable: True
@@ -2562,7 +2555,7 @@ LAB@[UDB=(3,2)][LB=1] #macrocells=4, #inputs=11, #pterms=8
 
 count7cell: Name =\I2S:BitCounter\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         enable => \I2S:ctrl_2\ ,
         count_6 => \I2S:count_6\ ,
         count_5 => \I2S:count_5\ ,
@@ -2570,7 +2563,7 @@ count7cell: Name =\I2S:BitCounter\
         count_3 => \I2S:count_3\ ,
         count_2 => \I2S:count_2\ ,
         count_1 => \I2S:count_1\ ,
-        count_0 => Net_455 );
+        count_0 => Net_3346 );
     Properties:
     {
         cy_alt_mode = 0
@@ -2582,33 +2575,14 @@ count7cell: Name =\I2S:BitCounter\
     Clock Polarity: Active High
     Clock Enable: True
 
-UDB [UDB=(3,3)] contents:
-LAB@[UDB=(3,3)][LB=0] #macrocells=1, #inputs=1, #pterms=1
+UDB [UDB=(0,4)] contents:
+LAB@[UDB=(0,4)][LB=0] #macrocells=4, #inputs=9, #pterms=6
 {
-    [McSlotId=0]:     MacroCell: Name=\I2S:reset\, Mode=(D-Register) @ [UDB=(3,3)][LB=0][MC=0]
-        Total # of inputs        : 1
-        Total # of product terms : 1
-        List of special equations: 
-            Clock  = (Net_459) => Global
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              !\I2S:ctrl_2\
-        );
-        Output = \I2S:reset\ (fanout=1)
-
-    [McSlotId=1]: (empty)
-    [McSlotId=2]: (empty)
-    [McSlotId=3]: (empty)
-}
-
-LAB@[UDB=(3,3)][LB=1] #macrocells=4, #inputs=7, #pterms=5
-{
-    [McSlotId=0]:     MacroCell: Name=\I2S:tx_underflow_sticky\, Mode=(D-Register) @ [UDB=(3,3)][LB=1][MC=0]
+    [McSlotId=0]:     MacroCell: Name=\I2S:tx_underflow_sticky\, Mode=(D-Register) @ [UDB=(0,4)][LB=0][MC=0]
         Total # of inputs        : 5
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
@@ -2618,7 +2592,7 @@ LAB@[UDB=(3,3)][LB=1] #macrocells=4, #inputs=7, #pterms=5
         );
         Output = \I2S:tx_underflow_sticky\ (fanout=2)
 
-    [McSlotId=1]:     MacroCell: Name=\I2S:tx_status_0\, Mode=(Combinatorial) @ [UDB=(3,3)][LB=1][MC=1]
+    [McSlotId=1]:     MacroCell: Name=\I2S:tx_status_0\, Mode=(Combinatorial) @ [UDB=(0,4)][LB=0][MC=1]
         Total # of inputs        : 3
         Total # of product terms : 1
             Clock Enable: True
@@ -2628,7 +2602,7 @@ LAB@[UDB=(3,3)][LB=1] #macrocells=4, #inputs=7, #pterms=5
         );
         Output = \I2S:tx_status_0\ (fanout=1)
 
-    [McSlotId=2]:     MacroCell: Name=Net_1745, Mode=(Combinatorial) @ [UDB=(3,3)][LB=1][MC=2]
+    [McSlotId=2]:     MacroCell: Name=Net_1745, Mode=(Combinatorial) @ [UDB=(0,4)][LB=0][MC=2]
         Total # of inputs        : 1
         Total # of product terms : 1
             Clock Enable: True
@@ -2638,22 +2612,61 @@ LAB@[UDB=(3,3)][LB=1] #macrocells=4, #inputs=7, #pterms=5
         );
         Output = Net_1745 (fanout=3)
 
-    [McSlotId=3]:     MacroCell: Name=Net_456, Mode=(D-Register) @ [UDB=(3,3)][LB=1][MC=3]
+    [McSlotId=3]:     MacroCell: Name=Net_3333_0, Mode=(Combinatorial) @ [UDB=(0,4)][LB=0][MC=3]
+        Total # of inputs        : 4
+        Total # of product terms : 2
+            Clock Enable: True
+        Main Equation            : 2 pterms
+        (
+              \QuadSampGenerator_1:Net_465\ * Net_1736 * !Net_3366
+            + !\QuadSampGenerator_1:Net_364\ * Net_1736 * Net_3366
+        );
+        Output = Net_3333_0 (fanout=1)
+}
+
+LAB@[UDB=(0,4)][LB=1] #macrocells=3, #inputs=6, #pterms=4
+{
+    [McSlotId=0]:     MacroCell: Name=Net_3338, Mode=(D-Register) @ [UDB=(0,4)][LB=1][MC=0]
         Total # of inputs        : 1
         Total # of product terms : 1
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 1 pterm
         (
               \I2S:tx_data_out\
         );
-        Output = Net_456 (fanout=1)
+        Output = Net_3338 (fanout=1)
+
+    [McSlotId=1]:     MacroCell: Name=Net_3333_1, Mode=(Combinatorial) @ [UDB=(0,4)][LB=1][MC=1]
+        Total # of inputs        : 4
+        Total # of product terms : 2
+            Clock Enable: True
+        Main Equation            : 2 pterms
+        (
+              \QuadSampGenerator_1:Net_465\ * Net_1736 * Net_3366
+            + !\QuadSampGenerator_1:Net_364\ * Net_1736 * !Net_3366
+        );
+        Output = Net_3333_1 (fanout=1)
+
+    [McSlotId=2]:     MacroCell: Name=\I2S:reset\, Mode=(D-Register) @ [UDB=(0,4)][LB=1][MC=2]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_3335) => Global
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\I2S:ctrl_2\
+        );
+        Output = \I2S:reset\ (fanout=1)
+
+    [McSlotId=3]: (empty)
 }
 
 datapathcell: Name =\I2S:Tx:dpTx:u0\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         cs_addr_1 => \I2S:tx_state_1\ ,
         cs_addr_0 => \I2S:tx_state_0\ ,
         so_comb => \I2S:tx_data_out\ ,
@@ -2688,7 +2701,7 @@ datapathcell: Name =\I2S:Tx:dpTx:u0\
 
 statusicell: Name =\I2S:Tx:TxStsReg\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         status_1 => \I2S:tx_status_1\ ,
         status_0 => \I2S:tx_status_0\ );
     Properties:
@@ -2702,7 +2715,7 @@ statusicell: Name =\I2S:Tx:TxStsReg\
 
 controlcell: Name =\I2S:SyncCtl:ControlReg\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         control_7 => \I2S:ctrl_7\ ,
         control_6 => \I2S:ctrl_6\ ,
         control_5 => \I2S:ctrl_5\ ,
@@ -2722,14 +2735,28 @@ controlcell: Name =\I2S:SyncCtl:ControlReg\
     Clock Polarity: Active High
     Clock Enable: True
 
-UDB [UDB=(3,4)] contents:
-LAB@[UDB=(3,4)][LB=0] #macrocells=4, #inputs=6, #pterms=5
+UDB [UDB=(0,5)] is empty.
+UDB [UDB=(1,1)] contents:
+statuscell: Name =\KEY:sts_reg\
+    PORT MAP (
+        status_1 => Net_3314_SYNCOUT ,
+        status_0 => Net_3315_SYNCOUT );
+    Properties:
+    {
+        cy_force_order = 1
+        cy_md_select = "00000000"
+    }
+    Clock Enable: True
+
+UDB [UDB=(1,2)] is empty.
+UDB [UDB=(1,3)] contents:
+LAB@[UDB=(1,3)][LB=0] #macrocells=4, #inputs=7, #pterms=7
 {
-    [McSlotId=0]:     MacroCell: Name=\I2S:rx_overflow_sticky\, Mode=(D-Register) @ [UDB=(3,4)][LB=0][MC=0]
+    [McSlotId=0]:     MacroCell: Name=\I2S:rx_overflow_sticky\, Mode=(D-Register) @ [UDB=(1,3)][LB=0][MC=0]
         Total # of inputs        : 4
         Total # of product terms : 2
         List of special equations: 
-            Clock  = (Net_459) => Global
+            Clock  = (Net_3335) => Global
             Clock Enable: True
         Main Equation            : 2 pterms
         (
@@ -2738,7 +2765,7 @@ LAB@[UDB=(3,4)][LB=0] #macrocells=4, #inputs=6, #pterms=5
         );
         Output = \I2S:rx_overflow_sticky\ (fanout=2)
 
-    [McSlotId=1]:     MacroCell: Name=\I2S:rx_status_0\, Mode=(Combinatorial) @ [UDB=(3,4)][LB=0][MC=1]
+    [McSlotId=1]:     MacroCell: Name=\I2S:rx_status_0\, Mode=(Combinatorial) @ [UDB=(1,3)][LB=0][MC=1]
         Total # of inputs        : 2
         Total # of product terms : 1
             Clock Enable: True
@@ -2748,62 +2775,34 @@ LAB@[UDB=(3,4)][LB=0] #macrocells=4, #inputs=6, #pterms=5
         );
         Output = \I2S:rx_status_0\ (fanout=1)
 
-    [McSlotId=2]:     MacroCell: Name=Net_475_0, Mode=(Combinatorial) @ [UDB=(3,4)][LB=0][MC=2]
-        Total # of inputs        : 1
-        Total # of product terms : 1
+    [McSlotId=2]:     MacroCell: Name=Net_3332_0, Mode=(Combinatorial) @ [UDB=(1,3)][LB=0][MC=2]
+        Total # of inputs        : 3
+        Total # of product terms : 2
             Clock Enable: True
-        Main Equation            : 1 pterm
+        Main Equation            : 2 pterms
         (
-              !Net_476_0
+              !\QuadSampGenerator_1:Net_465\ * Net_3365
+            + \QuadSampGenerator_1:Net_364\ * !Net_3365
         );
-        Output = Net_475_0 (fanout=1)
+        Output = Net_3332_0 (fanout=1)
 
-    [McSlotId=3]:     MacroCell: Name=Net_476_1, Mode=(Combinatorial) @ [UDB=(3,4)][LB=0][MC=3]
-        Total # of inputs        : 1
-        Total # of product terms : 1
+    [McSlotId=3]:     MacroCell: Name=Net_3332_1, Mode=(Combinatorial) @ [UDB=(1,3)][LB=0][MC=3]
+        Total # of inputs        : 3
+        Total # of product terms : 2
             Clock Enable: True
-        Main Equation            : 1 pterm
+        Main Equation            : 2 pterms
         (
-              !Net_475_1
+              !\QuadSampGenerator_1:Net_465\ * !Net_3365
+            + \QuadSampGenerator_1:Net_364\ * Net_3365
         );
-        Output = Net_476_1 (fanout=1)
-}
-
-LAB@[UDB=(3,4)][LB=1] #macrocells=2, #inputs=2, #pterms=2
-{
-    [McSlotId=0]:     MacroCell: Name=Net_475_1, Mode=(D-Register) @ [UDB=(3,4)][LB=1][MC=0]
-        Total # of inputs        : 1
-        Total # of product terms : 1
-        List of special equations: 
-            Clock  = (Net_477)
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              Net_476_0
-        );
-        Output = Net_475_1 (fanout=3)
-
-    [McSlotId=1]:     MacroCell: Name=Net_476_0, Mode=(D-Register) @ [UDB=(3,4)][LB=1][MC=1]
-        Total # of inputs        : 1
-        Total # of product terms : 1
-        List of special equations: 
-            Clock  = (Net_477)
-            Clock Enable: True
-        Main Equation            : 1 pterm
-        (
-              !Net_475_1
-        );
-        Output = Net_476_0 (fanout=3)
-
-    [McSlotId=2]: (empty)
-    [McSlotId=3]: (empty)
+        Output = Net_3332_1 (fanout=1)
 }
 
 datapathcell: Name =\I2S:Rx:dpRx:u0\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         cs_addr_0 => \I2S:rx_state_0\ ,
-        route_si => Net_460_SYNCOUT ,
+        route_si => Net_3345_SYNCOUT ,
         f0_load => \I2S:rx_f0_load\ ,
         f0_bus_stat_comb => Net_1754 ,
         f0_blk_stat_comb => \I2S:rx_f0_full_stat\ );
@@ -2836,7 +2835,7 @@ datapathcell: Name =\I2S:Rx:dpRx:u0\
 
 statusicell: Name =\I2S:Rx:RxStsReg\
     PORT MAP (
-        clock => Net_459 ,
+        clock => Net_3335 ,
         status_1 => Net_1754 ,
         status_0 => \I2S:rx_status_0\ );
     Properties:
@@ -2848,17 +2847,94 @@ statusicell: Name =\I2S:Rx:RxStsReg\
     Clock Polarity: Active High
     Clock Enable: True
 
+UDB [UDB=(1,4)] contents:
+LAB@[UDB=(1,4)][LB=0] #macrocells=2, #inputs=2, #pterms=2
+{
+    [McSlotId=0]:     MacroCell: Name=\QuadSampGenerator_1:Net_364\, Mode=(D-Register) @ [UDB=(1,4)][LB=0][MC=0]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_3363)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\QuadSampGenerator_1:Net_465\
+        );
+        Output = \QuadSampGenerator_1:Net_364\ (fanout=5)
+
+    [McSlotId=1]:     MacroCell: Name=\QuadSampGenerator_1:Net_465\, Mode=(D-Register) @ [UDB=(1,4)][LB=0][MC=1]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_3363)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \QuadSampGenerator_1:Net_364\
+        );
+        Output = \QuadSampGenerator_1:Net_465\ (fanout=5)
+
+    [McSlotId=2]: (empty)
+    [McSlotId=3]: (empty)
+}
+
+controlcell: Name =\Control:ctrl_reg\
+    PORT MAP (
+        control_7 => \Control:control_7\ ,
+        control_6 => \Control:control_6\ ,
+        control_5 => \Control:control_5\ ,
+        control_4 => \Control:control_4\ ,
+        control_3 => \Control:control_3\ ,
+        control_2 => Net_3366 ,
+        control_1 => Net_3365 ,
+        control_0 => Net_1736 );
+    Properties:
+    {
+        cy_ctrl_mode_0 = "00000000"
+        cy_ctrl_mode_1 = "00000000"
+        cy_ext_reset = 0
+        cy_force_order = 1
+        cy_init_value = "00000000"
+    }
+    Clock Enable: True
+
+synccell: Name =DOUT(0)_SYNC
+    PORT MAP (
+        in => Net_3345 ,
+        out => Net_3345_SYNCOUT ,
+        clock => ClockBlock_BUS_CLK );
+    Clock Polarity: Active High
+    Clock Enable: True
+
+UDB [UDB=(1,5)] is empty.
+UDB [UDB=(2,1)] is empty.
+UDB [UDB=(2,2)] is empty.
+UDB [UDB=(2,3)] is empty.
+UDB [UDB=(2,4)] is empty.
+UDB [UDB=(2,5)] is empty.
+UDB [UDB=(3,1)] is empty.
+UDB [UDB=(3,2)] is empty.
+UDB [UDB=(3,3)] is empty.
+UDB [UDB=(3,4)] contents:
+synccell: Name =SCL(0)_SYNC
+    PORT MAP (
+        in => \I2C:Net_854\ ,
+        out => \I2C:Net_854_SYNCOUT\ ,
+        clock => ClockBlock_BUS_CLK );
+    Clock Polarity: Active High
+    Clock Enable: True
+
+synccell: Name =SDA(0)_SYNC
+    PORT MAP (
+        in => \I2C:Net_855\ ,
+        out => \I2C:Net_855_SYNCOUT\ ,
+        clock => ClockBlock_BUS_CLK );
+    Clock Polarity: Active High
+    Clock Enable: True
+
 UDB [UDB=(3,5)] is empty.
 Intr hod @ [IntrHod=(0)]: 
   Intr@ [IntrHod=(0)][IntrId=(0)] 
-    interrupt: Name =\USBFS:ep_5\
-        PORT MAP (
-            interrupt => \USBFS:ept_int_5\ );
-        Properties:
-        {
-            int_type = "10"
-        }
-  Intr@ [IntrHod=(0)][IntrId=(1)] 
     interrupt: Name =\USBFS:ep_2\
         PORT MAP (
             interrupt => \USBFS:ept_int_2\ );
@@ -2866,18 +2942,26 @@ Intr hod @ [IntrHod=(0)]:
         {
             int_type = "10"
         }
-  Intr@ [IntrHod=(0)][IntrId=(2)] 
-    interrupt: Name =\USBFS:ep_4\
+  Intr@ [IntrHod=(0)][IntrId=(1)] 
+    interrupt: Name =\USBFS:ep_5\
         PORT MAP (
-            interrupt => \USBFS:ept_int_4\ );
+            interrupt => \USBFS:ept_int_5\ );
         Properties:
         {
             int_type = "10"
         }
-  Intr@ [IntrHod=(0)][IntrId=(6)] 
+  Intr@ [IntrHod=(0)][IntrId=(2)] 
+    interrupt: Name =\USBFS:ep_3\
+        PORT MAP (
+            interrupt => \USBFS:ept_int_3\ );
+        Properties:
+        {
+            int_type = "10"
+        }
+  Intr@ [IntrHod=(0)][IntrId=(5)] 
     interrupt: Name =RxI2S_done_isr
         PORT MAP (
-            interrupt => Net_1808 );
+            interrupt => Net_3307 );
         Properties:
         {
             int_type = "10"
@@ -2898,18 +2982,10 @@ Intr hod @ [IntrHod=(0)]:
         {
             int_type = "00"
         }
-  Intr@ [IntrHod=(0)][IntrId=(17)] 
-    interrupt: Name =\USBFS:ep_3\
-        PORT MAP (
-            interrupt => \USBFS:ept_int_3\ );
-        Properties:
-        {
-            int_type = "10"
-        }
   Intr@ [IntrHod=(0)][IntrId=(21)] 
     interrupt: Name =\USBFS:sof_int\
         PORT MAP (
-            interrupt => Net_1 );
+            interrupt => Net_3360 );
         Properties:
         {
             int_type = "10"
@@ -2938,10 +3014,18 @@ Intr hod @ [IntrHod=(0)]:
         {
             int_type = "10"
         }
+  Intr@ [IntrHod=(0)][IntrId=(25)] 
+    interrupt: Name =\USBFS:ep_4\
+        PORT MAP (
+            interrupt => \USBFS:ept_int_4\ );
+        Properties:
+        {
+            int_type = "10"
+        }
   Intr@ [IntrHod=(0)][IntrId=(29)] 
     interrupt: Name =\Microphone:IRQ\
         PORT MAP (
-            interrupt => Net_472 );
+            interrupt => Net_3342 );
         Properties:
         {
             int_type = "10"
@@ -2991,34 +3075,34 @@ Drq hod @ [DrqHod=(0)]:
             drq_type = "10"
             num_tds = 0
         }
-  Dma@ [DrqHod=(0)][DrqId=(6)] 
+  Dma@ [DrqHod=(0)][DrqId=(5)] 
     drqcell: Name =RxI2S_Buff
         PORT MAP (
             dmareq => Net_1801 ,
             termin => zero ,
-            termout => Net_1808 );
+            termout => Net_3307 );
         Properties:
         {
             drq_type = "10"
             num_tds = 0
         }
   Dma@ [DrqHod=(0)][DrqId=(8)] 
-    drqcell: Name =RxI2S_Stage
+    drqcell: Name =RxI2S_Swap
         PORT MAP (
             dmareq => Net_1754 ,
             termin => zero ,
-            termout => Net_1813 );
+            termout => Net_1801 );
         Properties:
         {
             drq_type = "10"
             num_tds = 0
         }
   Dma@ [DrqHod=(0)][DrqId=(9)] 
-    drqcell: Name =RxI2S_Swap
+    drqcell: Name =RxI2S_Stage
         PORT MAP (
             dmareq => Net_1754 ,
             termin => zero ,
-            termout => Net_1801 );
+            termout => Net_3306 );
         Properties:
         {
             drq_type = "10"
@@ -3058,7 +3142,7 @@ Pin : Name = BCK(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_455 ,
+        input => Net_3346 ,
         pad => BCK(0)_PAD );
     Properties:
     {
@@ -3097,7 +3181,7 @@ Pin : Name = SCK(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_1456_local ,
+        input => Net_3311_local ,
         pad => SCK(0)_PAD );
     Properties:
     {
@@ -3136,7 +3220,7 @@ Pin : Name = DOUT(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        fb => Net_460 ,
+        fb => Net_3345 ,
         pad => DOUT(0)_PAD );
     Properties:
     {
@@ -3255,7 +3339,7 @@ Pin : Name = QSC(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        fb => Net_477 ,
+        fb => Net_3363 ,
         pad => QSC(0)_PAD );
     Properties:
     {
@@ -3294,7 +3378,7 @@ Pin : Name = SPKR_L(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        analog_term => Net_1727 ,
+        analog_term => Net_3310 ,
         pad => SPKR_L(0)_PAD );
     Properties:
     {
@@ -3333,7 +3417,7 @@ Pin : Name = SPKR_R(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        analog_term => Net_1728 ,
+        analog_term => Net_3309 ,
         pad => SPKR_R(0)_PAD );
     Properties:
     {
@@ -3373,7 +3457,7 @@ Pin : Name = KEY_1(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        fb => Net_1447 ,
+        fb => Net_3314 ,
         pad => KEY_1(0)_PAD );
     Properties:
     {
@@ -3412,7 +3496,7 @@ Pin : Name = KEY_0(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        fb => Net_1446 ,
+        fb => Net_3315 ,
         pad => KEY_0(0)_PAD );
     Properties:
     {
@@ -3451,7 +3535,7 @@ Pin : Name = MIC(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        analog_term => Net_469 ,
+        analog_term => Net_3339 ,
         pad => MIC(0)_PAD );
     Properties:
     {
@@ -3606,10 +3690,10 @@ Pin : Name = QSE(1)
         SIO Vtrip: MULTIPLIER_0_5
         SIO RefSel: VCC_IO
         Required Capabilitites: DIGITAL
-        Initial Value: 0
+        Initial Value: 1
         IO Voltage: 0
     PORT MAP (
-        input => Net_475_0 ,
+        input => Net_3333_1 ,
         pad => QSE(1)_PAD );
     Properties:
     {
@@ -3645,10 +3729,10 @@ Pin : Name = QSE(0)
         SIO Vtrip: MULTIPLIER_0_5
         SIO RefSel: VCC_IO
         Required Capabilitites: DIGITAL
-        Initial Value: 0
+        Initial Value: 1
         IO Voltage: 0
     PORT MAP (
-        input => Net_475_1 ,
+        input => Net_3333_0 ,
         pad => QSE(0)_PAD );
     Properties:
     {
@@ -3659,14 +3743,14 @@ Pin : Name = XRX(0)
     Attributes:
         In Group/Port: True
         In Sync Option: AUTO
-        Out Sync Option: NOSYNC
+        Out Sync Option: SYNC
         Interrupt generated: False
         Interrupt mode: NONE
-        Drive mode: RES_PULL_UP
+        Drive mode: RES_PULL_UP_DOWN
         VTrip: EITHER
-        Slew: FAST
+        Slew: SLOW
         Input Sync needed: False
-        Output Sync needed: False
+        Output Sync needed: True
         SC shield enabled: False
         POR State: ANY
         LCD Mode: COMMON
@@ -3727,7 +3811,7 @@ Pin : Name = QSD(1)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_476_0 ,
+        input => Net_3332_1 ,
         pad => QSD(1)_PAD );
     Properties:
     {
@@ -3766,7 +3850,7 @@ Pin : Name = QSD(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_476_1 ,
+        input => Net_3332_0 ,
         pad => QSD(0)_PAD );
     Properties:
     {
@@ -3805,7 +3889,7 @@ Pin : Name = DIN(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_456 ,
+        input => Net_3338 ,
         pad => DIN(0)_PAD );
     Properties:
     {
@@ -3844,7 +3928,7 @@ Pin : Name = LRCK(0)
         Initial Value: 0
         IO Voltage: 0
     PORT MAP (
-        input => Net_454 ,
+        input => Net_3347 ,
         pad => LRCK(0)_PAD );
     Properties:
     {
@@ -3896,9 +3980,9 @@ Pin : Name = XTX(0)
         Out Sync Option: NOSYNC
         Interrupt generated: False
         Interrupt mode: NONE
-        Drive mode: RES_PULL_UP
+        Drive mode: RES_PULL_UP_DOWN
         VTrip: EITHER
-        Slew: FAST
+        Slew: SLOW
         Input Sync needed: False
         Output Sync needed: False
         SC shield enabled: False
@@ -4062,12 +4146,12 @@ Fixed Function block hod @ [FFB(Clock,0)]:
             clk_32k => ClockBlock_32k ,
             pllout => ClockBlock_PLL_OUT ,
             imo => ClockBlock_IMO ,
-            dclk_glb_0 => Net_459 ,
-            dclk_0 => Net_459_local ,
-            dclk_glb_1 => Net_1456 ,
-            dclk_1 => Net_1456_local ,
-            dclk_glb_2 => Net_1767 ,
-            dclk_2 => Net_1767_local ,
+            dclk_glb_0 => Net_3335 ,
+            dclk_0 => Net_3335_local ,
+            dclk_glb_1 => Net_3311 ,
+            dclk_1 => Net_3311_local ,
+            dclk_glb_2 => Net_3343 ,
+            dclk_2 => Net_3343_local ,
             dclk_glb_3 => \Microphone:Net_487\ ,
             dclk_3 => \Microphone:Net_487_local\ );
 Fixed Function block hod @ [FFB(Comparator,0)]: empty
@@ -4076,8 +4160,8 @@ Fixed Function block hod @ [FFB(DSM,0)]:
     DS Modulator @ [FFB(DSM,0)]: 
     dsmodcell: Name =\Microphone:DSM4\
         PORT MAP (
-            clk_udb => Net_1767_local ,
-            vplus => Net_469 ,
+            clk_udb => Net_3343_local ,
+            vplus => Net_3339 ,
             vminus => \Microphone:Net_520\ ,
             reset_dec => \Microphone:mod_reset\ ,
             extclk_cp_udb => \Microphone:Net_487_local\ ,
@@ -4114,7 +4198,7 @@ Fixed Function block hod @ [FFB(Decimator,0)]:
             mod_dat_0 => \Microphone:mod_dat_0\ ,
             ext_start => __ONE__ ,
             modrst => \Microphone:mod_reset\ ,
-            interrupt => Net_472 );
+            interrupt => Net_3342 );
         Properties:
         {
             cy_registers = ""
@@ -4147,7 +4231,7 @@ Fixed Function block hod @ [FFB(USB,0)]:
         PORT MAP (
             dp => \USBFS:Net_990\ ,
             dm => \USBFS:Net_597\ ,
-            sof_int => Net_1 ,
+            sof_int => Net_3360 ,
             arb_int => \USBFS:Net_79\ ,
             usb_int => \USBFS:Net_81\ ,
             ept_int_8 => \USBFS:ept_int_8\ ,
@@ -4193,10 +4277,10 @@ Fixed Function block hod @ [FFB(SAR,0)]: empty
 
 Blocks not positioned by the digital component placer:
     Amux Block @ <No Location>: 
-    amuxcell: Name =AMuxHw_1_Primitive_CYAMUXSIDE_A
+    amuxcell: Name =SPKR_Primitive_CYAMUXSIDE_A
         PORT MAP (
             muxin_0 => Net_1730 ,
-            vout => Net_1728 );
+            vout => Net_3309 );
         Properties:
         {
             api_type = 2
@@ -4207,10 +4291,10 @@ Blocks not positioned by the digital component placer:
             one_active = 0
         }
     Amux Block @ <No Location>: 
-    amuxcell: Name =AMuxHw_1_Primitive_CYAMUXSIDE_B
+    amuxcell: Name =SPKR_Primitive_CYAMUXSIDE_B
         PORT MAP (
             muxin_0 => Net_1729 ,
-            vout => Net_1727 );
+            vout => Net_3310 );
         Properties:
         {
             api_type = 2
@@ -4244,32 +4328,32 @@ Port Configuration report
      |     |       | Interrupt |                  |                 | 
 Port | Pin | Fixed |      Type |       Drive Mode |            Name | Connections
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------
-   0 |   0 |     * |      NONE |         CMOS_OUT |          BCK(0) | In(Net_455)
-     |   1 |     * |      NONE |         CMOS_OUT |          SCK(0) | In(Net_1456_local)
-     |   2 |     * |      NONE |     HI_Z_DIGITAL |         DOUT(0) | FB(Net_460)
+   0 |   0 |     * |      NONE |         CMOS_OUT |          BCK(0) | In(Net_3346)
+     |   1 |     * |      NONE |         CMOS_OUT |          SCK(0) | In(Net_3311_local)
+     |   2 |     * |      NONE |     HI_Z_DIGITAL |         DOUT(0) | FB(Net_3345)
      |   3 |     * |      NONE |    OPEN_DRAIN_LO |          SDA(0) | FB(\I2C:Net_855\), In(\I2C:Net_643_1\)
      |   4 |     * |      NONE |    OPEN_DRAIN_LO |          SCL(0) | FB(\I2C:Net_854\), In(\I2C:Net_643_0\)
-     |   5 |     * |      NONE |     HI_Z_DIGITAL |          QSC(0) | FB(Net_477)
-     |   6 |     * |      NONE |      HI_Z_ANALOG |       SPKR_L(0) | Analog(Net_1727)
-     |   7 |     * |      NONE |      HI_Z_ANALOG |       SPKR_R(0) | Analog(Net_1728)
+     |   5 |     * |      NONE |     HI_Z_DIGITAL |          QSC(0) | FB(Net_3363)
+     |   6 |     * |      NONE |      HI_Z_ANALOG |       SPKR_L(0) | Analog(Net_3310)
+     |   7 |     * |      NONE |      HI_Z_ANALOG |       SPKR_R(0) | Analog(Net_3309)
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------
-   1 |   4 |     * |      NONE |     HI_Z_DIGITAL |        KEY_1(0) | FB(Net_1447)
-     |   5 |     * |      NONE |     HI_Z_DIGITAL |        KEY_0(0) | FB(Net_1446)
-     |   6 |     * |      NONE |      HI_Z_ANALOG |          MIC(0) | Analog(Net_469)
+   1 |   4 |     * |      NONE |     HI_Z_DIGITAL |        KEY_1(0) | FB(Net_3314)
+     |   5 |     * |      NONE |     HI_Z_DIGITAL |        KEY_0(0) | FB(Net_3315)
+     |   6 |     * |      NONE |      HI_Z_ANALOG |          MIC(0) | Analog(Net_3339)
      |   7 |     * |      NONE |     HI_Z_DIGITAL | \USBFS:VBUS(0)\ | 
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------
    2 |   3 |     * |      NONE |      HI_Z_ANALOG |      AUDIO_L(0) | In(Net_1745), Analog(Net_1729)
      |   4 |     * |      NONE |      HI_Z_ANALOG |      AUDIO_R(0) | In(Net_1745), Analog(Net_1730)
-     |   5 |     * |      NONE |         CMOS_OUT |          QSE(1) | In(Net_475_0)
-     |   6 |     * |      NONE |         CMOS_OUT |          QSE(0) | In(Net_475_1)
-     |   7 |     * |      NONE |      RES_PULL_UP |          XRX(0) | In(Net_1745)
+     |   5 |     * |      NONE |         CMOS_OUT |          QSE(1) | In(Net_3333_1)
+     |   6 |     * |      NONE |         CMOS_OUT |          QSE(0) | In(Net_3333_0)
+     |   7 |     * |      NONE | RES_PULL_UP_DOWN |          XRX(0) | In(Net_1745)
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------
-  12 |   0 |     * |      NONE |         CMOS_OUT |          QSD(1) | In(Net_476_0)
-     |   1 |     * |      NONE |         CMOS_OUT |          QSD(0) | In(Net_476_1)
-     |   2 |     * |      NONE |         CMOS_OUT |          DIN(0) | In(Net_456)
-     |   3 |     * |      NONE |         CMOS_OUT |         LRCK(0) | In(Net_454)
+  12 |   0 |     * |      NONE |         CMOS_OUT |          QSD(1) | In(Net_3332_1)
+     |   1 |     * |      NONE |         CMOS_OUT |          QSD(0) | In(Net_3332_0)
+     |   2 |     * |      NONE |         CMOS_OUT |          DIN(0) | In(Net_3338)
+     |   3 |     * |      NONE |         CMOS_OUT |         LRCK(0) | In(Net_3347)
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------
-  15 |   2 |     * |      NONE |      RES_PULL_UP |          XTX(0) | In(Net_1736)
+  15 |   2 |     * |      NONE | RES_PULL_UP_DOWN |          XTX(0) | In(Net_1736)
      |   3 |     * |      NONE |    OPEN_DRAIN_LO |       TX_PWR(0) | In(Net_1736)
      |   6 |     * |   FALLING |      HI_Z_ANALOG |   \USBFS:Dp(0)\ | Analog(\USBFS:Net_990\)
      |   7 |     * |      NONE |      HI_Z_ANALOG |   \USBFS:Dm(0)\ | Analog(\USBFS:Net_597\)
@@ -4299,32 +4383,32 @@ Info: plm.M0037:
      (App=cydsfit)
 </CYPRESSTAG>
 </CYPRESSTAG>
-Digital component placer commit/Report: Elapsed time ==> 0s.343ms
+Digital component placer commit/Report: Elapsed time ==> 0s.312ms
 Digital Placement phase: Elapsed time ==> 0s.984ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 Routing successful.
-Digital Routing phase: Elapsed time ==> 3s.265ms
+Digital Routing phase: Elapsed time ==> 3s.828ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream and API generation">
-Bitstream and API generation phase: Elapsed time ==> 0s.296ms
+Bitstream and API generation phase: Elapsed time ==> 0s.312ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream verification">
 Bitstream verification phase: Elapsed time ==> 0s.140ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in peaberry_timing.html
-Static timing analysis phase: Elapsed time ==> 0s.875ms
+Static timing analysis phase: Elapsed time ==> 6s.093ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
 Data reporting phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-Design database save phase: Elapsed time ==> 0s.562ms
+Design database save phase: Elapsed time ==> 0s.578ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 9s.187ms
+cydsfit: Elapsed time ==> 15s.734ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 9s.250ms
-API generation phase: Elapsed time ==> 3s.609ms
-Dependency generation phase: Elapsed time ==> 0s.046ms
+Fitter phase: Elapsed time ==> 15s.859ms
+API generation phase: Elapsed time ==> 4s.546ms
+Dependency generation phase: Elapsed time ==> 0s.062ms
 Cleanup phase: Elapsed time ==> 0s.046ms

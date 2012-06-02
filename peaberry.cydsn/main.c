@@ -92,7 +92,7 @@ void main()
 	uint8 pcm3060_cmd[2];
 
     CyGlobalIntEnable;
-    
+	
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
 
     DmaRxConfiguration();
@@ -104,7 +104,7 @@ void main()
     I2C_Start();
     I2C_MasterClearStatus();
 	pcm3060_cmd[0] = 0x40;
-    pcm3060_cmd[1] = 0xC0;
+    pcm3060_cmd[1] = 0xC0; //C0-both D0-rxonly
     I2C_MasterWriteBuf(PCM3060_ADDR, (uint8 *) pcm3060_cmd, 2, I2C_MODE_COMPLETE_XFER);
     while(0u == (I2C_MasterStatus() & I2C_MSTAT_WR_CMPLT)) {}
 	I2C_Stop();
