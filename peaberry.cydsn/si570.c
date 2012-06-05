@@ -13,15 +13,17 @@
 #include <device.h>
 #include <si570.h>
 
-#define SI570_ADDR 0x55
 #define STARTUP_LO 0x713D0A07 // 14.08 MHz in byte reversed 11.21 bits
-#define STARTUP_FREQ 56.32 // Si570 default output (LO*4)
+#define SI570_STARTUP_FREQ 56.32 // Si570 default output (LO*4)
+#define SI570_ADDR 0x55
+#define SI570_DCO_MIN 4850.0
+#define SI570_DCO_MAX 5670.0
+#define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
 volatile uint32 Si570_LO = STARTUP_LO;
 uint32 Current_LO = STARTUP_LO;
 float Si570_Xtal;
-volatile uint8 Si570_State = 0;
-uint8 Si570_Buf[6];
+uint8 Si570_Buf[7];
 
 void Si570_Start(void) {
 
@@ -49,12 +51,56 @@ void Si570_Start(void) {
     rfreqint = (((uint16)Si570_Buf[1] & 0x3F) << 4) | (Si570_Buf[2] >> 4);
     rfreqfrac = ((uint32*)&Si570_Buf[2])[0] & 0x0FFFFFFF;
     rfreq = rfreqint + (float)rfreqfrac / 0x10000000;
-    Si570_Xtal = (STARTUP_FREQ * hsdiv * n1) / rfreq;
+    Si570_Xtal = (SI570_STARTUP_FREQ * hsdiv * n1) / rfreq;
 }
 
 void Si570_Main(void) {
-    if (Current_LO != Si570_LO) {
-        Current_LO = Si570_LO;
-        //TODO calc change
+    static uint8 n, hsdiv, state = 0;
+    static float fout, dco;
+    uint8 n1;
+    float dco1;
+
+    switch (state) {
+        case 0:
+            if (Current_LO != Si570_LO) {
+                Current_LO = Si570_LO;
+                Si570_Buf[0] = ((uint8*)&Current_LO)[3];
+                Si570_Buf[1] = ((uint8*)&Current_LO)[2];
+                Si570_Buf[2] = ((uint8*)&Current_LO)[1];
+                Si570_Buf[3] = ((uint8*)&Current_LO)[0];
+                fout = (float)*(uint32*)Si570_Buf;
+                fout = fout / 0x800000 * 4;
+                dco = SI570_DCO_MAX;
+                state = 4;
+            }
+            break;
+        case 12:
+            Si570_Buf[0] = 7;
+            //TODO rest of calcs
+            //I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 7, I2C_MODE_COMPLETE_XFER);
+            state++;
+            break;
+        case 13:
+            if (I2C_MasterStatus() & I2C_MSTAT_WR_CMPLT) {
+                state = 0;
+            }
+            break;
+        case 8:
+        case 10:
+            // 8 and 10 are invalid for HS_DIV
+            state++;
+            //nobreak
+        default:
+            n1 = SI570_DCO_CENTER / (fout * state);
+            if (n1 > 1 && (n1&1)) n1++;
+            dco1 = fout * state * n1;
+            if (dco1 > SI570_DCO_MIN && dco1 < dco) {
+                dco = dco1;
+                n = n1;
+                hsdiv = state;
+            }
+            state++;
+            break;            
     }
+
 }

@@ -46,6 +46,7 @@ uint8 USBFS_HandleVendorRqst(void)
                 USBFS_currentTD.pData = (void *)&Si570_LO;
                 USBFS_currentTD.count = sizeof(Si570_LO);
                 requestHandled  = USBFS_InitControlWrite();
+                break;
             default:
                 break;
         }
