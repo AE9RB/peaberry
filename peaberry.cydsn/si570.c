@@ -59,7 +59,7 @@ void Si570_Main(void) {
     float testdco;
 
     switch (state) {
-        case 0:
+        case 0: // idle
             if (Current_LO != Si570_LO) {
                 Current_LO = Si570_LO;
                 Si570_Buf[0] = ((uint8*)&Current_LO)[3];
@@ -72,7 +72,13 @@ void Si570_Main(void) {
                 state = 4;
             }
             break;
-        case 12:
+        case 12: // freeze DSPLL
+            Si570_Buf[0] = 135;
+            Si570_Buf[1] = 0x10;
+            I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
+            state++;
+            break;
+        case 14: // write new DSPLL config
             testdco = dco / Si570_Xtal;
             // masks are probably overkill, don't trust floats
             rfreqint = (uint16)testdco & 0x3FF;
@@ -89,17 +95,27 @@ void Si570_Main(void) {
             I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 7, I2C_MODE_COMPLETE_XFER);
             state++;
             break;
-        case 13:
+        case 16: // release DSPLL
+            Si570_Buf[0] = 135;
+            Si570_Buf[1] = 0x20;
+            I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
+            state++;
+            break;
+        case 13: // waiting on I2C
+        case 15:
+        case 17:
             if (I2C_MasterStatus() & I2C_MSTAT_WR_CMPLT) {
-                state = 0;
+                state++;
             }
             break;
-        case 8:
+        case 18: // done
+            state = 0;
+            break;
+        case 8:  // invalid for HS_DIV
         case 10:
-            // 8 and 10 are invalid for HS_DIV
             state++;
             //nobreak
-        default:
+        default: // try one hsdiv
             i = SI570_DCO_CENTER / (fout * state);
             if (i > 1 && (i&1)) i++;
             testdco = fout * state * i;
