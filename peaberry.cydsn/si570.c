@@ -26,25 +26,21 @@ float Si570_Xtal;
 uint8 Si570_Buf[7];
 
 void Si570_Start(void) {
-
-    
     uint8 hsdiv, n1;
-    uint32 rfreqint, rfreqfrac;
+    uint16 rfreqint;
+    uint32 rfreqfrac;
     float rfreq;
-    
     // reload Si570 default registers so we can calc xtal
     Si570_Buf[0] = 135;
     Si570_Buf[1] = 1;
     I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
     while(0u == (I2C_MasterStatus() & I2C_MSTAT_WR_CMPLT)) {}
-
     // read all the registers
     Si570_Buf[0] = 7;
     I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 1, I2C_MODE_NO_STOP);
     while(0u == (I2C_MasterStatus() & I2C_MSTAT_WR_CMPLT)) {}
     I2C_MasterReadBuf(SI570_ADDR, Si570_Buf, 6, I2C_MODE_REPEAT_START);
     while(0u == (I2C_MasterStatus() & I2C_MSTAT_RD_CMPLT)) {}
-
     // obtain xtal calibration
     hsdiv = (Si570_Buf[0] >> 5) + 4;
     n1 = (((Si570_Buf[0] & 0x1F) << 2) | (Si570_Buf[1] >> 6)) + 1;
@@ -55,10 +51,12 @@ void Si570_Start(void) {
 }
 
 void Si570_Main(void) {
-    static uint8 n, hsdiv, state = 0;
+    static uint8 n1, hsdiv, state = 0;
     static float fout, dco;
-    uint8 n1;
-    float dco1;
+    uint8 i;
+    uint16 rfreqint;
+    uint32 rfreqfrac;
+    float testdco;
 
     switch (state) {
         case 0:
@@ -75,9 +73,20 @@ void Si570_Main(void) {
             }
             break;
         case 12:
+            testdco = dco / Si570_Xtal;
+            // masks are probably overkill, don't trust floats
+            rfreqint = (uint16)testdco & 0x3FF;
+            rfreqfrac = (uint32)((testdco - rfreqint) * 0x10000000) & 0x0FFFFFFF;
             Si570_Buf[0] = 7;
-            //TODO rest of calcs
-            //I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 7, I2C_MODE_COMPLETE_XFER);
+            i = hsdiv - 4;
+            Si570_Buf[1] = i << 5;
+            i = n1 - 1;
+            Si570_Buf[1] |= i >> 2;
+            Si570_Buf[2] = i << 6;
+            Si570_Buf[2] |= rfreqint >> 4;
+            *(uint32*)&Si570_Buf[3] = rfreqfrac;
+            Si570_Buf[3] |= rfreqint << 4;
+            I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 7, I2C_MODE_COMPLETE_XFER);
             state++;
             break;
         case 13:
@@ -91,12 +100,12 @@ void Si570_Main(void) {
             state++;
             //nobreak
         default:
-            n1 = SI570_DCO_CENTER / (fout * state);
-            if (n1 > 1 && (n1&1)) n1++;
-            dco1 = fout * state * n1;
-            if (dco1 > SI570_DCO_MIN && dco1 < dco) {
-                dco = dco1;
-                n = n1;
+            i = SI570_DCO_CENTER / (fout * state);
+            if (i > 1 && (i&1)) i++;
+            testdco = fout * state * i;
+            if (testdco > SI570_DCO_MIN && testdco < dco) {
+                dco = testdco;
+                n1 = i;
                 hsdiv = state;
             }
             state++;
