@@ -13,23 +13,35 @@
 #include <pcm3060.h>
 #include <si570.h>
 
+extern uint8 USBFS_initVar;
+
 void main()
 {
     CyGlobalIntEnable;
     I2C_Start();
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    Si570_Start();
     PCM3060_Start();
+    Si570_Start();
 
     for(;;) {
+	
+        // monitor VBUS to comply with USB spec
+        if (USBFS_VBusPresent()) {
+            if(!USBFS_initVar) {
+                USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
+            }
+        } else {
+            if(USBFS_initVar) {
+                USBFS_Stop();
+            }
+        }
+        
         PCM3060_Main();
         Si570_Main();
-	
-        //TODO monitor VBUS to comply with USB spec
-    
 	    if(USBFS_IsConfigurationChanged() != 0u) {
 			//TODO out endpoints
         }
+            
     }
 }
 
