@@ -98,17 +98,24 @@ void Si570_Main(void) {
             state = 4;
         }
         break;
-    case 12: // freeze DSPLL
-        Si570_Buf[0] = 135;
-        Si570_Buf[1] = 0x10;
-        I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
-        state++;
+    case 12: // done with math
+        if (dco == SI570_DCO_MAX) {
+            // no valid dividers found
+            state = 0;
+        } else {
+            // freeze DSPLL
+            Si570_Buf[0] = 135;
+            Si570_Buf[1] = 0x20;
+            I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
+            state++;
+        }
         break;
     case 14: // write new DSPLL config
         testdco = dco / Si570_Xtal;
-        // masks are probably overkill, don't trust floats
-        rfreqint = (uint16)testdco & 0x3FF;
-        rfreqfrac = (uint32)((testdco - rfreqint) * 0x10000000) & 0x0FFFFFFF;
+        rfreqint = testdco;
+        rfreqfrac = (testdco - rfreqint) * 0x10000000;
+        // don't trust floats
+        if (rfreqfrac > 0x0FFFFFFF) rfreqfrac = 0x0FFFFFFF;
         Si570_Buf[0] = 7;
         i = hsdiv - 4;
         Si570_Buf[1] = i << 5;
@@ -123,7 +130,7 @@ void Si570_Main(void) {
         break;
     case 16: // release DSPLL
         Si570_Buf[0] = 135;
-        Si570_Buf[1] = 0x20;
+        Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
         state++;
         break;
