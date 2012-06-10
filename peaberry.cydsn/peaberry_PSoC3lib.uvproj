@@ -644,21 +644,6 @@
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_VBUS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep4_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
@@ -782,6 +767,61 @@
               <FileName>KEY.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_1_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_1_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_2_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_2_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1429,21 +1469,6 @@
               <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_VBUS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_VBUS_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep4_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
@@ -1567,6 +1592,61 @@
               <FileName>KEY.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_VBUS_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_1_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_1_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_2_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_DMA_2_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_Clock_2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
             </File>
           </Files>
         </Group>

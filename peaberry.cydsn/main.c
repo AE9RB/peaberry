@@ -12,12 +12,14 @@
 #include <device.h>
 #include <pcm3060.h>
 #include <si570.h>
+#include <fracn.h>
 
 extern uint8 USBFS_initVar;
 
 void main()
 {
     CyGlobalIntEnable;
+    FracN_Start();
     I2C_Start();
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     PCM3060_Start();
