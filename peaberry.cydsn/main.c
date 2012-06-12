@@ -40,9 +40,6 @@ void main()
         
         PCM3060_Main();
         Si570_Main();
-	    if(USBFS_IsConfigurationChanged() != 0u) {
-			//TODO out endpoints
-        }
             
     }
 }

@@ -823,6 +823,46 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
             </File>
+            <File>
+              <FileName>TxI2S_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Swap_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Swap_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Buff_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Buff_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Buff_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Stage_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Stage_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1647,6 +1687,46 @@
               <FileName>FracN_Clock_2.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Swap_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Swap_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Buff_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Buff_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Buff_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Stage_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Stage_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
           </Files>
         </Group>
