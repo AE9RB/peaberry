@@ -23,6 +23,19 @@
 #define TxI2S_INTERFACE             3u
 #define TxI2S_ENDPOINT              3u
 
+// Delay a whole sample to swap endians on 24-bit words using DMA.
+void LoadSwapOrder(uint8* a) {
+    a[0] = 5;
+    a[1] = 4;
+    a[2] = 3;
+    a[3] = 8;
+    a[4] = 7;
+    a[5] = 6;
+    a[6] = 2;
+    a[7] = 1;
+    a[8] = 0;
+}
+
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[I2S_NUM_BUFS];
 volatile uint8 RxI2S_Buff[I2S_NUM_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move;
 volatile uint8 RxI2S_In_Progress_TD = 0u;
@@ -36,7 +49,8 @@ CY_ISR(RxI2S_DMA_done) {
 void DmaRxConfiguration(void)
 {
     uint8 RxI2S_Swap_Chan, RxI2S_Stage_Chan, RxI2S_Stage_TD, RxI2S_Swap_TD[9];
-	uint8 i, n;
+	uint8 i, n, order[9];
+    LoadSwapOrder(order);
 
     RxI2S_Stage_Chan = RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
 	RxI2S_Stage_TD=CyDmaTdAllocate();
@@ -45,45 +59,32 @@ void DmaRxConfiguration(void)
 	CyDmaChSetInitialTd(RxI2S_Stage_Chan, RxI2S_Stage_TD);
 
     RxI2S_Swap_Chan = RxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-	for (i=0 ;i<9; i++) {RxI2S_Swap_TD[i]=CyDmaTdAllocate();}
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[0], 1, RxI2S_Swap_TD[1], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[0], LO16((uint32)RxI2S_Swap + 5), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[1], 1, RxI2S_Swap_TD[2], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[1], LO16((uint32)RxI2S_Swap + 4), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[2], 1, RxI2S_Swap_TD[3], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[2], LO16((uint32)RxI2S_Swap + 3), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[3], 1, RxI2S_Swap_TD[4], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[3], LO16((uint32)RxI2S_Swap + 8), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[4], 1, RxI2S_Swap_TD[5], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[4], LO16((uint32)RxI2S_Swap + 7), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[5], 1, RxI2S_Swap_TD[6], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[5], LO16((uint32)RxI2S_Swap + 6), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[6], 1, RxI2S_Swap_TD[7], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[6], LO16((uint32)RxI2S_Swap + 2), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[7], 1, RxI2S_Swap_TD[8], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[7], LO16((uint32)RxI2S_Swap + 1), LO16((uint32)&RxI2S_Move));
-	CyDmaTdSetConfiguration(RxI2S_Swap_TD[8], 1, RxI2S_Swap_TD[0], RxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(RxI2S_Swap_TD[8], LO16((uint32)RxI2S_Swap + 0), LO16((uint32)&RxI2S_Move));
+	for (i=0; i < 9; i++) RxI2S_Swap_TD[i]=CyDmaTdAllocate();
+    for (i=0; i < 9; i++) {
+	 	n = i + 1;
+		if (n >= 9) n=0;
+	    CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], RxI2S_Swap__TD_TERMOUT_EN);
+	    CyDmaTdSetAddress(RxI2S_Swap_TD[i], LO16(&RxI2S_Swap[order[i]]), LO16(&RxI2S_Move));
+    }
 	CyDmaChSetInitialTd(RxI2S_Swap_Chan, RxI2S_Swap_TD[0]);
 
     RxI2S_Buff_Chan = RxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-	for (i=0; i< I2S_NUM_BUFS; i++) {
-	    RxI2S_Buff_TD[i] = CyDmaTdAllocate();
-	}
-	for (i=0; i< I2S_NUM_BUFS; i++) {
+	for (i=0; i < I2S_NUM_BUFS; i++) RxI2S_Buff_TD[i] = CyDmaTdAllocate();
+	for (i=0; i < I2S_NUM_BUFS; i++) {
 	 	n = i + 1;
-		if (n >= I2S_NUM_BUFS) {n=0;}
+		if (n >= I2S_NUM_BUFS) n=0;
 	    CyDmaTdSetConfiguration(RxI2S_Buff_TD[i], I2S_BUF_SIZE, RxI2S_Buff_TD[n], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN );	
 	    CyDmaTdSetAddress(RxI2S_Buff_TD[i], LO16((uint32)&RxI2S_Move), LO16((uint32)RxI2S_Buff[i]));
 	}
 	CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[0u]);
-		
+	
+    RxI2S_In_Progress_TD = RxI2S_Buff_TD[0u];
 	RxI2S_done_isr_Start();
     RxI2S_done_isr_SetVector(RxI2S_DMA_done);
 
+    CyDmaChEnable(RxI2S_Buff_Chan, 1u);
 	CyDmaChEnable(RxI2S_Stage_Chan, 1u);
 	CyDmaChEnable(RxI2S_Swap_Chan, 1u);
-    CyDmaChEnable(RxI2S_Buff_Chan, 1u);
 }
 
 
@@ -99,64 +100,40 @@ CY_ISR(TxI2S_DMA_done) {
 
 void DmaTxConfiguration(void) {
     uint8 TxI2S_Swap_Chan, TxI2S_Swap_TD[9], TxI2S_Stage_Chan, TxI2S_Stage_TD[9];
-	uint8 i, n;
+	uint8 i, n, order[9];
+    LoadSwapOrder(order);
 	
     TxI2S_Swap_Chan = TxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_PERIPH_BASE));
-    for (i=0 ;i<9; i++) {TxI2S_Swap_TD[i]=CyDmaTdAllocate();}
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[0], 1, TxI2S_Swap_TD[1], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[0], LO16(TxI2S_Swap + 5), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[1], 1, TxI2S_Swap_TD[2], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[1], LO16(TxI2S_Swap + 4), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[2], 1, TxI2S_Swap_TD[3], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[2], LO16(TxI2S_Swap + 3), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[3], 1, TxI2S_Swap_TD[4], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[3], LO16(TxI2S_Swap + 8), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[4], 1, TxI2S_Swap_TD[5], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[4], LO16(TxI2S_Swap + 7), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[5], 1, TxI2S_Swap_TD[6], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[5], LO16(TxI2S_Swap + 6), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[6], 1, TxI2S_Swap_TD[7], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[6], LO16(TxI2S_Swap + 2), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[7], 1, TxI2S_Swap_TD[8], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[7], LO16(TxI2S_Swap + 1), LO16(I2S_TX_FIFO_0_PTR));
-	CyDmaTdSetConfiguration(TxI2S_Swap_TD[8], 1, TxI2S_Swap_TD[0], TxI2S_Swap__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Swap_TD[8], LO16(TxI2S_Swap + 0), LO16(I2S_TX_FIFO_0_PTR));
+    for (i=0; i < 9; i++) TxI2S_Swap_TD[i]=CyDmaTdAllocate();
+    for (i=0; i < 9; i++) {
+	 	n = i + 1;
+		if (n >= 9) n=0;
+	    CyDmaTdSetConfiguration(TxI2S_Swap_TD[i], 1, TxI2S_Swap_TD[n], TxI2S_Swap__TD_TERMOUT_EN);
+	    CyDmaTdSetAddress(TxI2S_Swap_TD[i], LO16(&TxI2S_Swap[order[i]]), LO16(I2S_TX_FIFO_0_PTR));
+    }
 	CyDmaChSetInitialTd(TxI2S_Swap_Chan, TxI2S_Swap_TD[0]);
     
     TxI2S_Stage_Chan = TxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0 ;i<9; i++) {TxI2S_Stage_TD[i]=CyDmaTdAllocate();}
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[0], 1, TxI2S_Stage_TD[1], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[0], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 0));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[1], 1, TxI2S_Stage_TD[2], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[1], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 1));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[2], 1, TxI2S_Stage_TD[3], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[2], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 2));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[3], 1, TxI2S_Stage_TD[4], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[3], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 3));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[4], 1, TxI2S_Stage_TD[5], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[4], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 4));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[5], 1, TxI2S_Stage_TD[6], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[5], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 5));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[6], 1, TxI2S_Stage_TD[7], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[6], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 6));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[7], 1, TxI2S_Stage_TD[8], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[7], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 7));
-	CyDmaTdSetConfiguration(TxI2S_Stage_TD[8], 1, TxI2S_Stage_TD[0], TxI2S_Stage__TD_TERMOUT_EN );
-	CyDmaTdSetAddress(TxI2S_Stage_TD[8], LO16(TxI2S_Stage), LO16(TxI2S_Swap + 8));
+    for (i=0; i < 9; i++) TxI2S_Stage_TD[i]=CyDmaTdAllocate();
+    for (i=0; i < 9; i++) {
+	 	n = i + 1;
+		if (n >= 9) n=0;
+	    CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], TxI2S_Stage__TD_TERMOUT_EN);
+	    CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxI2S_Stage), LO16(TxI2S_Swap + i));
+    }
 	CyDmaChSetInitialTd(TxI2S_Stage_Chan, TxI2S_Stage_TD[8]);
 
     TxI2S_Buff_Chan = TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-	for (i=0; i< I2S_NUM_BUFS; i++) {
-	    TxI2S_Buff_TD[i] = CyDmaTdAllocate();
-	}
-	for (i=0; i< I2S_NUM_BUFS; i++) {
+	for (i=0; i < I2S_NUM_BUFS; i++) TxI2S_Buff_TD[i] = CyDmaTdAllocate();
+	for (i=0; i < I2S_NUM_BUFS; i++) {
 	 	n = i + 1;
 		if (n >= I2S_NUM_BUFS) {n=0;}
 	    CyDmaTdSetConfiguration(TxI2S_Buff_TD[i], I2S_BUF_SIZE, TxI2S_Buff_TD[n], (TD_INC_SRC_ADR | TxI2S_Buff__TD_TERMOUT_EN) );	
-	    CyDmaTdSetAddress(TxI2S_Buff_TD[i], LO16(TxI2S_Buff[i]), LO16(TxI2S_Stage));
+	    CyDmaTdSetAddress(TxI2S_Buff_TD[i], LO16(TxI2S_Buff[i]), LO16(&TxI2S_Stage));
 	}
 	CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD[0]);
 
+    TxI2S_In_Progress_TD = TxI2S_Buff_TD[0u];
     TxI2S_done_isr_Start();
     TxI2S_done_isr_SetVector(TxI2S_DMA_done);
 
@@ -202,14 +179,6 @@ void PCM3060_Main(void) {
     static uint8 RxI2S_Last_TD = 0;
     uint8 td, i;
     
-    //uint8 sta = I2S_ReadTxStatus();
-    //TODO having problems with the I2S module sending random bits
-    //while USB IN EP2 is sending data.  There are no underflows and
-    //the buffers remain all zeros.  I can see the bits on a scope.
-    //I've tried pulling all of USBFS_LoadInEP in here for isolation
-    //and found the following critical line causes the spurious data.
-    //USBFS_ARB_EP1_CFG_PTR[ri] |= USBFS_ARB_EPX_CFG_IN_DATA_RDY;    
-    
     if(USBFS_IsConfigurationChanged() != 0u && USBFS_GetConfiguration() != 0u) {
         if (USBFS_GetInterfaceSetting(TxI2S_INTERFACE) == 1) {
             //TODO this is temporary until I finish tx/spkr switching
@@ -237,4 +206,3 @@ void PCM3060_Main(void) {
 		}
 	}
 }
-
