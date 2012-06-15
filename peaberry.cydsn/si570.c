@@ -11,17 +11,20 @@
 */
 
 #include <device.h>
+#include <main.h>
 #include <si570.h>
 
-#define STARTUP_LO 0x713D0A07 // 14.08 MHz in byte reversed 11.21 bits
+#define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
+#define MAX_LO 160.0 // maximum for CMOS Si570
+#define MIN_LO 5.0 // 5.0 MHz is minimum with additional divide by 2
 #define SI570_STARTUP_FREQ 56.32 // Si570 default output (LO*4)
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
+extern uint8 Lock_I2C;
 volatile uint32 Si570_LO = STARTUP_LO;
-uint32 Current_LO = STARTUP_LO;
 float Si570_Xtal;
 uint8 Si570_Buf[7];
 
@@ -79,6 +82,7 @@ void Si570_Start(void) {
 void Si570_Main(void) {
     static uint8 n1, hsdiv, state = 0;
     static float fout, dco;
+    static uint32 Current_LO = STARTUP_LO;
     uint8 i;
     uint16 rfreqint;
     uint32 rfreqfrac;
@@ -86,22 +90,27 @@ void Si570_Main(void) {
 
     switch (state) {
     case 0: // idle
-        if (Current_LO != Si570_LO) {
-            Current_LO = Si570_LO;
-            Si570_Buf[0] = ((uint8*)&Current_LO)[3];
-            Si570_Buf[1] = ((uint8*)&Current_LO)[2];
-            Si570_Buf[2] = ((uint8*)&Current_LO)[1];
-            Si570_Buf[3] = ((uint8*)&Current_LO)[0];
+        if (Current_LO != Si570_LO && Lock_I2C == LOCKI2C_UNLOCKED) {
+            i = CyEnterCriticalSection();
+            Si570_Buf[0] = ((uint8*)&Si570_LO)[3];
+            Si570_Buf[1] = ((uint8*)&Si570_LO)[2];
+            Si570_Buf[2] = ((uint8*)&Si570_LO)[1];
+            Si570_Buf[3] = ((uint8*)&Si570_LO)[0];
+            CyExitCriticalSection(i);
             fout = (float)*(uint32*)Si570_Buf;
-            fout = fout / 0x800000 * 4;
+            fout /= 0x200000;
+            if (fout < MIN_LO) fout = MIN_LO;
+            if (fout > MAX_LO) fout = MAX_LO;
+            Lock_I2C = LOCKI2C_SI570;
+            Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;
             state = 4;
         }
         break;
     case 12: // done with math
         if (dco == SI570_DCO_MAX) {
-            // no valid dividers found
-            state = 0;
+            // no valid dividers found, should never happen
+            state = 18;
         } else {
             // freeze DSPLL
             Si570_Buf[0] = 135;
@@ -144,14 +153,15 @@ void Si570_Main(void) {
             state++;
         }
         break;
-    case 18: // done
+    case 18: // all done
+        Lock_I2C = LOCKI2C_UNLOCKED;
         state = 0;
         break;
     case 8:  // invalid for HS_DIV
     case 10:
         state++;
         //nobreak
-    default: // try one hsdiv
+    default: // try one HS_DIV at a time
         i = SI570_DCO_CENTER / (fout * state);
         if (i > 1 && (i&1)) i++;
         testdco = fout * state * i;

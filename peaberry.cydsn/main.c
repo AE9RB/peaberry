@@ -10,9 +10,13 @@
  * ========================================
 */
 #include <device.h>
+#include <main.h>
 #include <pcm3060.h>
 #include <si570.h>
 #include <fracn.h>
+
+// Check and lock this in the main loop before using I2C
+uint8 Lock_I2C = LOCKI2C_UNLOCKED;
 
 extern uint8 USBFS_initVar;
 
