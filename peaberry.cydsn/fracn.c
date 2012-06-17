@@ -18,10 +18,7 @@
 
 uint8 p1, p2;
 
-// The standard PLL can only get us to 36.923 MHz.
-// This will lower the clock to about 36.869.
-// It is closer to the center of 36.864 but not likely
-// cause USB audio buffer underrun.
+// Fine tune the Cypress PLL to get audio near exactly 48000 Hz.
 void FracN_Start(void) {
     uint8 chan1, chan2, td1, td2;
     
@@ -31,7 +28,7 @@ void FracN_Start(void) {
     //TODO add support for USB audio synchronization
     //TODO work out the math and find least amount of DMA work
     //FracN_Clock_1_SetDividerValue(101); // prime
-    //FracN_Clock_2_SetDividerValue(1720);
+    //FracN_Clock_2_SetDividerValue(1690);
 
     chan1 = FracN_DMA_1_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
     td1 = CyDmaTdAllocate();

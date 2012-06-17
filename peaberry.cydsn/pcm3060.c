@@ -11,17 +11,22 @@
 */
 
 #include <device.h>
+#include <main.h>
 #include <pcm3060.h>
 
 #define PCM3060_ADDR 0x46
 #define PCM3060_REG 0x40
 
 // 48 24-bit stereo samples every 1 ms, triple buffered
-#define I2S_BUF_SIZE                (48u * 3 * 2)
-#define I2S_NUM_BUFS                3u
-#define RxI2S_ENDPOINT              2u
-#define TxI2S_INTERFACE             3u
-#define TxI2S_ENDPOINT              3u
+#define I2S_BUF_SIZE             (48u * 3 * 2)
+#define I2S_NUM_BUFS             3u
+#define RX_ENDPOINT              2u
+#define TX_INTERFACE             3u
+#define TX_ENDPOINT              3u
+#define SPKR_INTERFACE           6u
+#define SPKR_ENDPOINT            5u
+
+volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 // Delay a whole sample to swap endians on 24-bit words using DMA.
 void LoadSwapOrder(uint8* a) {
@@ -36,14 +41,13 @@ void LoadSwapOrder(uint8* a) {
     a[8] = 0;
 }
 
+
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[I2S_NUM_BUFS];
 volatile uint8 RxI2S_Buff[I2S_NUM_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move;
-volatile uint8 RxI2S_In_Progress_TD = 0u;
+volatile uint8 RxI2S_Use_Buf = I2S_NUM_BUFS - 1;
 
 CY_ISR(RxI2S_DMA_done) {
-    // Equivalent to the following but avoiding compiler warnings:
-	// CyDmaChStatus(RxI2S_Buff_Chan, &RxI2S_In_Progress_TD, 0);
-    RxI2S_In_Progress_TD = DMAC_CH[RxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    if (++RxI2S_Use_Buf == I2S_NUM_BUFS) RxI2S_Use_Buf = 0;
 }
 
 void DmaRxConfiguration(void)
@@ -78,7 +82,6 @@ void DmaRxConfiguration(void)
 	}
 	CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[0u]);
 	
-    RxI2S_In_Progress_TD = RxI2S_Buff_TD[0u];
 	RxI2S_done_isr_Start();
     RxI2S_done_isr_SetVector(RxI2S_DMA_done);
 
@@ -90,12 +93,10 @@ void DmaRxConfiguration(void)
 
 uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[I2S_NUM_BUFS];
 volatile uint8 TxI2S_Buff[I2S_NUM_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
-volatile uint8 TxI2S_In_Progress_TD = 0u;
+volatile uint8 TxI2S_Use_Buf = I2S_NUM_BUFS - 1;
 
 CY_ISR(TxI2S_DMA_done) {
-    // Equivalent to the following but avoiding compiler warnings:
-	//CyDmaChStatus(TxI2S_Buff_Chan, &TxI2S_In_Progress_TD, 0);
-    TxI2S_In_Progress_TD = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    if (++TxI2S_Use_Buf == I2S_NUM_BUFS) TxI2S_Use_Buf = 0;
 }
 
 void DmaTxConfiguration(void) {
@@ -133,7 +134,6 @@ void DmaTxConfiguration(void) {
 	}
 	CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD[0]);
 
-    TxI2S_In_Progress_TD = TxI2S_Buff_TD[0u];
     TxI2S_done_isr_Start();
     TxI2S_done_isr_SetVector(TxI2S_DMA_done);
 
@@ -154,6 +154,7 @@ void PCM3060_Start(void) {
     I2S_EnableRx();
 
     // Take PCM3060 out of sleep mode
+    //TODO error handling
 	pcm3060_cmd[0] = 0x40;
     pcm3060_cmd[1] = 0xC0;
     I2C_MasterWriteBuf(PCM3060_ADDR, pcm3060_cmd, 2, I2C_MODE_COMPLETE_XFER);
@@ -161,48 +162,50 @@ void PCM3060_Start(void) {
 }
 
 
-// The buffers will fire an interrupt after a transfer is complete.
-// We collect the current td in the interrupt, which is actually
-// the next td. This searches and backs up for the actual buf num.
-uint8 FindPrevBufNum(uint8 td_prev, uint8* td_list) {
-    uint8 i;
-	for (i=0; i < I2S_NUM_BUFS; i++) {
-		if (td_list[i] == td_prev) break;
-	}
-	if (i==0) i = I2S_NUM_BUFS-1;
-	else i--;
-    return i;
-}
-
 
 void PCM3060_Main(void) {
-    static uint8 RxI2S_Last_TD = 0;
-    uint8 td, i;
+    static uint8 RxI2S_Last_Buf = 0;
+    uint8 i;
     
     if(USBFS_IsConfigurationChanged() != 0u && USBFS_GetConfiguration() != 0u) {
-        if (USBFS_GetInterfaceSetting(TxI2S_INTERFACE) == 1) {
-            //TODO this is temporary until I finish tx/spkr switching
-            USBFS_ReadOutEP(TxI2S_ENDPOINT, TxI2S_Buff[0], I2S_BUF_SIZE);
-            USBFS_EnableOutEP(TxI2S_ENDPOINT);
+        if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
+            USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_EnableOutEP(TX_ENDPOINT);
+        }
+        if (USBFS_GetInterfaceSetting(SPKR_INTERFACE) == 1) {
+            USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_EnableOutEP(SPKR_ENDPOINT);
         }
     }
     
-    if (USBFS_GetEPState(TxI2S_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
+    if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
-        i = FindPrevBufNum(TxI2S_In_Progress_TD, TxI2S_Buff_TD);
-		// Automatic DMA has a strange interface.
-        USBFS_ReadOutEP(TxI2S_ENDPOINT, TxI2S_Buff[i], I2S_BUF_SIZE);
-        USBFS_EnableOutEP(TxI2S_ENDPOINT);
+        if (Control_Read() && CONTROL_TX_ENABLE) {
+            USBFS_ReadOutEP(TX_ENDPOINT, TxI2S_Buff[TxI2S_Use_Buf], I2S_BUF_SIZE);
+            USBFS_EnableOutEP(TX_ENDPOINT);
+        } else {
+            USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_EnableOutEP(TX_ENDPOINT);
+        }
     }
 
-	if (USBFS_GetEPState(RxI2S_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		td = RxI2S_In_Progress_TD; // copy the volatile
-		if (td != RxI2S_Last_TD) {
-            i = FindPrevBufNum(td, RxI2S_Buff_TD);
-			// Automatic DMA has a strange interface.
-			USBFS_LoadInEP(RxI2S_ENDPOINT, RxI2S_Buff[i], I2S_BUF_SIZE);
-			USBFS_LoadInEP(RxI2S_ENDPOINT, 0, I2S_BUF_SIZE);
-			RxI2S_Last_TD = td;
+    if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
+    {
+        if (Control_Read() && CONTROL_TX_ENABLE) {
+            USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_EnableOutEP(SPKR_ENDPOINT);
+        } else {
+            USBFS_ReadOutEP(SPKR_ENDPOINT, TxI2S_Buff[TxI2S_Use_Buf], I2S_BUF_SIZE);
+            USBFS_EnableOutEP(SPKR_ENDPOINT);
+        }
+    }
+
+	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+		i = RxI2S_Use_Buf; // copy the volatile
+		if (i != RxI2S_Last_Buf) {
+			USBFS_LoadInEP(RX_ENDPOINT, RxI2S_Buff[RxI2S_Use_Buf], I2S_BUF_SIZE);
+			USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
+			RxI2S_Last_Buf = i;
 		}
 	}
 }
