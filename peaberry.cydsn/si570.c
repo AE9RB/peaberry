@@ -99,8 +99,8 @@ void Si570_Main(void) {
             CyExitCriticalSection(i);
             fout = (float)*(uint32*)Si570_Buf;
             fout /= 0x200000;
-            if (fout < MIN_LO) fout = MIN_LO;
-            if (fout > MAX_LO) fout = MAX_LO;
+            if (fout < MIN_LO) fout = SI570_STARTUP_FREQ;
+            if (fout > MAX_LO) fout = SI570_STARTUP_FREQ;
             Lock_I2C = LOCKI2C_SI570;
             Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;
