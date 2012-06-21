@@ -26,22 +26,7 @@
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="RX_STATUS_REG" address="0x646B" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
-        <value name="NO_OVERFLOW" value="0" desc="" />
-        <value name="OVERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="TX_STATUS_REG" address="0x646C" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6467" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="FULL" value="0" desc="" />
@@ -56,7 +41,7 @@
         <value name="UNDERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x647B" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6477" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -68,6 +53,21 @@
       <field name="TX_ENBL" from="0" to="0" access="RW" resetVal="" desc="Enables Tx direction. This bit is applicable only if Tx direction presents for the component">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
+      </field>
+    </register>
+    <register name="RX_STATUS_REG" address="0x6566" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
   </block>
