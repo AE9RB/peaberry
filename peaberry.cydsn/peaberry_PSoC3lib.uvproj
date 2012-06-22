@@ -784,46 +784,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>FracN_Clock_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_1_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_1_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_2_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_2_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
-            </File>
-            <File>
               <FileName>TxI2S_done_isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
@@ -862,6 +822,76 @@
               <FileName>TxI2S_Stage_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter_PM.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1649,46 +1679,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>FracN_Clock_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_1_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_1_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_1_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_2_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_DMA_2_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_DMA_2_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.c</FilePath>
-            </File>
-            <File>
-              <FileName>FracN_Clock_2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\FracN_Clock_2.h</FilePath>
-            </File>
-            <File>
               <FileName>TxI2S_done_isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
@@ -1727,6 +1717,76 @@
               <FileName>TxI2S_Stage_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_Counter_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter_PM.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_PWM_PM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
             </File>
           </Files>
         </Group>

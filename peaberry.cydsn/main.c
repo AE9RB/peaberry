@@ -13,7 +13,7 @@
 #include <main.h>
 #include <pcm3060.h>
 #include <si570.h>
-#include <fracn.h>
+#include <syncsof.h>
 
 // Check and lock this in the main loop before using I2C
 uint8 Lock_I2C = LOCKI2C_UNLOCKED;
@@ -23,11 +23,11 @@ extern uint8 USBFS_initVar;
 void main()
 {
     CyGlobalIntEnable;
-    FracN_Start();
     I2C_Start();
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     PCM3060_Start();
     Si570_Start();
+    SyncSOF_Start();
 
     for(;;) {
 	

@@ -27,8 +27,6 @@ uint8 USBFS_HandleVendorRqst(void)
     uint8 requestHandled = USBFS_FALSE;
     uint8 reqType, reqCmd;
     
-    uint8 test1, test2;
-    
     reqType = CY_GET_REG8(USBFS_bmRequestType);
     reqCmd = CY_GET_REG8(USBFS_bRequest);
 

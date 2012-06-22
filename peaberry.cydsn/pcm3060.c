@@ -13,6 +13,7 @@
 #include <device.h>
 #include <main.h>
 #include <pcm3060.h>
+#include <syncsof.h>
 
 #define PCM3060_ADDR 0x46
 #define PCM3060_REG 0x40
@@ -20,7 +21,7 @@
 // 48 24-bit stereo samples every 1 ms
 #define I2S_BUF_SIZE             (48u * 3 * 2)
 #define I2S_RX_BUFS              3u
-#define I2S_TX_BUFS              5u
+#define I2S_TX_BUFS              4u
 #define RX_ENDPOINT              2u
 #define TX_INTERFACE             3u
 #define TX_ENDPOINT              3u
@@ -94,7 +95,7 @@ void DmaRxConfiguration(void)
 
 uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[I2S_TX_BUFS];
 volatile uint8 TxI2S_Buff[I2S_TX_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
-volatile uint8 TxI2S_Use_Buf = 0, TxI2S_DMA_Buf = 0, TxI2S_Eat_Bufs = 0;
+volatile uint8 TxI2S_Use_Buf = 0, TxI2S_DMA_Buf = 0, TxI2S_Eat_Bufs = 0, TxI2S_Debounce = 0;
 
 CY_ISR(TxI2S_DMA_done) {
     if (++TxI2S_DMA_Buf == I2S_TX_BUFS) TxI2S_DMA_Buf = 0;
@@ -144,26 +145,39 @@ void DmaTxConfiguration(void) {
 }
 
 
-//TODO I2S_TX_BUFS can be 4 when we sync clock
+
 void SyncTxBufs(void) {
+    uint8 thisDMA;
+    thisDMA = TxI2S_DMA_Buf; // copy volatile
+    if (TxI2S_Debounce) TxI2S_Debounce--;
     if (TxI2S_Eat_Bufs) {
-        TxI2S_Eat_Bufs--;
-        return;
-    }
-    if (TxI2S_Use_Buf == TxI2S_DMA_Buf) {
-        // underrun
-        // TODO adjust clock speed
+        // reuse a buffer until the DMA is about to catch up
+        if (thisDMA != TxI2S_Use_Buf) {
+            if (++thisDMA == I2S_TX_BUFS) thisDMA = 0;
+            if (thisDMA != TxI2S_Use_Buf) return;
+        }
+        if (++TxI2S_Use_Buf == I2S_TX_BUFS) TxI2S_Use_Buf = 0;
+        TxI2S_Eat_Bufs = 0;
+    } else if (TxI2S_Use_Buf == thisDMA) {
+        // underrun, skip ahead
         TxI2S_Use_Buf += I2S_TX_BUFS - 1;
+        if (TxI2S_Use_Buf >= I2S_TX_BUFS) TxI2S_Use_Buf -= I2S_TX_BUFS;
+        // debouce allows us to back up an extra buf for an underrun in some cases
+        // this will happen in the overrun logic
+        TxI2S_Debounce = I2S_TX_BUFS;
+        SyncSOF_Slower();
     } else {
         if (++TxI2S_Use_Buf == I2S_TX_BUFS) TxI2S_Use_Buf = 0;
-        if (TxI2S_Use_Buf == TxI2S_DMA_Buf) {
-            // overrun
-            // TODO adjust clock speed
+        if (TxI2S_Use_Buf == thisDMA) {
+            // overrun, prepare to drop some data
             TxI2S_Use_Buf += I2S_TX_BUFS - 1;
-            TxI2S_Eat_Bufs = I2S_TX_BUFS - 2;
-        }
-    }
-    if (TxI2S_Use_Buf >= I2S_TX_BUFS) TxI2S_Use_Buf -= I2S_TX_BUFS;
+            if (TxI2S_Use_Buf >= I2S_TX_BUFS) TxI2S_Use_Buf -= I2S_TX_BUFS;
+            if (!TxI2S_Debounce) {
+                TxI2S_Eat_Bufs = 1;
+                SyncSOF_Faster();
+            }
+        } 
+    }    
 }
 
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];

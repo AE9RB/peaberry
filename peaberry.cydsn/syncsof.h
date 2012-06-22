@@ -10,4 +10,6 @@
  * ========================================
 */
 
-void FracN_Start(void);
+void SyncSOF_Start(void);
+void SyncSOF_Slower(void);
+void SyncSOF_Faster(void);

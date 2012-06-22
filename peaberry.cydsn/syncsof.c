@@ -1,0 +1,92 @@
+/* ========================================
+ *
+ * Copyright 2012 David Turnbull
+ * All Rights Reserved
+ * UNPUBLISHED, LICENSED SOFTWARE.
+ *
+ * CONFIDENTIAL AND PROPRIETARY INFORMATION
+ * WHICH IS THE PROPERTY OF DAVID TURNBULL.
+ *
+ * ========================================
+*/
+
+#include <device.h>
+
+// The default clock is a little fast so we do fractional N
+// by wiggling FASTCLK_PLL_P with a PWM. A counter watches
+// the USB sof timing and constantly adjusts the PWM.
+// Special thanks to KF6SJ for finding FASTCLK_PLL_P.
+
+uint8 fasterp, slowerp;
+
+CY_ISR(isr_up) {
+    uint16 c, p;
+    c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
+    p = CY_GET_REG16(SyncSOF_PWM_PERIOD_LSB_PTR);
+    if (c<=p) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+}
+
+CY_ISR(isr_dn) {
+    uint16 c;
+    c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
+    if (c) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
+}
+
+void SyncSOF_Start(void) {
+    uint8 chan1, chan2, td1, td2;
+    
+    fasterp = FASTCLK_PLL_P;
+    slowerp = FASTCLK_PLL_P - 1;
+
+    SyncSOF_PWM_Start();
+    SyncSOF_Counter_Start();
+
+    pup_isr_Start();
+    pup_isr_SetVector(isr_up);
+
+    pdn_isr_Start();
+    pdn_isr_SetVector(isr_dn);
+
+    chan1 = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+    td1 = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(td1, 1, td1, 0);
+    CyDmaTdSetAddress(td1, LO16(&fasterp), LO16(&FASTCLK_PLL_P));
+    CyDmaChSetInitialTd(chan1, td1);
+    CyDmaChEnable(chan1, 1);
+
+    chan2 = pdn_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+    td2 = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(td2, 1, td2, 0);
+    CyDmaTdSetAddress(td2, LO16(&slowerp), LO16(&FASTCLK_PLL_P));
+    CyDmaChSetInitialTd(chan2, td2);
+    CyDmaChEnable(chan2, 1);
+}
+
+// Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.
+// The counter starts with a range of 18435-18427 which has a deadzone suitable
+// for PLL adjustment (found by experimentation). It is also minus 1 to compensate
+// for the reset. Actual out of sync conditions can request the center be fine tuned.
+
+void SyncSOF_Slower(void) {
+    uint16 p, c;
+    p = SyncSOF_Counter_ReadPeriod();
+    if (p < 18428) return;
+    c = SyncSOF_Counter_ReadCompare();
+    if ((p&0x0001) == (c&0x0001)) {
+        SyncSOF_Counter_WritePeriod(p-1);
+    } else {
+        SyncSOF_Counter_WriteCompare(c-1);
+    }
+}
+
+void SyncSOF_Faster(void) {
+    uint16 p, c;
+    c = SyncSOF_Counter_ReadCompare();
+    if (c > 18434) return;
+    p = SyncSOF_Counter_ReadPeriod();
+    if ((p&0x0001) == (c&0x0001)) {
+        SyncSOF_Counter_WriteCompare(c+1);
+    } else {
+        SyncSOF_Counter_WritePeriod(p+1);
+    }
+}
