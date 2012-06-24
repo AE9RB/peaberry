@@ -12,9 +12,13 @@
 
 #include <device.h>
 
-// The default clock is a little fast so we do fractional N
+// While there are crystals that get us the exact PCM3060 clock
+// that we want, we still want to lock on to the USB sof 1kHz.
+// We set the Cypress DLL close to the target and do fractional N
 // by wiggling FASTCLK_PLL_P with a PWM. A counter watches
 // the USB sof timing and constantly adjusts the PWM.
+// In effect, we end up with crystal stability using only the
+// PSoC 3 ILO internal LC circuit (assuming the host has a crystal).
 // Special thanks to KF6SJ for finding FASTCLK_PLL_P.
 
 uint8 fasterp, slowerp;
