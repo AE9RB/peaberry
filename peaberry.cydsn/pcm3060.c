@@ -49,7 +49,18 @@ volatile uint8 RxI2S_Buff[I2S_RX_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move;
 volatile uint8 RxI2S_Use_Buf = I2S_RX_BUFS - 1;
 
 CY_ISR(RxI2S_DMA_done) {
-    if (++RxI2S_Use_Buf == I2S_RX_BUFS) RxI2S_Use_Buf = 0;
+    uint8 i, td;
+    td = DMAC_CH[RxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    for (i=0;i<I2S_RX_BUFS;i++) {
+        if (td == RxI2S_Buff_TD[i]) break;
+    }
+    //TODO true sync
+    if (i==0) {
+        RxI2S_Use_Buf = I2S_RX_BUFS-1;
+    } else {
+        RxI2S_Use_Buf = i - 1;
+    }
+    //RxI2S_DMA_Buf = i;
 }
 
 void DmaRxConfiguration(void)
@@ -95,10 +106,15 @@ void DmaRxConfiguration(void)
 
 uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[I2S_TX_BUFS];
 volatile uint8 TxI2S_Buff[I2S_TX_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
-volatile uint8 TxI2S_Use_Buf = 0, TxI2S_DMA_Buf = 0, TxI2S_Eat_Bufs = 0, TxI2S_Debounce = 0;
+volatile uint8 TxI2S_DMA_Buf = 0;
 
 CY_ISR(TxI2S_DMA_done) {
-    if (++TxI2S_DMA_Buf == I2S_TX_BUFS) TxI2S_DMA_Buf = 0;
+    uint8 i, td;
+    td = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    for (i=0;i<I2S_TX_BUFS;i++) {
+        if (td == TxI2S_Buff_TD[i]) break;
+    }
+    TxI2S_DMA_Buf = i;
 }
 
 void DmaTxConfiguration(void) {
@@ -146,46 +162,46 @@ void DmaTxConfiguration(void) {
 
 
 
-void SyncTxBufs(void) {
-    uint8 thisDMA;
-    thisDMA = TxI2S_DMA_Buf; // copy volatile
+uint8 SyncTxBufs(void) {
+    //static uint8 under=0, over=0;
+    static uint8 TxI2S_Eat_Bufs = 0, TxI2S_Debounce = 0, TxI2S_Use_Buf = 0;
+    uint8 thisDMA, i;
+    thisDMA = TxI2S_DMA_Buf;
     if (TxI2S_Debounce) TxI2S_Debounce--;
-    if (TxI2S_Eat_Bufs) {
-        // reuse a buffer until the DMA is about to catch up
-        if (thisDMA != TxI2S_Use_Buf) {
-            if (++thisDMA == I2S_TX_BUFS) thisDMA = 0;
-            if (thisDMA != TxI2S_Use_Buf) return;
-        }
-        if (++TxI2S_Use_Buf == I2S_TX_BUFS) TxI2S_Use_Buf = 0;
-        TxI2S_Eat_Bufs = 0;
-    } else if (TxI2S_Use_Buf == thisDMA) {
-        // underrun, skip ahead
+    if (!TxI2S_Eat_Bufs && TxI2S_Use_Buf == thisDMA) {
+        // underrun
         TxI2S_Use_Buf += I2S_TX_BUFS - 1;
         if (TxI2S_Use_Buf >= I2S_TX_BUFS) TxI2S_Use_Buf -= I2S_TX_BUFS;
-        // debouce allows us to back up an extra buf for an underrun in some cases
-        // this will happen in the overrun logic
         TxI2S_Debounce = I2S_TX_BUFS;
-        SyncSOF_Slower();
+        //SyncSOF_Slower();
+        //under++;
     } else {
+        if (TxI2S_Eat_Bufs) {
+            i = thisDMA;
+            if (i != TxI2S_Use_Buf) {
+                if (++i == I2S_TX_BUFS) i = 0;
+                if (i != TxI2S_Use_Buf) return TxI2S_Use_Buf;
+            }
+            TxI2S_Eat_Bufs = 0;
+        }
         if (++TxI2S_Use_Buf == I2S_TX_BUFS) TxI2S_Use_Buf = 0;
-        if (TxI2S_Use_Buf == thisDMA) {
-            // overrun, prepare to drop some data
+        if ((TxI2S_Use_Buf == thisDMA)) {
+            // overrun, or we need to back up one more for previous underrun
             TxI2S_Use_Buf += I2S_TX_BUFS - 1;
             if (TxI2S_Use_Buf >= I2S_TX_BUFS) TxI2S_Use_Buf -= I2S_TX_BUFS;
             if (!TxI2S_Debounce) {
                 TxI2S_Eat_Bufs = 1;
-                SyncSOF_Faster();
+                //SyncSOF_Faster();
+                //over++;
             }
-        } 
+        }
     }    
+    return TxI2S_Use_Buf;
 }
 
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
 
 void PCM3060_Main(void) {
-    static uint8 RxI2S_Last_Buf = 0;
-    uint8 i;
-    
     if(USBFS_IsConfigurationChanged() != 0u) {
         if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
             if(USBFS_DmaTd[TX_ENDPOINT] == DMA_INVALID_TD) {
@@ -204,8 +220,7 @@ void PCM3060_Main(void) {
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
         if (Control_Read() & CONTROL_TX_ENABLE) {
-            SyncTxBufs();
-            USBFS_ReadOutEP(TX_ENDPOINT, TxI2S_Buff[TxI2S_Use_Buf], I2S_BUF_SIZE);
+            USBFS_ReadOutEP(TX_ENDPOINT, TxI2S_Buff[SyncTxBufs()], I2S_BUF_SIZE);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
             USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
@@ -219,19 +234,14 @@ void PCM3060_Main(void) {
             USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         } else {
-            SyncTxBufs();
-            USBFS_ReadOutEP(SPKR_ENDPOINT, TxI2S_Buff[TxI2S_Use_Buf], I2S_BUF_SIZE);
+            USBFS_ReadOutEP(SPKR_ENDPOINT, TxI2S_Buff[SyncTxBufs()], I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         }
     }
 
 	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		i = RxI2S_Use_Buf; // copy the volatile
-		if (i != RxI2S_Last_Buf) {
-			USBFS_LoadInEP(RX_ENDPOINT, RxI2S_Buff[RxI2S_Use_Buf], I2S_BUF_SIZE);
-			USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
-			RxI2S_Last_Buf = i;
-		}
+		USBFS_LoadInEP(RX_ENDPOINT, RxI2S_Buff[RxI2S_Use_Buf], I2S_BUF_SIZE);
+		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
 	}
 }
 
