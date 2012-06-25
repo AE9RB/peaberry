@@ -893,6 +893,26 @@
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
             </File>
+            <File>
+              <FileName>Mic_Buff_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_Buff_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1787,6 +1807,26 @@
               <FileName>SyncSOF_PWM_PM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_Buff_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_Buff_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
             </File>
           </Files>
         </Group>

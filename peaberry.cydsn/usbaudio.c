@@ -13,6 +13,7 @@
 #include <peaberry.h>
 
 #define RX_ENDPOINT              2
+#define MIC_ENDPOINT             4
 #define TX_INTERFACE             3
 #define TX_ENDPOINT              3
 #define SPKR_INTERFACE           6
@@ -95,4 +96,10 @@ void USBAudio_Main(void) {
 		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
 		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
 	}
+
+	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+		USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
+		USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
+	}
+
 }

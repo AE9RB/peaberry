@@ -28,6 +28,8 @@ extern uint8 Lock_I2C;
 
 // 48 24-bit stereo samples every 1 ms
 #define I2S_BUF_SIZE (48u * 3 * 2)
+// 48 12-bit mono samples every 1 ms
+#define MIC_BUF_SIZE (48u * 2)
 //  4 buffers is the minimum required to sync USB Audio
 #define USB_AUDIO_BUFS 4
 
@@ -54,5 +56,9 @@ void PCM3060_Start(void);
 void PCM3060_Main(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
+
+// mic.c
+void Mic_Start(void);
+uint8* Mic_Buf(void);
 
 #endif //PEABERRY_H

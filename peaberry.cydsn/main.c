@@ -18,8 +18,9 @@ void main()
     CyGlobalIntEnable;
     I2C_Start();
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    PCM3060_Start();
     Si570_Start();
+    Mic_Start();
+    PCM3060_Start();
     SyncSOF_Start();
 
     for(;;) {
