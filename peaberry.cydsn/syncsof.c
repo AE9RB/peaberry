@@ -10,7 +10,7 @@
  * ========================================
 */
 
-#include <device.h>
+#include <peaberry.h>
 
 // While there are crystals that get us the exact PCM3060 clock
 // that we want, we still want to lock on to the USB sof 1kHz.

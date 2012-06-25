@@ -10,9 +10,7 @@
  * ========================================
 */
 
-#include <device.h>
-#include <main.h>
-#include <si570.h>
+#include <peaberry.h>
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
@@ -23,7 +21,6 @@
 #define SI570_DCO_MAX 5670.0
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
-extern uint8 Lock_I2C;
 volatile uint32 Si570_LO = STARTUP_LO;
 float Si570_Xtal;
 uint8 Si570_Buf[7];
@@ -99,8 +96,8 @@ void Si570_Main(void) {
             CyExitCriticalSection(i);
             fout = (float)*(uint32*)Si570_Buf;
             fout /= 0x200000;
-            if (fout < MIN_LO) fout = SI570_STARTUP_FREQ;
-            if (fout > MAX_LO) fout = SI570_STARTUP_FREQ;
+            if (fout < MIN_LO) fout = MIN_LO;
+            if (fout > MAX_LO) fout = MAX_LO;
             Lock_I2C = LOCKI2C_SI570;
             Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;

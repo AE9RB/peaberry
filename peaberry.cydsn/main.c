@@ -9,16 +9,9 @@
  *
  * ========================================
 */
-#include <device.h>
-#include <main.h>
-#include <pcm3060.h>
-#include <si570.h>
-#include <syncsof.h>
+#include <peaberry.h>
 
-// Check and lock this in the main loop before using I2C
 uint8 Lock_I2C = LOCKI2C_UNLOCKED;
-
-extern uint8 USBFS_initVar;
 
 void main()
 {
@@ -42,6 +35,7 @@ void main()
             }
         }
         
+        USBAudio_Main();
         PCM3060_Main();
         Si570_Main();
             

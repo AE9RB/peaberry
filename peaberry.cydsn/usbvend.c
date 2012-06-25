@@ -10,15 +10,11 @@
  * ========================================
 */
 
-#include "device.h"
-//#include "USBFS.h"
-#include "main.h"
-#include "si570.h"
+#include <peaberry.h>
 
 uint8 USBFS_InitControlRead(void);
 uint8 USBFS_InitControlWrite(void);
 extern volatile T_USBFS_TD USBFS_currentTD;
-extern volatile uint32 Si570_LO;
 
 uint8 key_return;
 
