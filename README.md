@@ -14,7 +14,7 @@ A complete HF transceiver you can build yourself.
 
 ## Windows Driver
 
-The audio interfaces work with standard OS drivers. The control interface
+The audio interfaces use standard OS drivers. The control interface
 requires a driver on Windows. The PE0FKO libusb drivers work but require
 a small change to the inf file.  (&MI_00 added to DeviceID)
 
