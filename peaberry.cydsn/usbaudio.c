@@ -55,6 +55,8 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* eat, uint8* debounce, uint8
 
 
 void USBAudio_Main(void) {
+    void *i;
+    
     if(USBFS_IsConfigurationChanged() != 0u) {
         if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
             if(USBFS_DmaTd[TX_ENDPOINT] == DMA_INVALID_TD) {
@@ -98,8 +100,10 @@ void USBAudio_Main(void) {
 	}
 
 	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
-		USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
+        if (i = Mic_Buf()) {
+		    USBFS_LoadInEP(MIC_ENDPOINT, i, MIC_BUF_SIZE);
+		    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
+        }
 	}
 
 }

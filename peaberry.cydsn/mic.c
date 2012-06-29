@@ -28,7 +28,7 @@ void Mic_Start(void)
 	for (i=0; i < USB_AUDIO_BUFS; i++) {
 	 	n = i + 1;
 		if (n >= USB_AUDIO_BUFS) n=0;
-	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE, Mic_Buff_TD[n], TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
+	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE, Mic_Buff_TD[n], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
 	    CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i]));
 	}
 	CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD[0]);
@@ -43,13 +43,37 @@ void Mic_Start(void)
     Microphone_StartConvert();
 }
 
+//TODO Use DMA and synthesized hardware to perform buffer math
+// in the meantime, we divide the work into five
+// calls so as to be kind to the main loop.
 uint8* Mic_Buf(void) {
     static uint8 eat = 0, debounce = 0, use = 0;
-    uint8 dma, td;
+    static uint16 *buf;
+    static uint8 pos;
+    
+    uint8 dma, td, i;
+    uint16 b;
+    
+    if (pos) {
+        for (i = MIC_BUF_SIZE / 8; i; i--) {
+            pos--;
+            // source data is 12-bit unsigned
+            b = buf[pos] - 2048;
+            // rotate into USB bit order and
+            // lose a bit to account for overflow
+            // (see the DelSig datasheet)
+            buf[pos] = (b << 11) | (b >> 5);
+        }
+        if (pos) return 0;
+        return buf;
+    }
+
     td = Mic_DMA_TD; // volatile
     for (dma=0;dma<USB_AUDIO_BUFS;dma++) {
         if (td == Mic_Buff_TD[dma]) break;
     }
     USBAudio_SyncBufs(dma, &use, &eat, &debounce, 0);
-    return Mic_Buff[use];
+    buf = (uint16*)Mic_Buff[use];
+    pos = MIC_BUF_SIZE / 2;
+    return 0;
 }
