@@ -52,17 +52,18 @@ uint8* Mic_Buf(void) {
     static uint8 pos;
     
     uint8 dma, td, i;
-    uint16 b;
+    int16 b;
     
     if (pos) {
         for (i = MIC_BUF_SIZE / 8; i; i--) {
             pos--;
-            // source data is 12-bit unsigned
-            b = buf[pos] - 2048;
-            // rotate into USB bit order and
-            // lose a bit to account for overflow
-            // (see the DelSig datasheet)
-            buf[pos] = (b << 11) | (b >> 5);
+            b = buf[pos];
+            // DelSig will overflow (see datasheet)
+            if (b & 0xF000) b = 2047;
+            // changed to signed
+            else b -= 2048;
+            // rotate into USB bit order
+            buf[pos] = (b << 12) | (b >> 4);
         }
         if (pos) return 0;
         return buf;
