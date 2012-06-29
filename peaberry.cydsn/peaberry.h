@@ -43,6 +43,7 @@ void USBAudio_Main(void);
 
 // syncsof.c
 void SyncSOF_Start(void);
+void SyncSOF_Stop(void);
 void SyncSOF_Slower(void);
 void SyncSOF_Faster(void);
 

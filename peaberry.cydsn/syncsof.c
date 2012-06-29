@@ -21,7 +21,7 @@
 // PSoC 3 ILO internal LC circuit (assuming the host has a crystal).
 // Special thanks to KF6SJ for finding FASTCLK_PLL_P.
 
-uint8 fasterp, slowerp;
+uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 
 CY_ISR(isr_up) {
     uint16 c, p;
@@ -37,33 +37,42 @@ CY_ISR(isr_dn) {
 }
 
 void SyncSOF_Start(void) {
-    uint8 chan1, chan2, td1, td2;
+    uint8 td1, td2;
     
-    fasterp = FASTCLK_PLL_P;
-    slowerp = FASTCLK_PLL_P - 1;
+    if (!initialized) {
+        fasterp = FASTCLK_PLL_P;
+        slowerp = FASTCLK_PLL_P - 1;
 
-    SyncSOF_PWM_Start();
-    SyncSOF_Counter_Start();
+        SyncSOF_PWM_Start();
+        SyncSOF_Counter_Start();
 
-    pup_isr_Start();
-    pup_isr_SetVector(isr_up);
+        pup_isr_Start();
+        pup_isr_SetVector(isr_up);
 
-    pdn_isr_Start();
-    pdn_isr_SetVector(isr_dn);
+        pdn_isr_Start();
+        pdn_isr_SetVector(isr_dn);
 
-    chan1 = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
-    td1 = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(td1, 1, td1, 0);
-    CyDmaTdSetAddress(td1, LO16(&fasterp), LO16(&FASTCLK_PLL_P));
-    CyDmaChSetInitialTd(chan1, td1);
+        chan1 = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+        td1 = CyDmaTdAllocate();
+        CyDmaTdSetConfiguration(td1, 1, td1, 0);
+        CyDmaTdSetAddress(td1, LO16(&fasterp), LO16(&FASTCLK_PLL_P));
+        CyDmaChSetInitialTd(chan1, td1);
+
+        chan2 = pdn_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+        td2 = CyDmaTdAllocate();
+        CyDmaTdSetConfiguration(td2, 1, td2, 0);
+        CyDmaTdSetAddress(td2, LO16(&slowerp), LO16(&FASTCLK_PLL_P));
+        CyDmaChSetInitialTd(chan2, td2);
+        
+        initialized = 1;
+    }
     CyDmaChEnable(chan1, 1);
-
-    chan2 = pdn_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
-    td2 = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(td2, 1, td2, 0);
-    CyDmaTdSetAddress(td2, LO16(&slowerp), LO16(&FASTCLK_PLL_P));
-    CyDmaChSetInitialTd(chan2, td2);
     CyDmaChEnable(chan2, 1);
+}
+
+void SyncSOF_Stop(void) {
+    CyDmaChDisable(chan1);
+    CyDmaChDisable(chan2);
 }
 
 // Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.

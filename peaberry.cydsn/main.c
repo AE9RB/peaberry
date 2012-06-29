@@ -30,9 +30,11 @@ void main()
         if (USBFS_VBusPresent()) {
             if(!USBFS_initVar) {
                 USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
+                SyncSOF_Start();
             }
         } else {
             if(USBFS_initVar) {
+                SyncSOF_Stop();
                 USBFS_Stop();
             }
         }
