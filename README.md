@@ -4,7 +4,7 @@ A complete HF transceiver you can build yourself.
 
 ## Features
 
- * Single high-speed USB interface for audio and control.
+ * Single full-speed USB interface for audio and control.
  * 48kHz 24-bit radio interface.
  * 48kHz 24-bit stereo speaker and 12-bit microphone.
  * All DelSig clocks synchronized to USB SOF.
