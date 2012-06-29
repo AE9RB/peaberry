@@ -4706,8 +4706,8 @@
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@General@WarningLevel" v="2" />
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@General@IntPromote" v="False" />
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@General@InlineAsm" v="False" />
-<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Optimization@OptimizationEmphasis" v="Size" />
-<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Optimization@OptimizationLevel" v="8" />
+<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Optimization@OptimizationEmphasis" v="Speed" />
+<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Optimization@OptimizationLevel" v="5" />
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Optimization@ObjectAdvanced" v="False" />
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@C/C++@Command Line@Command Line" v="" />
 <name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051@Assembly@General@Additional Include Directories" v="" />

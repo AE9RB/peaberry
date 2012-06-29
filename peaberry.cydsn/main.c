@@ -16,12 +16,13 @@ uint8 Lock_I2C = LOCKI2C_UNLOCKED;
 void main()
 {
     CyGlobalIntEnable;
-    I2C_Start();
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
+    SyncSOF_Start();
+    while(!USBFS_GetConfiguration());
+    I2C_Start();
     Si570_Start();
     Mic_Start();
     PCM3060_Start();
-    SyncSOF_Start();
 
     for(;;) {
 	
