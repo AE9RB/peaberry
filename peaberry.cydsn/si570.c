@@ -16,10 +16,8 @@
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
-#define MIN_LO 5.0 // 5.0 MHz is minimum with additional divide by 2
-// The 160m build option is single-band so we can use the 
-// divider without confusing the calibration algorithms.
-#define DIV_LO 10.0 // Tunes 1.25-2.5 MHz without violating Si570 spec.
+#define MIN_LO 1.25 // minimum with additional divide by 8
+#define DIV_LO 10.0 // Tunes 600m-160m without violating Si570 spec.
 #define SI570_STARTUP_FREQ 56.32 // Si570 default output (LO*4)
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
@@ -105,7 +103,7 @@ void Si570_Main(void) {
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
             Divide_By_2 = (fout < DIV_LO);
-            if (Divide_By_2) fout *= 2;
+            if (Divide_By_2) fout *= 8;
             Lock_I2C = LOCKI2C_SI570;
             Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;
@@ -142,9 +140,9 @@ void Si570_Main(void) {
         Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
         if (Divide_By_2) {
-            Control_Write(Control_Read() | CONTROL_LO_DIV_BY_2);
+            Control_Write(Control_Read() | CONTROL_LO_DIV_BY_8);
         } else {
-            Control_Write(Control_Read() & ~CONTROL_LO_DIV_BY_2);
+            Control_Write(Control_Read() & ~CONTROL_LO_DIV_BY_8);
         }
         state++;
         break;

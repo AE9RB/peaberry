@@ -25,7 +25,7 @@ extern uint8 Lock_I2C;
 
 // Control register bits
 #define CONTROL_TX_ENABLE    0x01
-#define CONTROL_LO_DIV_BY_2  0x02
+#define CONTROL_LO_DIV_BY_8  0x02
 
 // 48 24-bit stereo samples every 1 ms
 #define I2S_BUF_SIZE (48u * 3 * 2)
