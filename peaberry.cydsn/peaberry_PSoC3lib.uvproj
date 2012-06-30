@@ -913,6 +913,21 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
             </File>
+            <File>
+              <FileName>RX_REV.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
+            </File>
+            <File>
+              <FileName>RX_REV.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV.h</FilePath>
+            </File>
+            <File>
+              <FileName>RX_REV_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1827,6 +1842,21 @@
               <FileName>Mic_done_isr.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>RX_REV.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
+            </File>
+            <File>
+              <FileName>RX_REV.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV.h</FilePath>
+            </File>
+            <File>
+              <FileName>RX_REV_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
             </File>
           </Files>
         </Group>
