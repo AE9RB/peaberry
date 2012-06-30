@@ -18,15 +18,15 @@
 #define MAX_LO 160.0 // maximum for CMOS Si570
 #define MIN_LO 1.25 // minimum with additional divide by 8
 #define DIV_LO 10.0 // Tunes 600m-160m without violating Si570 spec.
-#define SI570_STARTUP_FREQ 56.32 // Si570 default output (LO*4)
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
 volatile uint32 Si570_LO = STARTUP_LO;
-float Si570_Xtal;
-uint8 Si570_Buf[7];
+volatile float Si570_Xtal;
+// [0-1] for commands, [2-8] retain registers
+uint8 Si570_Buf[8];
 
 void Si570_Start(void) {
     uint8 hsdiv, n1, i, state = 0;
@@ -57,7 +57,7 @@ void Si570_Start(void) {
             }
             break;
         case 4: // do read registers
-            I2C_MasterReadBuf(SI570_ADDR, Si570_Buf, 6, I2C_MODE_REPEAT_START);
+            I2C_MasterReadBuf(SI570_ADDR, Si570_Buf + 2, 6, I2C_MODE_REPEAT_START);
             state++;
             break;
         case 5:
@@ -71,10 +71,10 @@ void Si570_Start(void) {
         }
     }
     // calculate xtal calibration
-    hsdiv = (Si570_Buf[0] >> 5) + 4;
-    n1 = (((Si570_Buf[0] & 0x1F) << 2) | (Si570_Buf[1] >> 6)) + 1;
-    rfreqint = (((uint16)Si570_Buf[1] & 0x3F) << 4) | (Si570_Buf[2] >> 4);
-    rfreqfrac = ((uint32*)&Si570_Buf[2])[0] & 0x0FFFFFFF;
+    hsdiv = (Si570_Buf[2] >> 5) + 4;
+    n1 = (((Si570_Buf[2] & 0x1F) << 2) | (Si570_Buf[3] >> 6)) + 1;
+    rfreqint = (((uint16)Si570_Buf[3] & 0x3F) << 4) | (Si570_Buf[4] >> 4);
+    rfreqfrac = ((uint32*)&Si570_Buf[4])[0] & 0x0FFFFFFF;
     rfreq = rfreqint + (float)rfreqfrac / 0x10000000;
     Si570_Xtal = (SI570_STARTUP_FREQ * hsdiv * n1) / rfreq;
 }
@@ -93,13 +93,8 @@ void Si570_Main(void) {
     case 0: // idle
         if (Current_LO != Si570_LO && Lock_I2C == LOCKI2C_UNLOCKED) {
             i = CyEnterCriticalSection();
-            Si570_Buf[0] = ((uint8*)&Si570_LO)[3];
-            Si570_Buf[1] = ((uint8*)&Si570_LO)[2];
-            Si570_Buf[2] = ((uint8*)&Si570_LO)[1];
-            Si570_Buf[3] = ((uint8*)&Si570_LO)[0];
+            fout = (float)swap32(Si570_LO) / 0x200000;
             CyExitCriticalSection(i);
-            fout = (float)*(uint32*)Si570_Buf;
-            fout /= 0x200000;
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
             Divide_By_2 = (fout < DIV_LO);
@@ -123,16 +118,16 @@ void Si570_Main(void) {
         rfreqfrac = (testdco - rfreqint) * 0x10000000;
         // don't trust floats
         if (rfreqfrac > 0x0FFFFFFF) rfreqfrac = 0x0FFFFFFF;
-        Si570_Buf[0] = 7;
+        Si570_Buf[1] = 7;
         i = hsdiv - 4;
-        Si570_Buf[1] = i << 5;
+        Si570_Buf[2] = i << 5;
         i = n1 - 1;
-        Si570_Buf[1] |= i >> 2;
-        Si570_Buf[2] = i << 6;
-        Si570_Buf[2] |= rfreqint >> 4;
-        *(uint32*)&Si570_Buf[3] = rfreqfrac;
-        Si570_Buf[3] |= rfreqint << 4;
-        I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 7, I2C_MODE_COMPLETE_XFER);
+        Si570_Buf[2] |= i >> 2;
+        Si570_Buf[3] = i << 6;
+        Si570_Buf[3] |= rfreqint >> 4;
+        *(uint32*)&Si570_Buf[4] = rfreqfrac;
+        Si570_Buf[4] |= rfreqint << 4;
+        I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf + 1, 7, I2C_MODE_COMPLETE_XFER);
         state++;
         break;
     case 16: // release DSPLL

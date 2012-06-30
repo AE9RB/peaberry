@@ -49,4 +49,15 @@ void main()
     }
 }
 
-/* [] END OF FILE */
+uint32 swap32(uint32 original) CYREENTRANT {
+    uint8 *r, *o;
+    uint32 ret;
+    r = (void*)&ret;
+    o = (void*)&original;
+    r[0] = o[3];
+    r[1] = o[2];
+    r[2] = o[1];
+    r[3] = o[0];
+    return ret;
+}
+

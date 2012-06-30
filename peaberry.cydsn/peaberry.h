@@ -34,9 +34,15 @@ extern uint8 Lock_I2C;
 //  4 buffers is the minimum required to sync USB Audio
 #define USB_AUDIO_BUFS 4
 
+// Silicon Labs sets this at the factory
+#define SI570_STARTUP_FREQ 56.32
+
 // Visibility into USBFS
 extern uint8 USBFS_initVar;
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
+
+// main.c
+uint32 swap32(uint32) CYREENTRANT;
 
 // usbaudio.c
 void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* eat, uint8* debounce, uint8 adjust);
@@ -50,6 +56,8 @@ void SyncSOF_Faster(void);
 
 // si570.c
 extern volatile uint32 Si570_LO;
+extern volatile float Si570_Xtal;
+extern uint8 Si570_Buf[];
 void Si570_Start(void);
 void Si570_Main(void);
 
