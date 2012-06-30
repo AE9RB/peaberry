@@ -36,6 +36,7 @@ uint8 USBFS_HandleVendorRqst(void)
                 USBFS_currentTD.pData = (void *)&Si570_LO;
                 USBFS_currentTD.count = sizeof(Si570_LO);
                 requestHandled  = USBFS_InitControlRead();
+                break;
             case 0x50: // CMD_SET_USRP1
                 if (CY_GET_REG8(USBFS_wValueLo) & 0x01) {
                     Control_Write(Control_Read() | CONTROL_TX_ENABLE);
@@ -48,6 +49,7 @@ uint8 USBFS_HandleVendorRqst(void)
                 USBFS_currentTD.pData = (void *)&key_return;
                 USBFS_currentTD.count = sizeof(key_return);
                 requestHandled  = USBFS_InitControlRead();
+                break;
             default:
                 break;
         }
