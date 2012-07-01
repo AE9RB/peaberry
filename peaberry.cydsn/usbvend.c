@@ -20,7 +20,7 @@ extern volatile T_USBFS_TD USBFS_currentTD;
 
 uint32 result;
 
-// Maps out actual registers into one that looks like the AVR
+// Maps PSoC registers into one that looks like the AVR
 uint8 emulated_register(void) {
     uint8 reg = 0, key;
     if (Control_Read() & CONTROL_TX_ENABLE) reg |= 0x10;
@@ -33,7 +33,7 @@ uint8 emulated_register(void) {
 uint8 USBFS_HandleVendorRqst(void) 
 {
     uint8 requestHandled = USBFS_FALSE;
-    uint8 reqType, reqCmd;
+    uint8 reqType, reqCmd, i;
     
     reqType = CY_GET_REG8(USBFS_bmRequestType);
     reqCmd = CY_GET_REG8(USBFS_bRequest);
@@ -62,9 +62,8 @@ uint8 USBFS_HandleVendorRqst(void)
                 requestHandled  = USBFS_InitControlRead();
                 break;
             case 0x3D: // CMD_GET_XTAL
-                result = swap32(Si570_Xtal * 0x01000000);
-                USBFS_currentTD.pData = (void *)&result;
-                USBFS_currentTD.count = sizeof(result);
+                USBFS_currentTD.pData = (void *)&Si570_Xtal;
+                USBFS_currentTD.count = sizeof(Si570_Xtal);
                 requestHandled  = USBFS_InitControlRead();
                 break;
             case 0x3F: // CMD_GET_SI570
@@ -85,8 +84,15 @@ uint8 USBFS_HandleVendorRqst(void)
                 USBFS_currentTD.count = 1;
                 requestHandled  = USBFS_InitControlRead();
                 break;
-            default:
-                //CyDelayUs(0); // for wip
+            case 0x20: // CMD_SET_SI570
+                // Fake a reset!  Used by cfgsr calibration algorithm.
+                if (CY_GET_REG8(USBFS_wValueHi) == 0x87 && CY_GET_REG16(USBFS_wIndex) == 0x01) {
+                    for (i = 0; i < 6; i++) Si570_Buf[i+2] = Si570_Factory[i];
+                    *(uint8*)&result = 0;
+                    USBFS_currentTD.pData = (void *)&result;
+                    USBFS_currentTD.count = 1;
+                    requestHandled  = USBFS_InitControlRead();
+                }
                 break;
         }
     }
@@ -99,8 +105,10 @@ uint8 USBFS_HandleVendorRqst(void)
                 USBFS_currentTD.count = sizeof(Si570_LO);
                 requestHandled  = USBFS_InitControlWrite();
                 break;
-            default:
-                //CyDelayUs(0); // for wip
+            case 0x33: // CMD_SET_XTAL
+                USBFS_currentTD.pData = (void *)&Si570_Xtal;
+                USBFS_currentTD.count = sizeof(Si570_Xtal);
+                requestHandled  = USBFS_InitControlWrite();
                 break;
         }
     }

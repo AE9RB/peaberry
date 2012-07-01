@@ -23,10 +23,11 @@
 #define SI570_DCO_MAX 5670.0
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
-volatile uint32 Si570_LO = STARTUP_LO;
-volatile float Si570_Xtal;
+volatile uint32 Si570_Xtal, Si570_LO = STARTUP_LO;
 // [0-1] for commands, [2-8] retain registers
 uint8 Si570_Buf[8];
+// A copy of the factory registers used for cfgsr calibration.
+uint8 Si570_Factory[6];
 
 void Si570_Start(void) {
     uint8 hsdiv, n1, i, state = 0;
@@ -76,7 +77,8 @@ void Si570_Start(void) {
     rfreqint = (((uint16)Si570_Buf[3] & 0x3F) << 4) | (Si570_Buf[4] >> 4);
     rfreqfrac = ((uint32*)&Si570_Buf[4])[0] & 0x0FFFFFFF;
     rfreq = rfreqint + (float)rfreqfrac / 0x10000000;
-    Si570_Xtal = (SI570_STARTUP_FREQ * hsdiv * n1) / rfreq;
+    Si570_Xtal = swap32((uint32)(SI570_STARTUP_FREQ * hsdiv * n1 / rfreq * 0x01000000));
+    for (i = 0; i < 6; i++) Si570_Factory[i] = Si570_Buf[i+2];
 }
 
 void Si570_Main(void) {
@@ -113,7 +115,9 @@ void Si570_Main(void) {
         state++;
         break;
     case 14: // write new DSPLL config
-        testdco = dco / Si570_Xtal;
+        i = CyEnterCriticalSection();
+        testdco = dco / ((float)swap32(Si570_Xtal) / 0x01000000);
+        CyExitCriticalSection(i);
         rfreqint = testdco;
         rfreqfrac = (testdco - rfreqint) * 0x10000000;
         // don't trust floats
