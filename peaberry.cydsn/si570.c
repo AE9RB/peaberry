@@ -28,6 +28,8 @@ volatile uint32 Si570_Xtal, Si570_LO = STARTUP_LO;
 uint8 Si570_Buf[8];
 // A copy of the factory registers used for cfgsr calibration.
 uint8 Si570_Factory[6];
+// Emulate old technique of setting of frequency by reg writes
+uint8 Si570_OLD[6];
 
 void Si570_Start(void) {
     uint8 hsdiv, n1, i, state = 0;
@@ -81,6 +83,27 @@ void Si570_Start(void) {
         Si570_Xtal = swap32((uint32)(SI570_STARTUP_FREQ * hsdiv * n1 / rfreq * 0x01000000));
     }
     for (i = 0; i < 6; i++) Si570_Factory[i] = Si570_Buf[i+2];
+    Si570_OLD[0]=0;
+}
+
+// This method of setting frequency is strongly discouraged.
+// It depends on client software managing the calibration data.
+// Unfortunately, the new SDR support in WSPR is using it.
+uint32 FreqFromOLD() {
+    uint8 hsdiv, n1;
+    uint16 rfreqint;
+    uint32 rfreqfrac;
+    float rfreq;
+
+    hsdiv = (Si570_OLD[0] >> 5) + 4;
+    n1 = (((Si570_OLD[0] & 0x1F) << 2) | (Si570_OLD[1] >> 6)) + 1;
+    rfreqint = (((uint16)Si570_OLD[1] & 0x3F) << 4) | (Si570_OLD[2] >> 4);
+    rfreqfrac = ((uint32*)&Si570_OLD[2])[0] & 0x0FFFFFFF;
+    rfreq = rfreqint + (float)rfreqfrac / 0x10000000;
+    
+    Si570_OLD[0]=0;
+    // Client software typically uses a fixed xtal freq of 114.285.
+    return swap32((uint32)(114.285 * rfreq / (hsdiv * n1) * 0x200000));
 }
 
 void Si570_Main(void) {
@@ -95,6 +118,7 @@ void Si570_Main(void) {
 
     switch (state) {
     case 0: // idle
+        if (Si570_OLD[0]) Si570_LO = FreqFromOLD();
         if (Current_LO != Si570_LO && Lock_I2C == LOCKI2C_UNLOCKED) {
             i = CyEnterCriticalSection();
             fout = (float)swap32(Si570_LO) / 0x200000;

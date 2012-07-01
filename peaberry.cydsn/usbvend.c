@@ -42,6 +42,12 @@ uint8 USBFS_HandleVendorRqst(void)
     {
         switch (reqCmd)
         {
+            case 0x00: // CMD_GET_VERSION
+                *(uint16*)&result = 0x0000; // V0.0
+                USBFS_currentTD.pData = (void *)&result;
+                USBFS_currentTD.count = 2;
+                requestHandled  = USBFS_InitControlRead();
+                break;
             case 0x02: // CMD_GET_PIN
                 // used on the test tab in cfgsr
                 *(uint8*)&result = emulated_register();
@@ -100,6 +106,11 @@ uint8 USBFS_HandleVendorRqst(void)
     {
         switch (reqCmd)
         {
+            case 0x30: // CMD_SET_FREQ_REG
+                USBFS_currentTD.pData = (void *)&Si570_OLD;
+                USBFS_currentTD.count = 6;
+                requestHandled  = USBFS_InitControlWrite();
+                break;
             case 0x32: // CMD_SET_FREQ
                 USBFS_currentTD.pData = (void *)&Si570_LO;
                 USBFS_currentTD.count = sizeof(Si570_LO);
