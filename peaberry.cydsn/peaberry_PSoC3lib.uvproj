@@ -928,6 +928,16 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
             </File>
+            <File>
+              <FileName>EEPROM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\EEPROM.c</FilePath>
+            </File>
+            <File>
+              <FileName>EEPROM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\EEPROM.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1857,6 +1867,16 @@
               <FileName>RX_REV_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>EEPROM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\EEPROM.c</FilePath>
+            </File>
+            <File>
+              <FileName>EEPROM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\EEPROM.h</FilePath>
             </File>
           </Files>
         </Group>

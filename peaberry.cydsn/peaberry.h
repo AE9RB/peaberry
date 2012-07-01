@@ -70,4 +70,9 @@ uint8* PCM3060_RxBuf(void);
 void Mic_Start(void);
 uint8* Mic_Buf(void);
 
+// settings.c
+void Settings_Start(void);
+void Settings_Main(void);
+
+
 #endif //PEABERRY_H

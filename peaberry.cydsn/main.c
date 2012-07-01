@@ -22,6 +22,7 @@ void main()
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     SyncSOF_Start();
     while(!USBFS_GetConfiguration());
+    Settings_Start();
     I2C_Start();
     Si570_Start();
     Mic_Start();
@@ -42,6 +43,7 @@ void main()
             }
         }
         
+        Settings_Main();
         USBAudio_Main();
         PCM3060_Main();
         Si570_Main();
