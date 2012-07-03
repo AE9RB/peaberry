@@ -24,35 +24,26 @@
 // For the unused speaker or transmit USB data.
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
-// Using a minimum of four DMA buffers with fine tuning of the SOF sync,
+// Using only four DMA buffers with fine tuning of the SOF sync,
 // we can reduce overruns and underruns so they almost never happen.
-void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* eat, uint8* debounce, uint8 adjust) {
-    uint8 i;
+void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
     if (*debounce) (*debounce)--;
-    if (!*eat && *use == dma) {
+    if (dma == *use) {
         *use += USB_AUDIO_BUFS - 1;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        *debounce = USB_AUDIO_BUFS;
         if (adjust) SyncSOF_Slower();
-    } else {
-        if (*eat) {
-            i = dma;
-            if (i != *use) {
-                if (++i == USB_AUDIO_BUFS) i = 0;
-                if (i != *use) return;
-            }
-            *eat = 0;
+        *debounce = USB_AUDIO_BUFS;
+        return;
+    }
+    if (++*use == USB_AUDIO_BUFS) *use = 0;
+    if (*use == dma) {
+        *use += USB_AUDIO_BUFS - 1;
+        if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
+        if (!*debounce) {
+            *debounce = USB_AUDIO_BUFS;
+            if (adjust) SyncSOF_Faster();
         }
-        if (++*use == USB_AUDIO_BUFS) *use = 0;
-        if ((*use == dma)) {
-            *use += USB_AUDIO_BUFS - 1;
-            if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-            if (!*debounce) {
-                *eat = 1;
-                if (adjust) SyncSOF_Faster();
-            }
-        }
-    }    
+    }
 }
 
 

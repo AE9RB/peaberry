@@ -49,7 +49,7 @@ void Mic_Start(void)
 // in the meantime, we divide the work into five
 // calls so as to be kind to the main loop.
 uint8* Mic_Buf(void) {
-    static uint8 eat = 0, debounce = 0, use = 0;
+    static uint8 debounce = 0, use = 0;
     static uint16 *buf;
     static uint8 pos;
     
@@ -75,7 +75,7 @@ uint8* Mic_Buf(void) {
     for (dma=0;dma<USB_AUDIO_BUFS;dma++) {
         if (td == Mic_Buff_TD[dma]) break;
     }
-    USBAudio_SyncBufs(dma, &use, &eat, &debounce, 0);
+    USBAudio_SyncBufs(dma, &use, &debounce, 0);
     buf = (uint16*)Mic_Buff[use];
     pos = MIC_BUF_SIZE / 2;
     return 0;

@@ -45,7 +45,7 @@ extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
 uint32 swap32(uint32) CYREENTRANT;
 
 // usbaudio.c
-void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* eat, uint8* debounce, uint8 adjust);
+void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust);
 void USBAudio_Main(void);
 
 // syncsof.c

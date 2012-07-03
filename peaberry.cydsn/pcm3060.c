@@ -136,24 +136,24 @@ void DmaTxConfiguration(void) {
 
 
 uint8* PCM3060_TxBuf(void) {
-    static uint8 eat = 0, debounce = 0, use = 0;
+    static uint8 debounce = 0, use = 0;
     uint8 dma, td;
     td = TxI2S_DMA_TD; // volatile
     for (dma=0;dma<USB_AUDIO_BUFS;dma++) {
         if (td == TxI2S_Buff_TD[dma]) break;
     }
-    USBAudio_SyncBufs(dma, &use, &eat, &debounce, 0);
+    USBAudio_SyncBufs(dma, &use, &debounce, 0);
     return TxI2S_Buff[use];
 }
 
 uint8* PCM3060_RxBuf(void) {
-    static uint8 eat = 0, debounce = 0, use = 0;
+    static uint8 debounce = 0, use = 0;
     uint8 dma, td;
     td = RxI2S_DMA_TD; // volatile
     for (dma=0;dma<USB_AUDIO_BUFS;dma++) {
         if (td == RxI2S_Buff_TD[dma]) break;
     }
-    USBAudio_SyncBufs(dma, &use, &eat, &debounce, 1);
+    USBAudio_SyncBufs(dma, &use, &debounce, 1);
     return RxI2S_Buff[use];
 }
 
