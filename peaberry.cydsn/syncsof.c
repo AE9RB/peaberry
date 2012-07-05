@@ -26,16 +26,15 @@
 uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 
 CY_ISR(isr_up) {
-    uint16 c, p;
+    uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    p = CY_GET_REG16(SyncSOF_PWM_PERIOD_LSB_PTR);
-    if (c<=p) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+    if (c<992) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
 }
 
 CY_ISR(isr_dn) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
+    if (c>983) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
 }
 
 void SyncSOF_Start(void) {
