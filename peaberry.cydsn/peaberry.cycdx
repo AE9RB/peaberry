@@ -85,6 +85,21 @@
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="TX_STATUS_REG" address="0x6460" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
     <register name="RX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
@@ -100,22 +115,7 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="TX_STATUS_REG" address="0x646C" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
-        <value name="NO_UNDERFLOW" value="0" desc="" />
-        <value name="UNDERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="CONTROL_REG" address="0x647D" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
