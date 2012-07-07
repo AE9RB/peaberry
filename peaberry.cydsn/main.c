@@ -22,6 +22,7 @@ void main()
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     SyncSOF_Start();
     while(!USBFS_GetConfiguration());
+    USBAudio_Start();
     Settings_Start();
     I2C_Start();
     Si570_Start();

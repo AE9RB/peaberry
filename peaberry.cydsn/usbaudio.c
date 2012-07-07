@@ -15,9 +15,11 @@
 #include <peaberry.h>
 
 #define RX_ENDPOINT              2
-#define MIC_ENDPOINT             4
+#define RX_INTERFACE             2
 #define TX_INTERFACE             3
 #define TX_ENDPOINT              3
+#define MIC_ENDPOINT             4
+#define MIC_INTERFACE            5
 #define SPKR_INTERFACE           6
 #define SPKR_ENDPOINT            5
 
@@ -47,23 +49,44 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
 }
 
 
+void USBAudio_Start(void) {
+    USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+    USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+}
+
 void USBAudio_Main(void) {
     void *i;
+    static uint8 tx_enabled = 0, spkr_enabled = 0;
     
-    if(USBFS_IsConfigurationChanged() != 0u) {
-        if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
-            if(USBFS_DmaTd[TX_ENDPOINT] == DMA_INVALID_TD) {
-                USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
-            }
+    if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
+        if (!tx_enabled) {
             USBFS_EnableOutEP(TX_ENDPOINT);
+            tx_enabled = 1;
         }
-        if (USBFS_GetInterfaceSetting(SPKR_INTERFACE) == 1) {
-            if(USBFS_DmaTd[SPKR_ENDPOINT] == DMA_INVALID_TD) {
-                USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
-            }
-            USBFS_EnableOutEP(SPKR_ENDPOINT);
+    } else {
+        if (tx_enabled) {
+            USBFS_DisableOutEP(TX_ENDPOINT);
+            tx_enabled = 0;
         }
     }
+    if (USBFS_GetInterfaceSetting(SPKR_INTERFACE) == 1) {
+        if (!spkr_enabled) {
+            USBFS_EnableOutEP(SPKR_ENDPOINT);
+            spkr_enabled = 1;
+        }
+    } else {
+        if (spkr_enabled) {
+            USBFS_DisableOutEP(SPKR_ENDPOINT);
+            spkr_enabled = 0;
+        }
+    }
+
+    // Not sure why this is needed, but HDSDR fails without it.
+    if(USBFS_IsConfigurationChanged() != 0u) {
+        if (tx_enabled) USBFS_EnableOutEP(TX_ENDPOINT);
+        if (spkr_enabled) USBFS_EnableOutEP(SPKR_ENDPOINT);
+    }
+
     
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
@@ -87,12 +110,12 @@ void USBAudio_Main(void) {
         }
     }
 
-	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+	if (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1 && USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
 		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
 		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
 	}
 
-	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+	if (USBFS_GetInterfaceSetting(MIC_INTERFACE) == 1 && USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
         if (i = Mic_Buf()) {
 		    USBFS_LoadInEP(MIC_ENDPOINT, i, MIC_BUF_SIZE);
 		    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
