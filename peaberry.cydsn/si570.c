@@ -88,7 +88,6 @@ void Si570_Start(void) {
 
 // This method of setting frequency is strongly discouraged.
 // It depends on client software managing the calibration data.
-// Unfortunately, the new SDR support in WSPR is using it.
 uint32 FreqFromOLD() {
     uint8 hsdiv, n1;
     uint16 rfreqint;
@@ -104,6 +103,13 @@ uint32 FreqFromOLD() {
     Si570_OLD[0]=0;
     // Client software typically uses a fixed xtal freq of 114.285.
     return swap32((uint32)(114.285 * rfreq / (hsdiv * n1) * 0x200000));
+}
+
+// CFGSR requests a reset in order to determine the xtal frequency.
+// This enables its calibration tab to fully work.
+void Si570_Fake_Reset(void) {
+    uint8 i;
+    for (i = 0; i < 6; i++) Si570_Buf[i+2] = Si570_Factory[i];
 }
 
 void Si570_Main(void) {

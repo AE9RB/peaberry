@@ -33,7 +33,7 @@ uint8 emulated_register(void) {
 uint8 USBFS_HandleVendorRqst(void) 
 {
     uint8 requestHandled = USBFS_FALSE;
-    uint8 reqType, reqCmd, i;
+    uint8 reqType, reqCmd;
     
     reqType = CY_GET_REG8(USBFS_bmRequestType);
     reqCmd = CY_GET_REG8(USBFS_bRequest);
@@ -91,9 +91,9 @@ uint8 USBFS_HandleVendorRqst(void)
                 requestHandled  = USBFS_InitControlRead();
                 break;
             case 0x20: // CMD_SET_SI570
-                // Fake a reset!  Used by cfgsr calibration algorithm.
+                // Fake a reset!  Used for calibration.
                 if (CY_GET_REG8(USBFS_wValueHi) == 0x87 && CY_GET_REG16(USBFS_wIndex) == 0x01) {
-                    for (i = 0; i < 6; i++) Si570_Buf[i+2] = Si570_Factory[i];
+                    Si570_Fake_Reset();
                     *(uint8*)&result = 0;
                     USBFS_currentTD.pData = (void *)&result;
                     USBFS_currentTD.count = 1;

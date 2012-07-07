@@ -59,6 +59,7 @@ extern volatile uint32 Si570_Xtal, Si570_LO;
 extern uint8 Si570_Buf[], Si570_Factory[], Si570_OLD[];
 void Si570_Start(void);
 void Si570_Main(void);
+void Si570_Fake_Reset(void);
 
 // pcm3060.c
 void PCM3060_Start(void);
