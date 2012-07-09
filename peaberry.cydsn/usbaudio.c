@@ -26,11 +26,23 @@
 // For the unused speaker or transmit USB data.
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
-// Using only four DMA buffers with fine tuning of the SOF sync,
+// Using only four USB buffers with fine tuning of the SOF sync,
 // we can reduce overruns and underruns so they almost never happen.
+// The four buffers are treated as eight buffers by the DelSig DMA
+// so we can avoid any race conditions where the DelSig catches up
+// while we are preparing for the next USB transfer.
 void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
+    uint8 dma_adjusted;
+    if (dma & 0x01) {
+        dma /= 2;
+        dma_adjusted = dma + 1;
+    } else {
+        dma /= 2;
+        dma_adjusted = dma;
+    }
+    if (dma_adjusted >= USB_AUDIO_BUFS) dma_adjusted -= USB_AUDIO_BUFS;
     if (*debounce) (*debounce)--;
-    if (dma == *use) {
+    if (dma == *use || dma_adjusted == *use) {
         *use += USB_AUDIO_BUFS - 1;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
         if (adjust) SyncSOF_Slower();
@@ -54,37 +66,40 @@ void USBAudio_Start(void) {
     USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
 }
 
+uint8 USBAudio_TX_Enabled = 0, USBAudio_RX_Enabled = 0, USBAudio_SPKR_Enabled = 0;
+
 void USBAudio_Main(void) {
     void *i;
-    static uint8 tx_enabled = 0, spkr_enabled = 0;
     
     if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
-        if (!tx_enabled) {
+        if (!USBAudio_TX_Enabled) {
             USBFS_EnableOutEP(TX_ENDPOINT);
-            tx_enabled = 1;
+            USBAudio_TX_Enabled = 1;
         }
     } else {
-        if (tx_enabled) {
+        if (USBAudio_TX_Enabled) {
             USBFS_DisableOutEP(TX_ENDPOINT);
-            tx_enabled = 0;
+            USBAudio_TX_Enabled = 0;
         }
     }
     if (USBFS_GetInterfaceSetting(SPKR_INTERFACE) == 1) {
-        if (!spkr_enabled) {
+        if (!USBAudio_SPKR_Enabled) {
             USBFS_EnableOutEP(SPKR_ENDPOINT);
-            spkr_enabled = 1;
+            USBAudio_SPKR_Enabled = 1;
         }
     } else {
-        if (spkr_enabled) {
+        if (USBAudio_SPKR_Enabled) {
             USBFS_DisableOutEP(SPKR_ENDPOINT);
-            spkr_enabled = 0;
+            USBAudio_SPKR_Enabled = 0;
         }
     }
 
+    USBAudio_RX_Enabled = (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1);
+
     // Not sure why this is needed, but HDSDR fails without it.
     if(USBFS_IsConfigurationChanged() != 0u) {
-        if (tx_enabled) USBFS_EnableOutEP(TX_ENDPOINT);
-        if (spkr_enabled) USBFS_EnableOutEP(SPKR_ENDPOINT);
+        if (USBAudio_TX_Enabled) USBFS_EnableOutEP(TX_ENDPOINT);
+        if (USBAudio_SPKR_Enabled) USBFS_EnableOutEP(SPKR_ENDPOINT);
     }
 
     
@@ -110,12 +125,12 @@ void USBAudio_Main(void) {
         }
     }
 
-	if (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1 && USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
 		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
 		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
 	}
 
-	if (USBFS_GetInterfaceSetting(MIC_INTERFACE) == 1 && USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
         if (i = Mic_Buf()) {
 		    USBFS_LoadInEP(MIC_ENDPOINT, i, MIC_BUF_SIZE);
 		    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
