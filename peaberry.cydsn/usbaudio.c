@@ -75,7 +75,7 @@ uint8 USBAudio_Volume(void) {
         if (i== 0x8000) {
             volume = 54;
         } else {
-            volume = 140 + ((i + 0x3980) >> 7);
+            volume = 176 + ((i + 0x2780) >> 7);
         }
     }
     if (USBFS_currentMute) return 54;
@@ -83,11 +83,13 @@ uint8 USBAudio_Volume(void) {
 }
 
 void USBAudio_Start(void) {
-    // -57.5dB to 0.0dB volume range
+    // -39.5dB to 0.0dB volume range
     USBFS_minimumVolume[0] = 0x80;
-    USBFS_minimumVolume[1] = 0xC6;
+    USBFS_minimumVolume[1] = 0xD8;
     USBFS_maximumVolume[0] = 0;
     USBFS_maximumVolume[1] = 0;
+    USBFS_currentVolume[0] = 0;
+    USBFS_currentVolume[1] = 0;
     USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
     USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
 }
@@ -122,7 +124,6 @@ void USBAudio_Main(void) {
 
     USBAudio_RX_Enabled = (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1);
 
-    // Not sure why this is needed, but HDSDR fails without it.
     if(USBFS_IsConfigurationChanged() != 0u) {
         if (USBAudio_TX_Enabled) USBFS_EnableOutEP(TX_ENDPOINT);
         if (USBAudio_SPKR_Enabled) USBFS_EnableOutEP(SPKR_ENDPOINT);
@@ -131,7 +132,7 @@ void USBAudio_Main(void) {
     
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
-        if (TX_Enabled) {
+        if (Control_Read() & CONTROL_TX_ENABLE) {
             USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
@@ -142,7 +143,7 @@ void USBAudio_Main(void) {
 
     if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
-        if (TX_Enabled) {
+        if (Control_Read() & CONTROL_TX_ENABLE) {
             USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         } else {

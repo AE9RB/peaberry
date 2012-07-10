@@ -212,38 +212,26 @@ void PCM3060_Main(void) {
     switch (state) {
     case 0:
         if (!Locked_I2C) {
-            if (TX_Enabled) {
+            if (Control_Read() & CONTROL_TX_ENABLE) {
                 if (!TX_Request) {
                     state = 10;
                     volume = 53;
                     Locked_I2C = 1;
-                } else if (volume == 53 && USBAudio_TX_Enabled) {
-                    Control_Write(Control_Read() | CONTROL_TX_ENABLE);
+                } else if (volume == 53) {
                     state = 30;
                     volume = 0xFF;
                     Locked_I2C = 1;
-                } else if (volume > 53 && !USBAudio_TX_Enabled) {
-                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-                    state = 30;
-                    volume = 53;
-                    Locked_I2C = 1;
                 }
-            } else { // !TX_Enabled
+            } else { // not transmitting
                 if (TX_Request) {
                     state = 20;
                     volume = 53;
                     Locked_I2C = 1;
                 } else {
                     i = USBAudio_Volume();
-                    if (volume != i && USBAudio_SPKR_Enabled) {
-                        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                    if (volume != i) {
                         state = 30;
                         volume = i;
-                        Locked_I2C = 1;
-                    } else if (volume > 53 && !USBAudio_SPKR_Enabled) {
-                        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-                        state = 30;
-                        volume = 53;
                         Locked_I2C = 1;
                     }
                 }
@@ -268,8 +256,9 @@ void PCM3060_Main(void) {
         if (i & I2C_MSTAT_ERR_XFER) {
             state--;
         } else if (i & I2C_MSTAT_WR_CMPLT) {
-            Locked_I2C = 0;
+            // Volume only moves 0.5dB every 8 samples
             TxBufCountdown = 34;
+            Locked_I2C = 0;
             state++;
         }
         break;    
@@ -280,12 +269,12 @@ void PCM3060_Main(void) {
         // wait on PCM3060 to process full volume change
         if (!TxBufCountdown) state++;
         break;
-    case 13:    
-        TX_Enabled = 0;
+    case 13:
+        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
         state = 0;
         break;
-    case 23:    
-        TX_Enabled = 1;
+    case 23:
+        Control_Write(Control_Read() | CONTROL_TX_ENABLE);
         state = 0;
         break;
     case 33:

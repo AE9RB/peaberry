@@ -37,7 +37,7 @@ extern uint8 USBFS_initVar;
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
 
 // main.c
-extern uint8 TX_Request, TX_Enabled, Locked_I2C;
+extern uint8 TX_Request, Locked_I2C;
 #define LOCKI2C_UNLOCKED 0
 #define LOCKI2C_SI570    1
 #define LOCKI2C_PCM3060  2

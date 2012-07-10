@@ -15,7 +15,7 @@
 #include <peaberry.h>
 
 // RX/TX switching must be synchronized with PCM3060
-uint8 TX_Request = 0, TX_Enabled = 0;
+uint8 TX_Request = 0;
 // Check and lock this in the main loop before using I2C
 uint8 Locked_I2C = 0;
 
@@ -39,6 +39,7 @@ void main()
             if(!USBFS_initVar) {
                 USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
                 SyncSOF_Start();
+                USBAudio_Start();
             }
         } else {
             if(USBFS_initVar) {
