@@ -226,16 +226,19 @@ void PCM3060_Main(void) {
                     state = 20;
                     volume = 53;
                     Locked_I2C = 1;
-                } else if (volume == 53 && USBAudio_SPKR_Enabled) {
-                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-                    state = 30;
-                    volume = 0xFF; //TODO
-                    Locked_I2C = 1;
-                } else if (volume > 53 && !USBAudio_SPKR_Enabled) {
-                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-                    state = 30;
-                    volume = 53;
-                    Locked_I2C = 1;
+                } else {
+                    i = USBAudio_Volume();
+                    if (volume != i && USBAudio_SPKR_Enabled) {
+                        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                        state = 30;
+                        volume = i;
+                        Locked_I2C = 1;
+                    } else if (volume > 53 && !USBAudio_SPKR_Enabled) {
+                        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                        state = 30;
+                        volume = 53;
+                        Locked_I2C = 1;
+                    }
                 }
             }
         }

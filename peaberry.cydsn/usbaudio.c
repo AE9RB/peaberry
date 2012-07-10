@@ -57,6 +57,23 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
     }
 }
 
+extern uint8 USBFS_currentVolume[];
+extern uint8 USBFS_currentMute;
+
+// Returns volume in the PCM3060 range of 54-255 where 54 is mute.
+uint8 USBAudio_Volume(void) {
+    // cache results of expensive division
+    static uint8 prev=0, volume=0;
+    if (USBFS_currentVolume[1] != prev) {
+        prev = USBFS_currentVolume[1];
+        // The full range of -100dB is excessive for audio.
+        // volume = 55 + (uint16)((int8)prev+0x80) * 200 / 255;
+        // -60dB is more practical. (returns 54,135-255)
+        volume = 135 + (uint16)((int8)prev+0x80) * 120 / 255;
+    }
+    if (USBFS_currentMute) return 54;
+    return volume;
+}
 
 void USBAudio_Start(void) {
     USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
