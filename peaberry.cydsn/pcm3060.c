@@ -198,75 +198,87 @@ void PCM3060_Start(void) {
 
 
 void PCM3060_Main(void) {
+    // 0-54 volume is mute, 53 = state mute, 54 = user mute
     static uint8 state = 0, volume = 0xFF, pcm3060_cmd[3];
     uint8 i;
     
     switch (state) {
     case 0:
         if (!Locked_I2C) {
-            if (TX_Request && !TX_Enabled) {
-                state = 1;
-                volume = 0;
-                Locked_I2C = 1;
-            }
-            else if (!TX_Request && TX_Enabled) {
-                state = 10;
-                volume = 0;
-                Locked_I2C = 1;
-            }
-            else if (!TX_Enabled) {
-                //TODO USB volume
+            if (TX_Enabled) {
+                if (!TX_Request) {
+                    state = 10;
+                    volume = 53;
+                    Locked_I2C = 1;
+                } else if (volume == 53 && USBAudio_TX_Enabled) {
+                    Control_Write(Control_Read() | CONTROL_TX_ENABLE);
+                    state = 30;
+                    volume = 0xFF;
+                    Locked_I2C = 1;
+                } else if (volume > 53 && !USBAudio_TX_Enabled) {
+                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                    state = 30;
+                    volume = 53;
+                    Locked_I2C = 1;
+                }
+            } else { // !TX_Enabled
+                if (TX_Request) {
+                    state = 20;
+                    volume = 53;
+                    Locked_I2C = 1;
+                } else if (volume == 53 && USBAudio_SPKR_Enabled) {
+                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                    state = 30;
+                    volume = 0xFF; //TODO
+                    Locked_I2C = 1;
+                } else if (volume > 53 && !USBAudio_SPKR_Enabled) {
+                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+                    state = 30;
+                    volume = 53;
+                    Locked_I2C = 1;
+                }
             }
         }
         break;
-    case 1:
-    case 4:
     case 10:
-    case 14:
+    case 20:
+    case 30:
+    case 40:
     	pcm3060_cmd[0] = 0x41;
         pcm3060_cmd[1] = volume;
         pcm3060_cmd[2] = volume;
         I2C_MasterWriteBuf(PCM3060_ADDR, pcm3060_cmd, 3, I2C_MODE_COMPLETE_XFER);
         state++;
         break;
-    case 2:
-    case 5:
     case 11:
-    case 15:
+    case 21:
+    case 31:
+    case 41:
         i = I2C_MasterStatus();
         if (i & I2C_MSTAT_ERR_XFER) {
             state--;
         } else if (i & I2C_MSTAT_WR_CMPLT) {
             Locked_I2C = 0;
-            TxBufCountdown = 85; // 42.5ms
+            TxBufCountdown = 34;
             state++;
         }
         break;    
-    case 3:
-        if (!TxBufCountdown && !Locked_I2C) {
-            TX_Enabled = 1;
-            Locked_I2C = 1;
-            volume = 0xFF;
-            state++;
-        }
+    case 12:
+    case 22:
+    case 32:
+    case 42:
+        // wait on PCM3060 to process full volume change
+        if (!TxBufCountdown) state++;
         break;
-    case 6:
-        Control_Write(Control_Read() | CONTROL_TX_ENABLE);
+    case 13:    
+        TX_Enabled = 0;
         state = 0;
         break;
-    case 12:
-        if (!TxBufCountdown && !Locked_I2C) {
-            TX_Enabled = 0;
-            Locked_I2C = 1;
-            state++;
-        }
+    case 23:    
+        TX_Enabled = 1;
+        state = 0;
         break;
-    case 13:
-        volume = 0xFF; //TODO read USB
-        state++;
-        break;
-    case 16:
-        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+    case 33:
         state = 0;
         break;
     }
