@@ -257,7 +257,8 @@ void PCM3060_Main(void) {
             state--;
         } else if (i & I2C_MSTAT_WR_CMPLT) {
             // Volume only moves 0.5dB every 8 samples
-            TxBufCountdown = 34;
+            // 67 = 100dB / 0.5 * 8 / 24sps
+            TxBufCountdown = 67;
             Locked_I2C = 0;
             state++;
         }
