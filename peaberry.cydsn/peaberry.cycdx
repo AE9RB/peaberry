@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="KEY_0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="RxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="RxI2S_Stage" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="RxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="pup_DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="pdn_DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="pup_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="KEY_0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="RxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="RxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SPKR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="TX_PWR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SCK_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="RxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="SPKR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="RX_REV" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Mic_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Mic_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_Zero" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="pdn_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Mic_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="TxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SyncSOF" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -50,10 +51,10 @@
       <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     </block>
   </block>
-  <block name="pup_DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="pdn_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="TxI2S_Stage" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="TxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Microphone" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -85,7 +86,7 @@
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6460" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="FULL" value="0" desc="" />
@@ -100,7 +101,7 @@
         <value name="UNDERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="RX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
+    <register name="RX_STATUS_REG" address="0x6466" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="EMPTY" value="0" desc="" />
@@ -115,7 +116,7 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6474" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />

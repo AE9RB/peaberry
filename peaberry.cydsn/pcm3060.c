@@ -86,7 +86,7 @@ void DmaRxConfiguration(void)
 }
 
 
-uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS], TxBufCountdown = 0;
+uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS], TxBufCountdown = 0, TxZero = 0;
 volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_TD;
 
 CY_ISR(TxI2S_DMA_done) {
@@ -96,7 +96,7 @@ CY_ISR(TxI2S_DMA_done) {
 
 void DmaTxConfiguration(void) {
     uint8 TxI2S_Swap_Chan, TxI2S_Swap_TD[9], TxI2S_Stage_Chan, TxI2S_Stage_TD[9];
-	uint8 i, n, order[9];
+	uint8 i, n, order[9], TxI2S_Zero_Chan, TxI2S_Zero_TD;
     LoadSwapOrder(order);
 	
     TxI2S_Swap_Chan = TxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_PERIPH_BASE));
@@ -132,10 +132,17 @@ void DmaTxConfiguration(void) {
 	}
 	CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD[0]);
 
+    TxI2S_Zero_Chan = TxI2S_Zero_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    TxI2S_Zero_TD = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(TxI2S_Zero_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, TxI2S_Zero_TD, TD_INC_DST_ADR );	
+    CyDmaTdSetAddress(TxI2S_Zero_TD, LO16(&TxZero), LO16(TxI2S_Buff[0]));
+	CyDmaChSetInitialTd(TxI2S_Zero_Chan, TxI2S_Zero_TD);
+
     TxI2S_DMA_TD = TxI2S_Buff_TD[0];
     TxI2S_done_isr_Start();
     TxI2S_done_isr_SetVector(TxI2S_DMA_done);
 
+    CyDmaChEnable(TxI2S_Zero_Chan, 1u);
     CyDmaChEnable(TxI2S_Buff_Chan, 1u);
 	CyDmaChEnable(TxI2S_Stage_Chan, 1u);
 	CyDmaChEnable(TxI2S_Swap_Chan, 1u);

@@ -938,6 +938,16 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\EEPROM.h</FilePath>
             </File>
+            <File>
+              <FileName>TxI2S_Zero_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Zero_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1877,6 +1887,16 @@
               <FileName>EEPROM.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\EEPROM.h</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Zero_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>TxI2S_Zero_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.h</FilePath>
             </File>
           </Files>
         </Group>
