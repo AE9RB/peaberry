@@ -1,6 +1,6 @@
 # AE9RB Peaberry SDR
 
-A complete HF transceiver you can build yourself.
+An amateur HF transceiver designed for the Free and Open Source community.
 
 ## Features
 

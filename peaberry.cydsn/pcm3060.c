@@ -86,10 +86,11 @@ void DmaRxConfiguration(void)
 }
 
 
-uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS];
+uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS], TxBufCountdown = 0;
 volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_TD;
 
 CY_ISR(TxI2S_DMA_done) {
+    if (TxBufCountdown) TxBufCountdown--;
     TxI2S_DMA_TD = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
 }
 
@@ -195,15 +196,79 @@ void PCM3060_Start(void) {
     }
 }
 
+
 void PCM3060_Main(void) {
-    static uint8 state = 0;
+    static uint8 state = 0, volume = 0xFF, pcm3060_cmd[3];
+    uint8 i;
     
     switch (state) {
     case 0:
-        if (Lock_I2C == LOCKI2C_UNLOCKED) {
+        if (!Locked_I2C) {
+            if (TX_Request && !TX_Enabled) {
+                state = 1;
+                volume = 0;
+                Locked_I2C = 1;
+            }
+            else if (!TX_Request && TX_Enabled) {
+                state = 10;
+                volume = 0;
+                Locked_I2C = 1;
+            }
+            else if (!TX_Enabled) {
+                //TODO USB volume
+            }
         }
         break;
+    case 1:
+    case 4:
+    case 10:
+    case 14:
+    	pcm3060_cmd[0] = 0x41;
+        pcm3060_cmd[1] = volume;
+        pcm3060_cmd[2] = volume;
+        I2C_MasterWriteBuf(PCM3060_ADDR, pcm3060_cmd, 3, I2C_MODE_COMPLETE_XFER);
+        state++;
+        break;
+    case 2:
+    case 5:
+    case 11:
+    case 15:
+        i = I2C_MasterStatus();
+        if (i & I2C_MSTAT_ERR_XFER) {
+            state--;
+        } else if (i & I2C_MSTAT_WR_CMPLT) {
+            Locked_I2C = 0;
+            TxBufCountdown = 85; // 42.5ms
+            state++;
+        }
+        break;    
+    case 3:
+        if (!TxBufCountdown && !Locked_I2C) {
+            TX_Enabled = 1;
+            Locked_I2C = 1;
+            volume = 0xFF;
+            state++;
+        }
+        break;
+    case 6:
+        Control_Write(Control_Read() | CONTROL_TX_ENABLE);
+        state = 0;
+        break;
+    case 12:
+        if (!TxBufCountdown && !Locked_I2C) {
+            TX_Enabled = 0;
+            Locked_I2C = 1;
+            state++;
+        }
+        break;
+    case 13:
+        volume = 0xFF; //TODO read USB
+        state++;
+        break;
+    case 16:
+        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+        state = 0;
+        break;
     }
-    
 }
 

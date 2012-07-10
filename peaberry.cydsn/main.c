@@ -14,7 +14,10 @@
 
 #include <peaberry.h>
 
-uint8 Lock_I2C = LOCKI2C_UNLOCKED;
+// RX/TX switching must be synchronized with PCM3060
+uint8 TX_Request = 0, TX_Enabled = 0;
+// Check and lock this in the main loop before using I2C
+uint8 Locked_I2C = 0;
 
 void main()
 {

@@ -17,12 +17,6 @@
 
 #include <device.h>
 
-// Check and lock this in the main loop before using I2C
-extern uint8 Lock_I2C;
-#define LOCKI2C_UNLOCKED 0
-#define LOCKI2C_SI570    1
-#define LOCKI2C_PCM3060  2
-
 // Control register bits
 #define CONTROL_TX_ENABLE    0x01
 #define CONTROL_LO_DIV_BY_8  0x02
@@ -38,14 +32,15 @@ extern uint8 Lock_I2C;
 // while we are preparing for the next USB transfer.
 #define DMA_AUDIO_BUFS (USB_AUDIO_BUFS * 2)
 
-// Silicon Labs sets this at the factory
-#define SI570_STARTUP_FREQ 56.32
-
 // Visibility into USBFS
 extern uint8 USBFS_initVar;
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
 
 // main.c
+extern uint8 TX_Request, TX_Enabled, Locked_I2C;
+#define LOCKI2C_UNLOCKED 0
+#define LOCKI2C_SI570    1
+#define LOCKI2C_PCM3060  2
 uint32 swap32(uint32) CYREENTRANT;
 
 // usbaudio.c
@@ -61,6 +56,7 @@ void SyncSOF_Slower(void);
 void SyncSOF_Faster(void);
 
 // si570.c
+#define SI570_STARTUP_FREQ 56.32
 extern volatile uint32 Si570_Xtal, Si570_LO;
 extern uint8 Si570_Buf[], Si570_Factory[], Si570_OLD[];
 void Si570_Start(void);

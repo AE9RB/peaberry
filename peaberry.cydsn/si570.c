@@ -125,7 +125,7 @@ void Si570_Main(void) {
     switch (state) {
     case 0: // idle
         if (Si570_OLD[0]) Si570_LO = FreqFromOLD();
-        if (Current_LO != Si570_LO && Lock_I2C == LOCKI2C_UNLOCKED) {
+        if (Current_LO != Si570_LO && !Locked_I2C) {
             i = CyEnterCriticalSection();
             fout = (float)swap32(Si570_LO) / 0x200000;
             CyExitCriticalSection(i);
@@ -133,7 +133,7 @@ void Si570_Main(void) {
             if (fout > MAX_LO) fout = MAX_LO;
             Divide_By_2 = (fout < DIV_LO);
             if (Divide_By_2) fout *= 8;
-            Lock_I2C = LOCKI2C_SI570;
+            Locked_I2C = 1;
             Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;
             state = 4;
@@ -188,7 +188,7 @@ void Si570_Main(void) {
         }
         break;
     case 18: // all done
-        Lock_I2C = LOCKI2C_UNLOCKED;
+        Locked_I2C = 0;
         state = 0;
         break;
     case 8:  // invalid for HS_DIV

@@ -23,7 +23,7 @@ uint32 result;
 // Maps PSoC registers into one that looks like the AVR
 uint8 emulated_register(void) {
     uint8 reg = 0, key;
-    if (Control_Read() & CONTROL_TX_ENABLE) reg |= 0x10;
+    if (TX_Enabled) reg |= 0x10;
     key = ~KEY_Read();
     if (key & 0x01) reg |= 0x20;
     if (key & 0x02) reg |= 0x02;
@@ -78,11 +78,7 @@ uint8 USBFS_HandleVendorRqst(void)
                 requestHandled  = USBFS_InitControlRead();
                 break;
             case 0x50: // CMD_SET_USRP1
-                if (CY_GET_REG8(USBFS_wValueLo) & 0x01) {
-                    Control_Write(Control_Read() | CONTROL_TX_ENABLE);
-                } else {
-                    Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-                }
+                TX_Request = (CY_GET_REG8(USBFS_wValueLo) & 0x01);
                 //nobreak, returns key value
             case 0x51: // CMD_GET_CW_KEY
                 *(uint8*)&result = emulated_register();

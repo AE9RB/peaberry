@@ -102,7 +102,7 @@ void USBAudio_Main(void) {
     
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
-        if (Control_Read() & CONTROL_TX_ENABLE) {
+        if (TX_Enabled) {
             USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
@@ -113,7 +113,7 @@ void USBAudio_Main(void) {
 
     if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
-        if (Control_Read() & CONTROL_TX_ENABLE) {
+        if (TX_Enabled) {
             USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         } else {
