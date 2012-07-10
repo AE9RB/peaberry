@@ -28,9 +28,6 @@ volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 // Using only four USB buffers with fine tuning of the SOF sync,
 // we can reduce overruns and underruns so they almost never happen.
-// The four buffers are treated as eight buffers by the DelSig DMA
-// so we can avoid any race conditions where the DelSig catches up
-// while we are preparing for the next USB transfer.
 void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
     uint8 dma_adjusted;
     if (dma & 0x01) {

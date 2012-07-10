@@ -14,7 +14,7 @@
 
 #include <peaberry.h>
 
-uint8 Mic_Buff_Chan, Mic_Buff_TD[USB_AUDIO_BUFS*2];
+uint8 Mic_Buff_Chan, Mic_Buff_TD[DMA_AUDIO_BUFS];
 volatile uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE], Mic_DMA_TD;
 
 CY_ISR(Mic_DMA_done) {
@@ -26,13 +26,13 @@ void Mic_Start(void)
 	uint8 i, n;
 
     Mic_Buff_Chan = Mic_Buff_DmaInitialize(2, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
-	for (i=0; i < USB_AUDIO_BUFS*2; i++) Mic_Buff_TD[i] = CyDmaTdAllocate();
-	for (i=0; i < USB_AUDIO_BUFS*2; i++) {
+	for (i=0; i < DMA_AUDIO_BUFS; i++) Mic_Buff_TD[i] = CyDmaTdAllocate();
+	for (i=0; i < DMA_AUDIO_BUFS; i++) {
 	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/2, Mic_Buff_TD[i+1], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
 	    CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/2]));
         i++;
 	 	n = i + 1;
-		if (n >= USB_AUDIO_BUFS*2) n=0;
+		if (n >= DMA_AUDIO_BUFS) n=0;
 	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/2, Mic_Buff_TD[n], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
 	    CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/2] + MIC_BUF_SIZE/2));
 	}
@@ -75,7 +75,7 @@ uint8* Mic_Buf(void) {
     }
 
     td = Mic_DMA_TD; // volatile
-    for (dma=0;dma<USB_AUDIO_BUFS*2;dma++) {
+    for (dma = 0; dma < DMA_AUDIO_BUFS; dma++) {
         if (td == Mic_Buff_TD[dma]) break;
     }
     USBAudio_SyncBufs(dma, &use, &debounce, 0);

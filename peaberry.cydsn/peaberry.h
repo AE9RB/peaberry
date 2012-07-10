@@ -31,8 +31,12 @@ extern uint8 Lock_I2C;
 #define I2S_BUF_SIZE (48u * 3 * 2)
 // 48 12-bit mono samples every 1 ms
 #define MIC_BUF_SIZE (48u * 2)
-//  4 buffers is the minimum required to sync USB Audio
+// Four buffers is the minimum required to sync USB Audio.
 #define USB_AUDIO_BUFS 4
+// The four buffers are treated as eight half-buffers by the DelSig DMA
+// so we can avoid any race conditions where the DelSig catches up
+// while we are preparing for the next USB transfer.
+#define DMA_AUDIO_BUFS (USB_AUDIO_BUFS * 2)
 
 // Silicon Labs sets this at the factory
 #define SI570_STARTUP_FREQ 56.32
