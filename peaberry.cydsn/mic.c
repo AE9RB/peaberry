@@ -15,10 +15,10 @@
 #include <peaberry.h>
 
 uint8 Mic_Buff_Chan, Mic_Buff_TD[DMA_AUDIO_BUFS];
-volatile uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE], Mic_DMA_TD, Mic_DMA_Buf;
+volatile uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE], Mic_DMA_Buf;
 
 CY_ISR(Mic_DMA_done) {
-    uint8 bufnum, i;
+    uint8 td, bufnum, i;
     uint16 b, *buf;
     
     // This conversion could be verilog if more CPU is needed
@@ -34,13 +34,13 @@ CY_ISR(Mic_DMA_done) {
         buf[i] = (b << 12) | (b >> 4);
     }
 
-    Mic_DMA_TD = DMAC_CH[Mic_Buff_Chan].basic_status[1] & 0x7Fu;
+    td = DMAC_CH[Mic_Buff_Chan].basic_status[1] & 0x7Fu;
     bufnum = Mic_DMA_Buf + 1;
     if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
-    if (Mic_DMA_TD != Mic_Buff_TD[bufnum]) {
+    if (td != Mic_Buff_TD[bufnum]) {
         // resync, should only happen when debugging
         for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
-            if (Mic_DMA_TD == Mic_Buff_TD[bufnum]) break;
+            if (td == Mic_Buff_TD[bufnum]) break;
         }
     }
     Mic_DMA_Buf = bufnum;
@@ -64,7 +64,6 @@ void Mic_Start(void)
 	CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD[0]);
 	
     Mic_DMA_Buf = 0;
-    Mic_DMA_TD = Mic_Buff_TD[0];
 	Mic_done_isr_Start();
     Mic_done_isr_SetVector(Mic_DMA_done);
 

@@ -31,17 +31,17 @@ void LoadSwapOrder(uint8* a) {
 
 
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[DMA_AUDIO_BUFS];
-volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move, RxI2S_DMA_TD, RxI2S_DMA_Buf;
+volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move, RxI2S_DMA_Buf;
 
 CY_ISR(RxI2S_DMA_done) {
-    uint8 bufnum;
-    RxI2S_DMA_TD = DMAC_CH[RxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    uint8 td, bufnum;
+    td = DMAC_CH[RxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
     bufnum = RxI2S_DMA_Buf + 1;
     if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
-    if (RxI2S_DMA_TD != RxI2S_Buff_TD[bufnum]) {
+    if (td != RxI2S_Buff_TD[bufnum]) {
         // resync, should only happen when debugging
         for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
-            if (RxI2S_DMA_TD == RxI2S_Buff_TD[bufnum]) break;
+            if (td == RxI2S_Buff_TD[bufnum]) break;
         }
     }
     RxI2S_DMA_Buf = bufnum;
@@ -87,7 +87,6 @@ void DmaRxConfiguration(void)
 	CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[0]);
 	
     RxI2S_DMA_Buf = 0;
-    RxI2S_DMA_TD = RxI2S_Buff_TD[0];
 	RxI2S_done_isr_Start();
     RxI2S_done_isr_SetVector(RxI2S_DMA_done);
 
@@ -98,18 +97,18 @@ void DmaRxConfiguration(void)
 
 
 uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS], TxBufCountdown = 0, TxZero = 0;
-volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_TD, TxI2S_DMA_Buf;
+volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_Buf;
 
 CY_ISR(TxI2S_DMA_done) {
-    uint8 bufnum;
+    uint8 td, bufnum;
     if (TxBufCountdown) TxBufCountdown--;
-    TxI2S_DMA_TD = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    td = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
     bufnum = TxI2S_DMA_Buf + 1;
     if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
-    if (TxI2S_DMA_TD != TxI2S_Buff_TD[bufnum]) {
+    if (td != TxI2S_Buff_TD[bufnum]) {
         // resync, should only happen when debugging
         for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
-            if (TxI2S_DMA_TD == TxI2S_Buff_TD[bufnum]) break;
+            if (td == TxI2S_Buff_TD[bufnum]) break;
         }
     }
     TxI2S_DMA_Buf = bufnum;
@@ -161,7 +160,6 @@ void DmaTxConfiguration(void) {
 	CyDmaChSetInitialTd(TxI2S_Zero_Chan, TxI2S_Zero_TD);
 
     TxI2S_DMA_Buf = 0;
-    TxI2S_DMA_TD = TxI2S_Buff_TD[0];
     TxI2S_done_isr_Start();
     TxI2S_done_isr_SetVector(TxI2S_DMA_done);
 
