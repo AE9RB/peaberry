@@ -31,10 +31,20 @@ void LoadSwapOrder(uint8* a) {
 
 
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[DMA_AUDIO_BUFS];
-volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move, RxI2S_DMA_TD;
+volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move, RxI2S_DMA_TD, RxI2S_DMA_Buf;
 
 CY_ISR(RxI2S_DMA_done) {
+    uint8 bufnum;
     RxI2S_DMA_TD = DMAC_CH[RxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    bufnum = RxI2S_DMA_Buf + 1;
+    if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
+    if (RxI2S_DMA_TD != RxI2S_Buff_TD[bufnum]) {
+        // resync, should only happen when debugging
+        for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
+            if (RxI2S_DMA_TD == RxI2S_Buff_TD[bufnum]) break;
+        }
+    }
+    RxI2S_DMA_Buf = bufnum;
 }
 
 void DmaRxConfiguration(void)
@@ -76,6 +86,7 @@ void DmaRxConfiguration(void)
 	}
 	CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[0]);
 	
+    RxI2S_DMA_Buf = 0;
     RxI2S_DMA_TD = RxI2S_Buff_TD[0];
 	RxI2S_done_isr_Start();
     RxI2S_done_isr_SetVector(RxI2S_DMA_done);
@@ -87,11 +98,22 @@ void DmaRxConfiguration(void)
 
 
 uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[DMA_AUDIO_BUFS], TxBufCountdown = 0, TxZero = 0;
-volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_TD;
+volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage, TxI2S_DMA_TD, TxI2S_DMA_Buf;
 
 CY_ISR(TxI2S_DMA_done) {
+    uint8 bufnum;
     if (TxBufCountdown) TxBufCountdown--;
     TxI2S_DMA_TD = DMAC_CH[TxI2S_Buff_Chan].basic_status[1] & 0x7Fu;
+    bufnum = TxI2S_DMA_Buf + 1;
+    if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
+    if (TxI2S_DMA_TD != TxI2S_Buff_TD[bufnum]) {
+        // resync, should only happen when debugging
+        for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
+            if (TxI2S_DMA_TD == TxI2S_Buff_TD[bufnum]) break;
+        }
+    }
+    TxI2S_DMA_Buf = bufnum;
+
 }
 
 void DmaTxConfiguration(void) {
@@ -138,6 +160,7 @@ void DmaTxConfiguration(void) {
     CyDmaTdSetAddress(TxI2S_Zero_TD, LO16(&TxZero), LO16(TxI2S_Buff[0]));
 	CyDmaChSetInitialTd(TxI2S_Zero_Chan, TxI2S_Zero_TD);
 
+    TxI2S_DMA_Buf = 0;
     TxI2S_DMA_TD = TxI2S_Buff_TD[0];
     TxI2S_done_isr_Start();
     TxI2S_done_isr_SetVector(TxI2S_DMA_done);
@@ -151,23 +174,13 @@ void DmaTxConfiguration(void) {
 
 uint8* PCM3060_TxBuf(void) {
     static uint8 debounce = 0, use = 0;
-    uint8 dma, td;
-    td = TxI2S_DMA_TD; // volatile
-    for (dma = 0; dma < DMA_AUDIO_BUFS; dma++) {
-        if (td == TxI2S_Buff_TD[dma]) break;
-    }
-    USBAudio_SyncBufs(dma, &use, &debounce, !USBAudio_RX_Enabled);
+    USBAudio_SyncBufs(TxI2S_DMA_Buf, &use, &debounce, 1);
     return TxI2S_Buff[use];
 }
 
 uint8* PCM3060_RxBuf(void) {
     static uint8 debounce = 0, use = 0;
-    uint8 dma, td;
-    td = RxI2S_DMA_TD; // volatile
-    for (dma = 0; dma < DMA_AUDIO_BUFS; dma++) {
-        if (td == RxI2S_Buff_TD[dma]) break;
-    }
-    USBAudio_SyncBufs(dma, &use, &debounce, USBAudio_RX_Enabled);
+    USBAudio_SyncBufs(RxI2S_DMA_Buf, &use, &debounce, 1);
     return RxI2S_Buff[use];
 }
 
@@ -209,6 +222,9 @@ void PCM3060_Main(void) {
     static uint8 state = 0, volume = 0xFF, pcm3060_cmd[3];
     uint8 i;
     
+    // Watch for TX/RX switching and ask the PCM3060 to mute
+    // so we only toggle the transmit register while fully muted.
+    // This also manages the speaker volume.
     switch (state) {
     case 0:
         if (!Locked_I2C) {
@@ -257,7 +273,7 @@ void PCM3060_Main(void) {
             state--;
         } else if (i & I2C_MSTAT_WR_CMPLT) {
             // Volume only moves 0.5dB every 8 samples
-            // 67 = 100dB / 0.5 * 8 / 24sps
+            // 67buf = 100dB / 0.5dB * 8samples / 24samples/buf
             TxBufCountdown = 67;
             Locked_I2C = 0;
             state++;

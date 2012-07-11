@@ -44,7 +44,6 @@ extern uint8 TX_Request, Locked_I2C;
 uint32 swap32(uint32) CYREENTRANT;
 
 // usbaudio.c
-extern uint8 USBAudio_TX_Enabled, USBAudio_RX_Enabled, USBAudio_SPKR_Enabled;
 void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust);
 void USBAudio_Main(void);
 void USBAudio_Start(void);

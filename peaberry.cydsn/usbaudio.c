@@ -94,39 +94,36 @@ void USBAudio_Start(void) {
     USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
 }
 
-uint8 USBAudio_TX_Enabled = 0, USBAudio_RX_Enabled = 0, USBAudio_SPKR_Enabled = 0;
 
 void USBAudio_Main(void) {
-    void *i;
+    static uint8 TX_Enabled = 0, SPKR_Enabled = 0;
     
     if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
-        if (!USBAudio_TX_Enabled) {
+        if (!TX_Enabled) {
             USBFS_EnableOutEP(TX_ENDPOINT);
-            USBAudio_TX_Enabled = 1;
+            TX_Enabled = 1;
         }
     } else {
-        if (USBAudio_TX_Enabled) {
+        if (TX_Enabled) {
             USBFS_DisableOutEP(TX_ENDPOINT);
-            USBAudio_TX_Enabled = 0;
+            TX_Enabled = 0;
         }
     }
     if (USBFS_GetInterfaceSetting(SPKR_INTERFACE) == 1) {
-        if (!USBAudio_SPKR_Enabled) {
+        if (!SPKR_Enabled) {
             USBFS_EnableOutEP(SPKR_ENDPOINT);
-            USBAudio_SPKR_Enabled = 1;
+            SPKR_Enabled = 1;
         }
     } else {
-        if (USBAudio_SPKR_Enabled) {
+        if (SPKR_Enabled) {
             USBFS_DisableOutEP(SPKR_ENDPOINT);
-            USBAudio_SPKR_Enabled = 0;
+            SPKR_Enabled = 0;
         }
     }
 
-    USBAudio_RX_Enabled = (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1);
-
-    if(USBFS_IsConfigurationChanged() != 0u) {
-        if (USBAudio_TX_Enabled) USBFS_EnableOutEP(TX_ENDPOINT);
-        if (USBAudio_SPKR_Enabled) USBFS_EnableOutEP(SPKR_ENDPOINT);
+    if(USBFS_IsConfigurationChanged()) {
+        USBFS_EnableOutEP(TX_ENDPOINT);
+        USBFS_EnableOutEP(SPKR_ENDPOINT);
     }
 
     
@@ -158,10 +155,8 @@ void USBAudio_Main(void) {
 	}
 
 	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-        if (i = Mic_Buf()) {
-		    USBFS_LoadInEP(MIC_ENDPOINT, i, MIC_BUF_SIZE);
-		    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
-        }
+	    USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
+	    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
 	}
 
 }
