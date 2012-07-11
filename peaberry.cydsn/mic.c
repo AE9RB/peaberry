@@ -49,37 +49,36 @@ void Mic_Start(void)
 }
 
 //TODO Use DMA and synthesized hardware to perform buffer math
-// in the meantime, we divide the work into five
+// in the meantime, we divide the work into two
 // calls so as to be kind to the main loop.
 uint8* Mic_Buf(void) {
     static uint8 debounce = 0, use = 0;
     static uint16 *buf;
-    static uint8 pos;
+    static uint8 state = 0;
     
     uint8 dma, td, i;
     int16 b;
     
-    if (pos) {
-        for (i = MIC_BUF_SIZE / 8; i; i--) {
-            pos--;
-            b = buf[pos];
-            // DelSig will overflow (see datasheet)
-            if (b & 0xF000) b = 2047;
-            // changed to signed
-            else b -= 2048;
-            // rotate into USB bit order
-            buf[pos] = (b << 12) | (b >> 4);
+    if (!state) {
+        td = Mic_DMA_TD; // volatile
+        for (dma = 0; dma < DMA_AUDIO_BUFS; dma++) {
+            if (td == Mic_Buff_TD[dma]) break;
         }
-        if (pos) return 0;
-        return buf;
+        USBAudio_SyncBufs(dma, &use, &debounce, 0);
+        buf = (uint16*)Mic_Buff[use];
+        state = 1;
+        return 0;
     }
-
-    td = Mic_DMA_TD; // volatile
-    for (dma = 0; dma < DMA_AUDIO_BUFS; dma++) {
-        if (td == Mic_Buff_TD[dma]) break;
+    
+    for (i = MIC_BUF_SIZE / 2; i; ) {
+        b = buf[--i];
+        // DelSig will overflow (see datasheet)
+        if (b & 0xF000) b = 2047;
+        // changed to signed
+        else b -= 2048;
+        // rotate into USB bit order
+        buf[i] = (b << 12) | (b >> 4);
     }
-    USBAudio_SyncBufs(dma, &use, &debounce, 0);
-    buf = (uint16*)Mic_Buff[use];
-    pos = MIC_BUF_SIZE / 2;
-    return 0;
+    state = 0;
+    return buf;
 }
