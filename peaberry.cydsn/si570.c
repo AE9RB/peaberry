@@ -128,13 +128,13 @@ void Si570_Main(void) {
         if (Current_LO != Si570_LO && !Locked_I2C) {
             i = CyEnterCriticalSection();
             fout = (float)swap32(Si570_LO) / 0x200000;
+            Current_LO = Si570_LO;
             CyExitCriticalSection(i);
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
             Divide_By_2 = (fout < DIV_LO);
             if (Divide_By_2) fout *= 8;
             Locked_I2C = 1;
-            Current_LO = Si570_LO;
             dco = SI570_DCO_MAX;
             state = 4;
         }
