@@ -8,7 +8,7 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3445PVI-090</Device>
+          <Device>CY8C3245PVA-150</Device>
           <Vendor>Cypress</Vendor>
           <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -958,7 +958,7 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3445PVI-090</Device>
+          <Device>CY8C3245PVA-150</Device>
           <Vendor>Cypress</Vendor>
           <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
