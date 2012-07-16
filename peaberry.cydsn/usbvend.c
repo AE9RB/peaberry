@@ -24,7 +24,7 @@ uint32 result;
 uint8 emulated_register(void) {
     uint8 reg = 0, key;
     if (TX_Request) reg |= 0x10;
-    key = ~KEY_Read();
+    key = KEY_Read();
     if (key & 0x01) reg |= 0x20;
     if (key & 0x02) reg |= 0x02;
     return reg;
