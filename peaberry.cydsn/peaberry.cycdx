@@ -13,6 +13,15 @@
   <block name="RxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="RX_REV" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Mic_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_Zero" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Mic_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SyncSOF" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="Clock_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -42,19 +51,10 @@
       <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     </block>
   </block>
-  <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="RX_REV" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TxI2S_Zero" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Mic_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="TxI2S_done_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Mic_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="pdn_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="TxI2S_Stage" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="TxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Microphone" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -86,22 +86,7 @@
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6462" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
-        <value name="NO_UNDERFLOW" value="0" desc="" />
-        <value name="UNDERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="RX_STATUS_REG" address="0x6467" bitWidth="8" desc="">
+    <register name="RX_STATUS_REG" address="0x6468" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="EMPTY" value="0" desc="" />
@@ -116,7 +101,22 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6472" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x646B" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x647B" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -133,23 +133,24 @@
   </block>
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="xor_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="demux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="and_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="and_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
@@ -251,18 +252,17 @@
   <block name="SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="DOUT" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="I2S_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Control" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="XRX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QSC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="I2S_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SPKR_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QSE" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="XRX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
 </blockRegMap>

@@ -16,8 +16,7 @@
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
-#define MIN_LO 10.0 //NOTICE this disables divider which needs cleaner routing
-//#define MIN_LO 1.25 // minimum with additional divide by 8
+#define MIN_LO 1.25 // minimum with additional divide by 8
 #define DIV_LO 10.0 // Tunes 600m-160m without violating Si570 spec.
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
