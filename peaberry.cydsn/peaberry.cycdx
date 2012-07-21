@@ -133,31 +133,34 @@
   </block>
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <block name="not_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="xor_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cydff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="demux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="xor_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="DIN" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="MIC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
