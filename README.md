@@ -2,6 +2,8 @@
 
 An amateur HF transceiver designed by the Free and Open Source community.
 
+Kits available from http://AE9RB.com/
+
 ## Features
 
  * Single full-speed USB interface for audio and control.
