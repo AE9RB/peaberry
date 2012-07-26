@@ -28,7 +28,7 @@ volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 // Using only four USB buffers with fine tuning of the SOF sync,
 // we can reduce overruns and underruns so they almost never happen.
-void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
+void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce) {
     uint8 dma_adjusted;
     if (dma & 0x01) {
         dma /= 2;
@@ -42,7 +42,6 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
     if (dma == *use || dma_adjusted == *use) {
         *use += USB_AUDIO_BUFS - 1;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        if (adjust) SyncSOF_Slower();
         *debounce = USB_AUDIO_BUFS;
         return;
     }
@@ -52,7 +51,6 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust) {
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
         if (!*debounce) {
             *debounce = USB_AUDIO_BUFS;
-            if (adjust) SyncSOF_Faster();
         }
     }
 }

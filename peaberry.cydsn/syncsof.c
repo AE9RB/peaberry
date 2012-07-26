@@ -77,9 +77,11 @@ void SyncSOF_Stop(void) {
 }
 
 // Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.
-// The counter starts with a range of 18435-18427 which has a deadzone suitable
-// for PLL adjustment (found by experimentation). It is also minus 1 to compensate
-// for the reset. Actual out of sync conditions can request the center be fine tuned.
+// The counter uses a range of 18434-18427.
+// The deadzone was determined by experimentation on a dev kit. It is large enough
+// to not change the divider too often but small enough to keep the PLL from drifting.
+// The center, which has to account for the time SOF is high, was found by 
+// experimentation using the following functions inserted into USBAudio_SyncBufs.
 
 void SyncSOF_Slower(void) {
     uint16 p, c;

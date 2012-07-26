@@ -44,7 +44,7 @@ extern uint8 TX_Request, Locked_I2C;
 uint32 swap32(uint32) CYREENTRANT;
 
 // usbaudio.c
-void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce, uint8 adjust);
+void USBAudio_SyncBufs(uint8 dma, uint8* use, uint8* debounce);
 void USBAudio_Main(void);
 void USBAudio_Start(void);
 uint8 USBAudio_Volume(void);
@@ -52,8 +52,6 @@ uint8 USBAudio_Volume(void);
 // syncsof.c
 void SyncSOF_Start(void);
 void SyncSOF_Stop(void);
-void SyncSOF_Slower(void);
-void SyncSOF_Faster(void);
 
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
