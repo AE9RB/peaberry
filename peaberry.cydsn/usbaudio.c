@@ -63,13 +63,17 @@ extern uint8 USBFS_currentMute;
 // Returns volume in the PCM3060 range of 54-255 where 54 is mute.
 uint8 USBAudio_Volume(void) {
     // cache results of expensive division
-    static uint16 prev=0;
-    static uint8 volume=0;
+    static uint16 prev = 0;
+    static uint8 volume = 255;
     uint16 i;
-    if (*(uint16*)USBFS_currentVolume != prev) {
-        prev = *(uint16*)USBFS_currentVolume;
-        ((uint8*)&i)[1] = USBFS_currentVolume[0];
-        ((uint8*)&i)[0] = USBFS_currentVolume[1];
+    uint8 save_cs;
+    save_cs = CyEnterCriticalSection();
+    i = *(uint16*)USBFS_currentVolume;
+    CyExitCriticalSection(save_cs);
+    if (i != prev) {
+        prev = i;
+        ((uint8*)&i)[1] = ((uint8*)&prev)[0];
+        ((uint8*)&i)[0] = ((uint8*)&prev)[1];
         if (i== 0x8000) {
             volume = 54;
         } else {
