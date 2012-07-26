@@ -42,6 +42,7 @@ void Settings_Main(void) {
         if (EEPROM_QueryWrite() != CYRET_STARTED) {
             for (i=4; i < CYDEV_EEPROM_ROW_SIZE; i++) buffer[i] = 0;
             *(uint32*)&buffer = Si570_Xtal;
+            CySetTemp();
             EEPROM_StartWrite(buffer, 0);
         }
     }
