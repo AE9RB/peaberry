@@ -31,24 +31,116 @@
     <block name="cydff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="PWM" BASE="0x0" SIZE="0x0" desc="" visible="true">
-      <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="SyncSOF_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="PWMHW" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <register name="SyncSOF_PWM_GLOBAL_ENABLE" address="0x43A3" bitWidth="8" desc="PM.ACT.CFG">
+        <field name="en_timer" from="3" to="0" access="RW" resetVal="" desc="Enable timer/counters." />
+      </register>
+      <register name="SyncSOF_PWM_CONTROL" address="0x4F00" bitWidth="8" desc="TMRx.CFG0">
+        <field name="EN" from="0" to="0" access="RW" resetVal="" desc="Enables timer/comparator." />
+        <field name="MODE" from="1" to="1" access="R" resetVal="" desc="Mode. (0 = Timer; 1 = Comparator)">
+          <value name="Timer" value="0" desc="Timer mode. CNT/CMP register holds timer count value." />
+          <value name="Comparator" value="1" desc="Comparator mode. CNT/CMP register holds comparator threshold value." />
+        </field>
+        <field name="ONESHOT" from="2" to="2" access="RW" resetVal="" desc="Timer stops upon reaching stop condition defined by TMR_CFG bits. Can be restarted by asserting TIMER RESET or disabling and re-enabling block." />
+        <field name="CMP_BUFF" from="3" to="3" access="RW" resetVal="" desc="Buffer compare register. Compare register updates only on timer terminal count." />
+        <field name="INV" from="4" to="4" access="RW" resetVal="" desc="Invert sense of TIMEREN signal" />
+        <field name="DB" from="5" to="5" access="RW" resetVal="" desc="Deadband mode--Deadband phases phi1 and phi2 are outputted on CMP and TC output pins respectively.">
+          <value name="Timer" value="0" desc="CMP and TC are output." />
+          <value name="Deadband" value="1" desc="PHI1 (instead of CMP) and PHI2 (instead of TC) are output." />
+        </field>
+        <field name="DEADBAND_PERIOD" from="7" to="6" access="RW" resetVal="" desc="Deadband Period" />
+      </register>
+      <register name="SyncSOF_PWM_CONTROL2" address="0x4F01" bitWidth="8" desc="TMRx.CFG1">
+        <field name="IRQ_SEL" from="0" to="0" access="RW" resetVal="" desc="Irq selection. (0 = raw interrupts; 1 = status register interrupts)" />
+        <field name="FTC" from="1" to="1" access="RW" resetVal="" desc="First Terminal Count (FTC). Setting this bit forces a single pulse on the TC pin when first enabled.">
+          <value name="Disable FTC" value="0" desc="Disable the single cycle pulse, which signifies the timer is starting." />
+          <value name="Enable FTC" value="1" desc="Enable the single cycle pulse, which signifies the timer is starting." />
+        </field>
+        <field name="DCOR" from="2" to="2" access="RW" resetVal="" desc="Disable Clear on Read (DCOR) of Status Register SR0." />
+        <field name="DBMODE" from="3" to="3" access="RW" resetVal="" desc="Deadband mode (asynchronous/synchronous). CMP output pin is also affected when not in deadband mode (CFG0.DEADBAND)." />
+        <field name="CLK_BUS_EN_SEL" from="6" to="4" access="RW" resetVal="" desc="Digital Global Clock selection." />
+        <field name="BUS_CLK_SEL" from="7" to="7" access="RW" resetVal="" desc="Bus Clock selection." />
+      </register>
+      <register name="SyncSOF_PWM_CONTROL3_" address="0x4F02" bitWidth="8" desc="TMRx.CFG2">
+        <field name="TMR_CFG" from="1" to="0" access="RW" resetVal="" desc="Timer configuration (MODE = 0): 000 = Continuous; 001 = Pulsewidth; 010 = Period; 011 = Stop on IRQ">
+          <value name="Continuous" value="0" desc="Timer runs while EN bit of CFG0 register is set to '1'." />
+          <value name="Pulsewidth" value="1" desc="Timer runs from positive to negative edge of TIMEREN." />
+          <value name="Period" value="10" desc="Timer runs from positive to positive edge of TIMEREN." />
+          <value name="Irq" value="11" desc="Timer runs until IRQ." />
+        </field>
+        <field name="COD" from="2" to="2" access="RW" resetVal="" desc="Clear On Disable (COD). Clears or gates outputs to zero." />
+        <field name="ROD" from="3" to="3" access="RW" resetVal="" desc="Reset On Disable (ROD). Resets internal state of output logic" />
+        <field name="CMP_CFG" from="6" to="4" access="RW" resetVal="" desc="Comparator configurations">
+          <value name="Equal" value="0" desc="Compare Equal " />
+          <value name="Less than" value="1" desc="Compare Less Than " />
+          <value name="Less than or equal" value="10" desc="Compare Less Than or Equal ." />
+          <value name="Greater" value="11" desc="Compare Greater Than ." />
+          <value name="Greater than or equal" value="100" desc="Compare Greater Than or Equal " />
+        </field>
+        <field name="HW_EN" from="7" to="7" access="RW" resetVal="" desc="When set Timer Enable controls counting." />
+      </register>
+      <register name="SyncSOF_PWM_PERIOD" address="0x4F04" bitWidth="16" desc="TMRx.PER0 - Assigned Period" />
+      <register name="SyncSOF_PWM_COMPARE" address="0x4F06" bitWidth="16" desc="TMRx.CNT_CMP0 - Assigned Compare Value" />
     </block>
-    <block name="Counter" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="SyncSOF_Counter" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="TC_vm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="vmEnableMode" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="CounterUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="TC_vm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
       <block name="int_vm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <register name="SyncSOF_Counter_COUNTER" address="0x6402" bitWidth="16" desc="UDB.A0 - Current Counter Value" />
+      <register name="SyncSOF_Counter_PERIOD" address="0x6422" bitWidth="16" desc="UDB.D0 - Assigned Period" />
+      <register name="SyncSOF_Counter_COMPARE" address="0x6432" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" />
+      <register name="SyncSOF_Counter_Control_Reg" address="0x6472" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value">
+        <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable Counter" />
+        <field name="CTRL_CAPMODE" from="4" to="3" access="RW" resetVal="" desc="Capture mode" />
+        <field name="CTRL_CMPMODE" from="2" to="0" access="RW" resetVal="" desc="Compare mode" />
+      </register>
+      <register name="SyncSOF_Counter_STATUS_MASK" address="0x6483" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register">
+        <field name="COUNTER_STS_CMP" from="0" to="0" access="RW" resetVal="" desc="Compare output status" />
+        <field name="COUNTER_STS_A0ZERO" from="1" to="1" access="RW" resetVal="" desc="A0 Zero ouput status" />
+        <field name="COUNTER_STS_OVERFLOW" from="2" to="2" access="RW" resetVal="" desc="Overflow status " />
+        <field name="COUNTER_STS_UNDERFLOW" from="3" to="3" access="RW" resetVal="" desc="Underflow status " />
+        <field name="COUNTER_STS_CAPTURE" from="4" to="4" access="RW" resetVal="" desc="Capture Status" />
+        <field name="COUNTER_STS_FIFO_FULL" from="5" to="5" access="RW" resetVal="" desc="FIFO Full Status " />
+        <field name="COUNTER_STS_FIFO_NEMPTY" from="6" to="6" access="RW" resetVal="" desc="FIFO Not Empty Status " />
+      </register>
+      <register name="SyncSOF_Counter_STATUS_AUX_CTRL" address="0x6493" bitWidth="8" desc="UDB Auxilliary Control Register">
+        <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+          <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+          <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+        </field>
+        <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+          <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+          <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+        </field>
+        <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+          <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+          <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+        </field>
+        <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+          <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+          <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+        </field>
+        <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+          <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+          <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+        </field>
+        <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+          <value name="E_CNT_START0" value="0" desc="Disable counter" />
+          <value name="E_CNT_START1" value="1" desc="Enable counter" />
+        </field>
+      </register>
     </block>
   </block>
   <block name="pdn_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -56,37 +148,833 @@
   <block name="TxI2S_Buff" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Microphone" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Clock_VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="DSM4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ADC_Vssa_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
-      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    </block>
-    <block name="cy_analog_virtualmux_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ADC_Vssa_2" BASE="0x0" SIZE="0x0" desc="" visible="true">
-      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    </block>
+    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Ext_CP_Clk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="DEC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="AMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Ext_CP_Clk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="DEC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Clock_VirtualMux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ADC_Vssa_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    </block>
+    <block name="ADC_Vssa_2" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    </block>
+    <block name="cy_analog_virtualmux_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="DSM4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Clock_VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="Microphone_DSM_DEC_PM_ACT_CFG" address="0x43AA" bitWidth="8" desc="Decimator Active mode Power Register">
+      <field name="en_dsm_channel" from="4" to="4" access="RW" resetVal="" desc="Enable delta-sigma modulator ADC channel. Note: set the appropriate enables in the analog interface prior to setting this global enable for the channel.">
+        <value name="Disable_DSM_Channel" value="0" desc="Disable power to DSM channel." />
+        <value name="Enable_DSM_Channel" value="1" desc="Enable power to DSM channel." />
+      </field>
+      <field name="en_dec" from="0" to="0" access="RW" resetVal="" desc="Enable decimator(s). Populated subsystems are counted from the LSB.">
+        <value name="DIS_DEC" value="0" desc="Disable power to Decimator." />
+        <value name="EN_DEC" value="1" desc="Enable power to Decimator." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_DEC_PM_STBY_CFG" address="0x43BA" bitWidth="8" desc="Decimator Alternate Active mode Power Register">
+      <field name="en_dsm_channel" from="4" to="4" access="RW" resetVal="" desc="Enable delta-sigma modulator ADC channel. Note: set the appropriate enables in the analog interface prior to setting this global enable for the channel.">
+        <value name="Disable_DSM_Channel" value="0" desc="Disable power to DSM channel." />
+        <value name="Enable_DSM_Channel" value="1" desc="Enable power to DSM channel during Standby power mode." />
+      </field>
+      <field name="en_dec" from="0" to="0" access="RW" resetVal="" desc="Enable decimator(s). Populated subsystems are counted from the LSB.">
+        <value name="DIS_DEC" value="0" desc="Disable power to Decimator." />
+        <value name="EN_DEC" value="1" desc="Enable power to Decimator during Standby power mode." />
+      </field>
+    </register>
+    <register name="Microphone_DEC_CR" address="0x4E00" bitWidth="8" desc="Decimator Control Register">
+      <field name="sta_en" from="7" to="7" access="RW" resetVal="" desc="Controls saturation logic in the Post Processing filter. When enabled, the resulting outputs of the Post Processing filter are held to the most positive or negative values, rather then wrapping around. Conversion results are unpredictable if this bit is changed while the Post Processing filter is running. This bit is ignored if FIR_EN, OCOR_EN and GCOR_EN are all 0.">
+        <value name="SAT_DIS" value="0" desc="No saturation control." />
+        <value name="SAT_EN" value="1" desc="Saturation Control Enabled." />
+      </field>
+      <field name="fir_en" from="6" to="6" access="RW" resetVal="" desc="Controls whether or not Post Processing filter implements a FIR filter. If this bit is set it enables the Post Processing filter. Conversion results are unpredictable if this bit is changed while the filter is running. The decimation period of this filter is controlled by the DR2 bits in register DR2 and DR2H.">
+        <value name="FIR_DIS" value="0" desc="FIR filter function Disabled." />
+        <value name="FIR_EN" value="1" desc="FIR filter function is on." />
+      </field>
+      <field name="ocor_en" from="5" to="5" access="RW" resetVal="" desc="This bit controls the offset correction feature of the Post Processing filter. If this bit is set it enables the Post Processing filter. The offset value is programmed in the OCOR bits of registers OCOR, OCORM and OCORH. Conversion results are unpredictable if this bit is changed while the filter is running.">
+        <value name="OCOR_DIS" value="0" desc="No offset correction." />
+        <value name="OCOR_EN" value="1" desc="Offset correction enabled." />
+      </field>
+      <field name="gcor_en" from="4" to="4" access="RW" resetVal="" desc="This bit controls the gain correction feature of the Post Processing filter. If this bit is set it enables the Post Processing filter. The gain coefficient is programmed in the GCOR bits of registers GCOR and GCORH. Which bits in this 16-bit field that are valid is set in GVAL. Conversion results are unpredictable if this bit is changed while the filter is running. When this feature is enabled, the DR1 register field must be set to a value higher than 32 (worst case) for proper operation.">
+        <value name="GCOR_DIS" value="0" desc="Default: no gain correction." />
+        <value name="GCOR_EN" value="1" desc="Gain correction enabled." />
+      </field>
+      <field name="conv_mode" from="3" to="2" access="RW" resetVal="" desc="The value in these two bits controls the sampling mode the Decimator runs in. ">
+        <value name="SINGLE_SAMPLE" value="0" desc="Single Sample Mode." />
+        <value name="FAST_FILTER" value="1" desc="Fast Filter Mode." />
+        <value name="CONTINUOUS" value="10" desc="Continuous Mode." />
+        <value name="FAST_FIR" value="11" desc="Fast FIR." />
+      </field>
+      <field name="xstart_en" from="1" to="1" access="RW" resetVal="" desc="Controls whether DSI signal ext_start is active. If XSTART_EN is high, it allows the ext_start input to start a conversion just as START_CONV does. Regardless of the state of this bit, writing to START_CONV will start a conversion.">
+        <value name="XSTART_DIS" value="0" desc="Default: DSI signal ext_start is disabled." />
+        <value name="XSTART_EN" value="1" desc="Enable the DSI input signal ext_start to start a conversion." />
+      </field>
+      <field name="start_conv" from="0" to="0" access="RW" resetVal="" desc="A write of 1 to this bit starts a conversion (regardless of the state of XSTART_EN) according to the CONV_MODE set in bits 2, 3. If read, a 1 indicates the filter is running when not in Single Sample mode. If a 0 is read the block is in the standby state when not in Single Sample mode. When in Single Sample more this bit is cleared shortly after it is written and does not reflect the running state of the Decimator. ">
+        <value name="DEC_STOP" value="0" desc="Kill current conversion (if running) and enter Standby state (SW reset)." />
+        <value name="DEC_START" value="1" desc="Initiate a conversion." />
+      </field>
+    </register>
+    <register name="Microphone_DEC_SR" address="0x4E01" bitWidth="8" desc="Decimator Status Register">
+      <field name="coreclk_disable" from="5" to="5" access="RW" resetVal="" desc="This bit when set high disables (gates off) the clock to the entire core of the block (adc_clk). This includes all FFs except those used for the AHB interface and CSRs. When disabled (set high) the AHB interface to the CSR is still fully functional. This bit is ANDed with the primary input signal cic_clk_en to control the clock gate. cic_clk_en must be high and CoreCLK_Disable must be low for the clock to run.">
+        <value name="CORECLK_DISABLE_LOW" value="0" desc="Core Clock is Enabled." />
+        <value name="CORECLK_DISABLE_HIGH" value="1" desc="Core Clock is Disabled." />
+      </field>
+      <field name="intr_pulse" from="4" to="4" access="RW" resetVal="" desc="This read/write bit selects if cic_intr is pulse or level sensed. If level, a sample completion sets cic_intr high where it remains until bit 2 is written, a soft-reset if performed or if OUTSAMP/M/H is read. If pulse, a single cycle (pclk) strobe is generated on cic_intr to be used as an edge sensed interrupt or a DMAREQ. Regardless of which is selected, the interrupt output is still subject to masking by bit 1.">
+        <value name="INTR_LEVEL" value="0" desc="Selects a level interrupt on cic_intr." />
+        <value name="INTR_PULSE" value="1" desc="Selects a pulse interrupt on cic_intr." />
+      </field>
+      <field name="out_align" from="3" to="3" access="RW" resetVal="" desc="This bit when set high causes a read of OUTSAMP to produce the contents of OUTSAMPM and OUTSAMPM to produce the contents of OUTSAMPH. Effectively, this is an 8-bit right shift of the result. Note that the setting of this bit does not alter the content of the OUTSAMP registers. Setting this bit simply realigns the byte lanes when the register is read. If this bit is set low, the OUTSAMP registers are read normally. ">
+        <value name="OUT_ALIGN_LOW" value="0" desc="No affect on SAMP Registers." />
+        <value name="OUT_ALIGN_HIGH" value="1" desc="Shifts SAMP registers right by 8-bits." />
+      </field>
+      <field name="intr_clr" from="2" to="2" access="W" resetVal="" desc="INTR_CLR is a write-only bit that clears bit0 and cic_intr. A read always produces a 0.">
+        <value name="INTR_NOP" value="0" desc="No affect." />
+        <value name="INTR_CLEAR" value="1" desc="Clears CONV_DONE and the interrupt on cic_intr (if enabled)." />
+      </field>
+      <field name="intr_mask" from="1" to="1" access="RW" resetVal="" desc="INTR_MASK is a RD/WR bit that controls the generation of the conversion completion interrupt. A read produces that last value written to this bit. This bit functions as a mask regardless of the value of bit 4 (INTR PULSE).">
+        <value name="INTR_ENABLED" value="0" desc="Allows CONV_DONE to generate an interrupt." />
+        <value name="INTR_MASKED" value="1" desc="Masks the interrupt generation on cic_intr." />
+      </field>
+      <field name="conv_done" from="0" to="0" access="R" resetVal="" desc="CONV_DONE is a read-only bit indicating that the most recently started conversion has completed if it has been cleared since the last sample read. This same bit is the interrupt signal cic_intr when bit 4 is low, if not masked by bit 1. This bit is intended to provide a polling mechanism should this be preferred to receiving interrupts. It is cleared by writing a 1 to bit 2, a soft-reset or a read of register OUTSAMP, OUTSAMPM or OUTSAMPH (regardless of Coherency settings).">
+        <value name="CONV_NOTCOMP" value="0" desc="Most recently started conversion completed." />
+        <value name="CONV_COMP" value="1" desc="Conversion not completed since last clear." />
+      </field>
+    </register>
+    <register name="Microphone_DEC_SHIFT1" address="0x4E02" bitWidth="8" desc="Decimator Shift Register">
+      <field name="shift1" from="4" to="0" access="RW" resetVal="" desc="Value for left shift amount of modulator input data. 0 = no shift, 1 = left shift by 1 bit, .... up to the max supported 31." />
+    </register>
+    <register name="Microphone_DEC_SHIFT2" address="0x4E03" bitWidth="8" desc="Decimator Shift Register">
+      <field name="shift2" from="3" to="0" access="RW" resetVal="" desc="Value for the amount of right shift for the output of the CIC filter prior to entering the Post Processor. Functional values range from 0 to 15, 0 = no shift." />
+    </register>
+    <register name="Microphone_DEC_DR2" address="0x4E04" bitWidth="8" desc="Decimator Decimation Rate (2) Register">
+      <field name="dr2_low" from="7" to="0" access="RW" resetVal="" desc="FIR Filter decimation ratio bits [7:0] (of [9:0])." />
+    </register>
+    <register name="Microphone_DEC_DR2H" address="0x4E05" bitWidth="8" desc="Decimator Decimation Rate and Overflow Correction Register">
+      <field name="of_width" from="7" to="3" access="RW" resetVal="" desc="Occupying the top 5 bits of this register is the Overflow Correction Bit-Width field (it is unrelated to the DR2). This field both enables and sets the bit width of the Overflow Correction logic in the CIC core." />
+      <field name="dr2_high" from="1" to="0" access="RW" resetVal="" desc="FIR Filter decimation ratio bits [9:8] (of [9:0]). See description in DR2 register." />
+    </register>
+    <register name="Microphone_DEC_DR1" address="0x4E06" bitWidth="8" desc="Decimator Decimation Rate (1) Register">
+      <field name="dr1" from="7" to="0" access="RW" resetVal="" desc="CIC Filter decimation rate." />
+    </register>
+    <register name="Microphone_DEC_OCOR" address="0x4E08" bitWidth="8" desc="Decimator Offset Correction Coefficient (Low Byte) Register">
+      <field name="ocor_low" from="7" to="0" access="RW" resetVal="" desc="Offset correction coefficient bits [7:0] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_OCORM" address="0x4E09" bitWidth="8" desc="Decimator Offset Correction Coefficient (Middle Byte) Register">
+      <field name="ocor_mid" from="7" to="0" access="RW" resetVal="" desc="Offset correction coefficient bits [15:8] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_OCORH" address="0x4E0A" bitWidth="8" desc="Decimator Offset Correction Coefficient (High Byte) Register">
+      <field name="ocor_high" from="7" to="0" access="RW" resetVal="" desc="Offset correction coefficient bits [23:16] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_GCOR" address="0x4E0C" bitWidth="8" desc="Decimator Gain Correction Coefficient (Low Byte) Register">
+      <field name="gcor_low" from="7" to="0" access="RW" resetVal="" desc="Gain correction coefficient bits [7:0] (of [15:0])." />
+    </register>
+    <register name="Microphone_DEC_GCORH" address="0x4E0D" bitWidth="8" desc="Decimator Gain Correction Coefficient (High Byte) Register">
+      <field name="gcor_high" from="7" to="0" access="RW" resetVal="" desc="Gain correction coefficient bits [15:8] (of [15:0])." />
+    </register>
+    <register name="Microphone_DEC_GVAL" address="0x4E0E" bitWidth="8" desc="Decimator Gain Correction Size Register">
+      <field name="gval" from="3" to="0" access="RW" resetVal="" desc="Number of valid bits minus one in Gain Coefficient registers GCORH and GCOR." />
+    </register>
+    <register name="Microphone_DEC_OUTSAMP" address="0x4E10" bitWidth="8" desc="Decimator Output Data Sample (Low Byte) Register">
+      <field name="samp_low" from="7" to="0" access="R" resetVal="" desc="Low order byte of the filter conversion result, bits [7:0] (of [23:0]) --- Or if the out_align bit is set it contains bits [15:8] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_OUTSAMPM" address="0x4E11" bitWidth="8" desc="Decimator Output Data Sample (Middle Byte) Register">
+      <field name="samp_mid" from="7" to="0" access="R" resetVal="" desc="Middle order byte of the filter conversion result, bits [15:8] (of [23:0]) --- Or if the out_align bit is set it contains bits [23:16] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_OUTSAMPH" address="0x4E12" bitWidth="8" desc="Decimator Output Data Sample (High Byte) Register">
+      <field name="samp_high" from="7" to="0" access="R" resetVal="" desc="High order byte of the filter conversion result, bits [23:16] (of [23:0])." />
+    </register>
+    <register name="Microphone_DEC_COHER" address="0x4E14" bitWidth="8" desc="Decimator Coherency Register">
+      <field name="gcor_key" from="5" to="4" access="RW" resetVal="" desc="Sets the Key Coherency Byte of the GCOR/GCORH/GVAL field.">
+        <value name="GCOR_KEY_OFF" value="0" desc="Gain Coefficient Coherency checking off." />
+        <value name="GCOR_KEY_LOW" value="1" desc="Key Byte is low byte (GCOR)." />
+        <value name="GCOR_KEY_MID" value="10" desc="Key Byte is middle byte (GCORH)." />
+        <value name="GCOR_KEY_HIGH" value="11" desc="Key Byte is high byte (GVAL)." />
+      </field>
+      <field name="ocor_key" from="3" to="2" access="RW" resetVal="" desc="Sets the Key Coherency Byte of the OCOR/OCORM/OCORH field.">
+        <value name="OCOR_KEY_OFF" value="0" desc="Offset Coefficient Coherency checking off." />
+        <value name="OCOR_KEY_LOW" value="1" desc="Key Byte is low byte (OCOR)." />
+        <value name="OCOR_KEY_MID" value="10" desc="Key Byte is middle byte (OCORM)." />
+        <value name="OCOR_KEY_HIGH" value="11" desc="Key Byte is high byte (OCORH)." />
+      </field>
+      <field name="samp_key" from="1" to="0" access="RW" resetVal="" desc="Sets the Key Coherency Byte of the OUTSAMP/OUTSAMPM/OUTSAMPH field.">
+        <value name="SAMP_KEY_OFF" value="0" desc="Output Sample Coherency checking off." />
+        <value name="SAMP_KEY_LOW" value="1" desc="Key Byte is low byte (OUTSAMP)." />
+        <value name="SAMP_KEY_MID" value="10" desc="Key Byte is middle byte (OUTSAMPM)." />
+        <value name="SAMP_KEY_HIGH" value="11" desc="Key Byte is high byte (OUTSAMPH)." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR0" address="0x5880" bitWidth="8" desc="Delta Sigma Modulator Control Register 0">
+      <field name="nonov" from="3" to="2" access="RW" resetVal="" desc="Non overlap delay of clock phases.">
+        <value name="NONOV_LOW" value="0" desc="low (1.57ns, typ)." />
+        <value name="NONOV_MEDIUM" value="1" desc="medium (3.54ns, typ)." />
+        <value name="NONOV_HIGH" value="10" desc="high (6.47ns, typ)." />
+        <value name="NONOV_VERYHIGH" value="11" desc="very high (9.91ns, typ)." />
+      </field>
+      <field name="qlev" from="1" to="0" access="RW" resetVal="" desc="Quantization Level choice for modulator.">
+        <value name="QLEV_2" value="0" desc="2 level quantization." />
+        <value name="QLEV_3" value="1" desc="3 level quantization." />
+        <value name="QLEV_9" value="10" desc="9 level quantization." />
+        <value name="QLEV_9_ALSO" value="11" desc="9 level quantization." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR1" address="0x5881" bitWidth="8" desc="Delta Sigma Modulator Control Register 1">
+      <field name="dpmode" from="6" to="6" access="RW" resetVal="" desc="Datapath mode.">
+        <value name="DPMODE_NORMAL" value="0" desc="normal." />
+        <value name="DPMODE_LOWOFFSET" value="1" desc="low offset." />
+      </field>
+      <field name="oden" from="5" to="5" access="RW" resetVal="" desc="Overload detect scheme enable." />
+      <field name="odet_th" from="4" to="0" access="RW" resetVal="" desc="Overload detection threshold. If the number of continuous 1s or 0s coming out of quantizer exceeds this number overload detection flag is set." />
+    </register>
+    <register name="Microphone_DSM_CR2" address="0x5882" bitWidth="8" desc="Delta Sigma Modulator Control Register 2">
+      <field name="mx_reset" from="7" to="7" access="RW" resetVal="" desc="select DSM reset source.">
+        <value name="MXSELRESET_0" value="0" desc="Select Decimator for reset source." />
+        <value name="MXSELRESET_1" value="1" desc="Select UDB for reset source." />
+      </field>
+      <field name="reset3_en" from="6" to="6" access="RW" resetVal="" desc="allow third stage integrating capacitance to be reset.">
+        <value name="RESET3_EN_DISABLE" value="0" desc="third stage integrating capacitance cannot be reset (use only for debug purposes)." />
+        <value name="RESET3_EN_ENABLE" value="1" desc="third stage integrating capacitance can be reset." />
+      </field>
+      <field name="reset2_en" from="5" to="5" access="RW" resetVal="" desc="allow second stage integrating capacitance to be reset.">
+        <value name="RESET2_EN_DISABLE" value="0" desc="second stage integrating capacitance cannot be reset (use when in overload, to allow for second order operation, assuming the reset1_en bit is also cleared." />
+        <value name="RESET2_EN_ENABLE" value="1" desc="second stage integrating capacitance can be reset." />
+      </field>
+      <field name="reset1_en" from="4" to="4" access="RW" resetVal="" desc="Allow first stage integrating capacitance to be reset.">
+        <value name="RESET1_EN_DISABLE" value="0" desc="First stage integrating capacitance cannot be reset (use when in overload, to allow for first order operation)." />
+        <value name="RESET1_EN_ENABLE" value="1" desc="First stage integrating capacitance can be reset." />
+      </field>
+      <field name="mod_chop_en" from="3" to="3" access="RW" resetVal="" desc="Enable Modulator Chopping.">
+        <value name="MOD_CHOP_DIS" value="0" desc="Disable modulator chopping." />
+        <value name="MOD_CHOP_EN" value="1" desc="Enable modulator chopping." />
+      </field>
+      <field name="fchop" from="2" to="0" access="RW" resetVal="" desc="Chopping Frequency Selection. The Fclock is samply frequency clock.">
+        <value name="FCHOP_DIV2" value="000" desc="Fclock/2." />
+        <value name="FCHOP_DIV4" value="001" desc="Fclock/4." />
+        <value name="FCHOP_DIV8" value="010" desc="Fclock/8." />
+        <value name="FCHOP_DIV16" value="011" desc="Fclock/16." />
+        <value name="FCHOP_DIV32" value="100" desc="Fclock/32." />
+        <value name="FCHOP_DIV64" value="101" desc="Fclock/64." />
+        <value name="FCHOP_DIV128" value="110" desc="Fclock/128." />
+        <value name="FCHOP_DIV256" value="111" desc="Fclock/256." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR3" address="0x5883" bitWidth="8" desc="Delta Sigma Modulator Control Register 3">
+      <field name="sign" from="7" to="7" access="RW" resetVal="" desc="Invert sign of input.">
+        <value name="SIGN_NONINVERT" value="0" desc="keep original polarity for the input." />
+        <value name="SIGN_INVERT" value="1" desc="Invert sign of input (use when trying to chop once and then average the offset value out)." />
+      </field>
+      <field name="mx_dout" from="5" to="5" access="RW" resetVal="" desc="Select DSM dout routed to UDB.">
+        <value name="MX_DOUT_8BIT" value="0" desc="Select reg OUT0=dout[7:0] (synced; w/o post processing)." />
+        <value name="MX_DOUT_2SCOMP" value="1" desc="Select reg OUT1={2'b0,ovdcause,ovdflag,dout2scomp} (synced; overload cause, overload flag, dout 2s complement." />
+      </field>
+      <field name="modbitin_en" from="4" to="4" access="RW" resetVal="" desc="modbitin enable.">
+        <value name="MODBITIN_EN_DISABLE" value="0" desc="Do not allow modbit input to be mixed with modulator input." />
+        <value name="MODBITIN_EN_ENABLE" value="1" desc="Allow modbit input to be mixed with modulator input." />
+      </field>
+      <field name="mx_modbitin" from="3" to="0" access="RW" resetVal="" desc="Select modbitin input.">
+        <value name="MX_MODBITIN_LUT0" value="0000" desc="lut0_out." />
+        <value name="MX_MODBITIN_LUT1" value="0001" desc="lut1_out." />
+        <value name="MX_MODBITIN_LUT2" value="0010" desc="lut2_out." />
+        <value name="MX_MODBITIN_LUT3" value="0011" desc="lut3_out." />
+        <value name="MX_MODBITIN_LUT4" value="0100" desc="lut4_out (doesn't exist on Leopard, tied to 0)." />
+        <value name="MX_MODBITIN_LUT5" value="0101" desc="lut5_out (doesn't exist on Leopard, tied to 0)." />
+        <value name="MX_MODBITIN_LUT6" value="0110" desc="lut6_out (doesn't exist on Leopard, tied to 0)." />
+        <value name="MX_MODBITIN_LUT7" value="0111" desc="lut7_out (doesn't exist on Leopard, tied to 0)." />
+        <value name="MX_MODBITIN_UDB" value="1000" desc="UDB." />
+        <value name="MX_MODBITIN_CONST1" value="1001" desc="constant 1." />
+        <value name="MX_MODBITIN_CONST0" value="1010" desc="constant 0." />
+        <value name="MX_MODBITIN_0xB_RSVD" value="1011" desc="Reserved." />
+        <value name="MX_MODBITIN_0xC_RSVD" value="1100" desc="Reserved." />
+        <value name="MX_MODBITIN_0xD_RSVD" value="1101" desc="Reserved." />
+        <value name="MX_MODBITIN_0xE_RSVD" value="1110" desc="Reserved." />
+        <value name="MX_MODBITIN_0xF_RSVD" value="1111" desc="Reserved." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR4" address="0x5884" bitWidth="8" desc="Delta Sigma Modulator Control Register 4">
+      <field name="fcap1_en" from="7" to="7" access="RW" resetVal="" desc="Enable/Disable Capacitance path meant for DFT (Design for Testability) of the first integrator's integrating capacitance path.">
+        <value name="FCAP1_EN_DISABLE" value="0" desc="Disable the DFT 100fF capacitance path." />
+        <value name="FCAP1_EN_ENABLE" value="1" desc="Enable the DFT 100fF capacitance path." />
+      </field>
+      <field name="fcap1" from="6" to="0" access="RW" resetVal="" desc="binary weighted first stage integrating capacitance.">
+        <value name="FCAP1_MIN" value="0000000" desc="0 fF." />
+        <value name="FCHOP_MAX" value="1111111" desc="Max Value = 12.7 pF." />
+        <value name="FCAP1_BIT0" value="0000001" desc="fcap[0] set -&gt; +100 fF." />
+        <value name="FCAP1_BIT1" value="0000010" desc="fcap[1] set -&gt; +200 fF." />
+        <value name="FCAP1_BIT2" value="0000100" desc="fcap[2] set -&gt; +400 fF." />
+        <value name="FCAP1_BIT3" value="0001000" desc="fcap[3] set -&gt; +800 fF." />
+        <value name="FCAP1_BIT4" value="0010000" desc="fcap[4] set -&gt; +1600 fF." />
+        <value name="FCAP1_BIT5" value="0100000" desc="fcap[5] set -&gt; +3200 fF." />
+        <value name="FCAP1_BIT6" value="1000000" desc="fcap[6] set -&gt; +6400 fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR5" address="0x5885" bitWidth="8" desc="Delta Sigma Modulator Control Register 5">
+      <field name="ipcap1_en" from="7" to="7" access="RW" resetVal="" desc="Enable/Disable Capacitance path meant for DFT (Design for Testability) of the first integrator's input sampling path.">
+        <value name="IPCAP1_EN_DISABLE" value="0" desc="Disable the DFT 100fF capacitance path." />
+        <value name="IPCAP1_EN_ENABLE" value="1" desc="Enable the DFT 100fF capacitance path." />
+      </field>
+      <field name="ipcap1" from="6" to="0" access="RW" resetVal="" desc="Binary weighted first stage integrating capacitance.">
+        <value name="IPCAP1_MIN" value="0000000" desc="0 fF." />
+        <value name="IPCHOP_MAX" value="1111111" desc="Max Value = 12.7 pF." />
+        <value name="IPCAP1_BIT0" value="0000001" desc="ipcap[0] set -&gt; +100 fF." />
+        <value name="IPCAP1_BIT1" value="0000010" desc="ipcap[1] set -&gt; +200 fF." />
+        <value name="IPCAP1_BIT2" value="0000100" desc="ipcap[2] set -&gt; +400 fF." />
+        <value name="IPCAP1_BIT3" value="0001000" desc="ipcap[3] set -&gt; +800 fF." />
+        <value name="IPCAP1_BIT4" value="0010000" desc="ipcap[4] set -&gt; +1600 fF." />
+        <value name="IPCAP1_BIT5" value="0100000" desc="ipcap[5] set -&gt; +3200 fF." />
+        <value name="IPCAP1_BIT6" value="1000000" desc="ipcap[6] set -&gt; +6400 fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR6" address="0x5886" bitWidth="8" desc="Delta Sigma Modulator Control Register 6">
+      <field name="daccap_en" from="6" to="6" access="RW" resetVal="" desc="Enable/Disable Capacitance path meant for DFT (Design for Testability) of the DAC Reference sampling path.">
+        <value name="DACCAP_EN_DISABLE" value="0" desc="Disable the DFT 12fF capacitance path." />
+        <value name="DACCAP_EN_ENABLE" value="1" desc="Enable the DFT 12fF capacitance path." />
+      </field>
+      <field name="daccap" from="5" to="0" access="RW" resetVal="" desc="Binary weighted first stage DAC capacitance.">
+        <value name="DACCAP_BIT0" value="000001" desc="daccap[0] set -&gt; add 12*8= +96 fF." />
+        <value name="DACCAP_BIT1" value="000010" desc="daccap[1] set -&gt; add 24*8= +192 fF." />
+        <value name="DACCAP_BIT2" value="000100" desc="daccap[2] set -&gt; add 50*8= +400 fF." />
+        <value name="DACCAP_BIT3" value="001000" desc="daccap[3] set -&gt; add 100*8= +800 fF." />
+        <value name="DACCAP_BIT4" value="010000" desc="daccap[4] set -&gt; add 200*8= +1600 fF." />
+        <value name="DACCAP_BIT5" value="100000" desc="daccap[5] set -&gt; add 400*8= +3200 fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR7" address="0x5887" bitWidth="8" desc="Delta Sigma Modulator Control Register 7">
+      <field name="fcap2_en" from="7" to="7" access="RW" resetVal="" desc="Enable/Disable additional 50fF capacitance path in the second integrators integrating capacitance path.">
+        <value name="FCAP2_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="FCAP2_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="fcap3_en" from="6" to="6" access="RW" resetVal="" desc="Enable/Disable additional capacitance path in the third integrator's integrating capacitance path.">
+        <value name="FCAP3_EN_DISABLE" value="0" desc="Disable the additional 100fF capacitance path." />
+        <value name="FCAP3_EN_ENABLE" value="1" desc="Enable the additional 100fF capacitance path." />
+      </field>
+      <field name="ipcap1offset" from="5" to="5" access="RW" resetVal="" desc="Offset capacitance for the input sampling capacitance in the first stage integrator.">
+        <value name="IPCAP1OFFSET_0" value="0" desc="Don't add offset capacitance." />
+        <value name="IPCAP1OFFSET_1" value="1" desc="Add offset capacitance of 4.8 pF." />
+      </field>
+      <field name="fcap1offset" from="4" to="4" access="RW" resetVal="" desc="Offset Capacitance for the integrating capacitance in the first stage integrator.">
+        <value name="FCAP1OFFSET_0" value="0" desc="Don't add offset capacitance." />
+        <value name="FCAP1OFFSET_1" value="1" desc="Add offset capacitance of 3.4 pF." />
+      </field>
+      <field name="rescap_en" from="3" to="3" access="RW" resetVal="" desc="Reserved. The resonator loop feature has been disabled in the design; programming these bits does not produce any change in the ADC outcome." />
+      <field name="rescap" from="2" to="0" access="RW" resetVal="" desc="Reserved. The resonator loop feature has been disabled in the design; programming these bits does not produce any change in the ADC outcome." />
+    </register>
+    <register name="Microphone_DSM_CR8" address="0x5888" bitWidth="8" desc="Delta Sigma Modulator Control Register 8">
+      <field name="ipcap2_en" from="7" to="7" access="RW" resetVal="" desc="Enable/Disable additional 50fF capacitance path in the second integrator's input sampling path.">
+        <value name="IPCAP2_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="IPCAP2_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="ipcap2" from="6" to="4" access="RW" resetVal="" desc="The second integrator's input sampling capacitance (0-350fF, 50fF step).">
+        <value name="IPCAP2_0FEMPTO" value="000" desc="0fF." />
+        <value name="IPCAP2_50FEMPTO" value="001" desc="50fF." />
+        <value name="IPCAP2_100FEMPTO" value="010" desc="100fF." />
+        <value name="IPCAP2_150FEMPTO" value="011" desc="150fF." />
+        <value name="IPCAP2_200FEMPTO" value="100" desc="200fF." />
+        <value name="IPCAP2_250FEMPTO" value="101" desc="250fF." />
+        <value name="IPCAP2_300FEMPTO" value="110" desc="300fF." />
+        <value name="IPCAP2_350FEMPTO" value="111" desc="350fF." />
+      </field>
+      <field name="fcap2" from="3" to="0" access="RW" resetVal="" desc="The second stage integrating capacitance (0-750fF, 50fF step).">
+        <value name="FCAP2_0FEMPTO" value="0000" desc="0fF." />
+        <value name="FCAP2_50FEMPTO" value="0001" desc="50fF." />
+        <value name="FCAP2_100FEMPTO" value="0010" desc="100fF." />
+        <value name="FCAP2_150FEMPTO" value="0011" desc="150fF." />
+        <value name="FCAP2_200FEMPTO" value="0100" desc="200fF." />
+        <value name="FCAP2_250FEMPTO" value="0101" desc="250fF." />
+        <value name="FCAP2_300FEMPTO" value="0110" desc="300fF." />
+        <value name="FCAP2_350FEMPTO" value="0111" desc="350fF." />
+        <value name="FCAP2_400FEMPTO" value="1000" desc="400fF." />
+        <value name="FCAP2_450FEMPTO" value="1001" desc="450fF." />
+        <value name="FCAP2_500FEMPTO" value="1010" desc="500fF." />
+        <value name="FCAP2_550FEMPTO" value="1011" desc="550fF." />
+        <value name="FCAP2_600FEMPTO" value="1100" desc="600fF." />
+        <value name="FCAP2_650FEMPTO" value="1101" desc="650fF." />
+        <value name="FCAP2_700FEMPTO" value="1110" desc="700fF." />
+        <value name="FCAP2_750FEMPTO" value="1111" desc="750fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR9" address="0x5889" bitWidth="8" desc="Delta Sigma Modulator Control Register 9">
+      <field name="ipcap3_en" from="7" to="7" access="RW" resetVal="" desc="Enable/Disable additional 50fF capacitance path in the second integrator's input sampling path.">
+        <value name="IPCAP3_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="IPCAP3_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="ipcap3" from="6" to="4" access="RW" resetVal="" desc="The third integrator's input sampling capacitance (0-350fF in 50fF step).">
+        <value name="IPCAP3_0FEMPTO" value="000" desc="0fF." />
+        <value name="IPCAP3_50FEMPTO" value="001" desc="50fF." />
+        <value name="IPCAP3_100FEMPTO" value="010" desc="100fF." />
+        <value name="IPCAP3_150FEMPTO" value="011" desc="150fF." />
+        <value name="IPCAP3_200FEMPTO" value="100" desc="200fF." />
+        <value name="IPCAP3_250FEMPTO" value="101" desc="250fF." />
+        <value name="IPCAP3_300FEMPTO" value="110" desc="300fF." />
+        <value name="IPCAP3_350FEMPTO" value="111" desc="350fF." />
+      </field>
+      <field name="fcap3" from="3" to="0" access="RW" resetVal="" desc="The third stage integrating capacitance (0-1500fF, 100fF step).">
+        <value name="FCAP3_0FEMPTO" value="0000" desc="0fF." />
+        <value name="FCAP3_100FEMPTO" value="0001" desc="100fF." />
+        <value name="FCAP3_200FEMPTO" value="0010" desc="200fF." />
+        <value name="FCAP3_300FEMPTO" value="0011" desc="300fF." />
+        <value name="FCAP3_400FEMPTO" value="0100" desc="400fF." />
+        <value name="FCAP3_500FEMPTO" value="0101" desc="500fF." />
+        <value name="FCAP3_600FEMPTO" value="0110" desc="600fF." />
+        <value name="FCAP3_700FEMPTO" value="0111" desc="700fF." />
+        <value name="FCAP3_800FEMPTO" value="1000" desc="800fF." />
+        <value name="FCAP3_900FEMPTO" value="1001" desc="900fF." />
+        <value name="FCAP3_1000FEMPTO" value="1010" desc="1000fF." />
+        <value name="FCAP3_1100FEMPTO" value="1011" desc="1100fF." />
+        <value name="FCAP3_1200FEMPTO" value="1100" desc="1200fF." />
+        <value name="FCAP3_1300FEMPTO" value="1101" desc="1300fF." />
+        <value name="FCAP3_1400FEMPTO" value="1110" desc="1400fF." />
+        <value name="FCAP3_1500FEMPTO" value="1111" desc="1500fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR10" address="0x588A" bitWidth="8" desc="Delta Sigma Modulator Control Register 10">
+      <field name="sumcap1_en" from="7" to="7" access="RW" resetVal="" desc="Enabling/Disabling the the additional 50fF capacitance path that lies between first integrator output and summer input (feed-forward) path.">
+        <value name="SUMCAP1_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="SUMCAP1_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="sumcap1" from="6" to="4" access="RW" resetVal="" desc="The summer capacitance that lies on the feed-forward path from the first integrator output (0fF to 350fF in 50fF step).">
+        <value name="SUMCAP1_0FEMPTO" value="000" desc="0fF." />
+        <value name="SUMCAP1_50FEMPTO" value="001" desc="50fF." />
+        <value name="SUMCAP1_100FEMPTO" value="010" desc="100fF." />
+        <value name="SUMCAP1_150FEMPTO" value="011" desc="150fF." />
+        <value name="SUMCAP1_200FEMPTO" value="100" desc="200fF." />
+        <value name="SUMCAP1_250FEMPTO" value="101" desc="250fF." />
+        <value name="SUMCAP1_300FEMPTO" value="110" desc="300fF." />
+        <value name="SUMCAP1_350FEMPTO" value="111" desc="350fF." />
+      </field>
+      <field name="sumcap2_en" from="3" to="3" access="RW" resetVal="" desc="Enabling/Disabling the additional 50fF capacitance path that lies between the second integrator output and summer input (feed-forward) path.">
+        <value name="SUMCAP2_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="SUMCAP2_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="sumcap2" from="2" to="0" access="RW" resetVal="" desc="The summer capacitance that lies on the feed-forward path from the second integrator output (0fF to 350fF in 50fF step.">
+        <value name="SUMCAP2_0FEMPTO" value="000" desc="0fF." />
+        <value name="SUMCAP2_50FEMPTO" value="001" desc="50fF." />
+        <value name="SUMCAP2_100FEMPTO" value="010" desc="100fF." />
+        <value name="SUMCAP2_150FEMPTO" value="011" desc="150fF." />
+        <value name="SUMCAP2_200FEMPTO" value="100" desc="200fF." />
+        <value name="SUMCAP2_250FEMPTO" value="101" desc="250fF." />
+        <value name="SUMCAP2_300FEMPTO" value="110" desc="300fF." />
+        <value name="SUMCAP2_350FEMPTO" value="111" desc="350fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR11" address="0x588B" bitWidth="8" desc="Delta Sigma Modulator Control Register 11">
+      <field name="sumcap3_en" from="7" to="7" access="RW" resetVal="" desc="Enabling/Disabling the additional 50fF path that lies between the third integrator output and summer input (feed-forward) path.">
+        <value name="SUMCAP3_EN_DISABLE" value="0" desc="Disable the additional 50fF capacitance path." />
+        <value name="SUMCAP3_EN_ENABLE" value="1" desc="Enable the additional 50fF capacitance path." />
+      </field>
+      <field name="sumcap3" from="6" to="4" access="RW" resetVal="" desc="The summer capacitance that lies on the feed-forward path from the third integrator output (0fF to 350fF in 50fF step.">
+        <value name="SUMCAP3_0FEMPTO" value="000" desc="0fF." />
+        <value name="SUMCAP3_50FEMPTO" value="001" desc="50fF." />
+        <value name="SUMCAP3_100FEMPTO" value="010" desc="100fF." />
+        <value name="SUMCAP3_150FEMPTO" value="011" desc="150fF." />
+        <value name="SUMCAP3_200FEMPTO" value="100" desc="200fF." />
+        <value name="SUMCAP3_250FEMPTO" value="101" desc="250fF." />
+        <value name="SUMCAP3_300FEMPTO" value="110" desc="300fF." />
+        <value name="SUMCAP3_350FEMPTO" value="111" desc="350fF." />
+      </field>
+      <field name="sumcapfb" from="3" to="0" access="RW" resetVal="" desc="The summer feedback capacitance (0fF to 750F in 50fF step).">
+        <value name="SUMCAPFB_0FEMPTO" value="0000" desc="0fF." />
+        <value name="SUMCAPFB_50FEMPTO" value="0001" desc="50fF." />
+        <value name="SUMCAPFB_100FEMPTO" value="0010" desc="100fF." />
+        <value name="SUMCAPFB_150FEMPTO" value="0011" desc="150fF." />
+        <value name="SUMCAPFB_200FEMPTO" value="0100" desc="200fF." />
+        <value name="SUMCAPFB_250FEMPTO" value="0101" desc="250fF." />
+        <value name="SUMCAPFB_300FEMPTO" value="0110" desc="300fF." />
+        <value name="SUMCAPFB_350FEMPTO" value="0111" desc="350fF." />
+        <value name="SUMCAPFB_400FEMPTO" value="1000" desc="400fF." />
+        <value name="SUMCAPFB_450FEMPTO" value="1001" desc="450fF." />
+        <value name="SUMCAPFB_500FEMPTO" value="1010" desc="500fF." />
+        <value name="SUMCAPFB_550FEMPTO" value="1011" desc="550fF." />
+        <value name="SUMCAPFB_600FEMPTO" value="1100" desc="600fF." />
+        <value name="SUMCAPFB_650FEMPTO" value="1101" desc="650fF." />
+        <value name="SUMCAPFB_700FEMPTO" value="1110" desc="700fF." />
+        <value name="SUMCAPFB_750FEMPTO" value="1111" desc="750fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR12" address="0x588C" bitWidth="8" desc="Delta Sigma Modulator Control Register 12">
+      <field name="sumcapfb_en" from="6" to="6" access="RW" resetVal="" desc="Enabling/Disabling the DFT path that lies on the feedback path of the active summer.">
+        <value name="SUMCAPFB_EN_DISABLE" value="0" desc="Disable the DFT 50fF capacitance path." />
+        <value name="SUMCAPFB_EN_ENABLE" value="1" desc="Enable the DFT 50fF capacitance path." />
+      </field>
+      <field name="sumcapin_en" from="5" to="5" access="RW" resetVal="" desc="Enabling/Disabling the DFT path that lies between input of the sigma delta modulator and the summer input..">
+        <value name="SUMCAPIN_EN_DISABLE" value="0" desc="Disable the DFT 50fF capacitance path." />
+        <value name="SUMCAPIN_EN_ENABLE" value="1" desc="Enable the DFT 50fF capacitance path." />
+      </field>
+      <field name="sumcapin" from="4" to="0" access="RW" resetVal="" desc="The summer capacitance that lies on the path where the input signal is summed (50fF to 1.6pF in 50fF step).">
+        <value name="SUMCAPIN_0FEMPTO" value="00000" desc="0fF." />
+        <value name="SUMCAPIN_50FEMPTO" value="00001" desc="50fF." />
+        <value name="SUMCAPIN_100FEMPTO" value="00010" desc="100fF." />
+        <value name="SUMCAPIN_150FEMPTO" value="00011" desc="150fF." />
+        <value name="SUMCAPIN_200FEMPTO" value="00100" desc="200fF." />
+        <value name="SUMCAPIN_250FEMPTO" value="00101" desc="250fF." />
+        <value name="SUMCAPIN_300FEMPTO" value="00110" desc="300fF." />
+        <value name="SUMCAPIN_350FEMPTO" value="00111" desc="350fF." />
+        <value name="SUMCAPIN_400FEMPTO" value="01000" desc="400fF." />
+        <value name="SUMCAPIN_450FEMPTO" value="01001" desc="450fF." />
+        <value name="SUMCAPIN_500FEMPTO" value="01010" desc="500fF." />
+        <value name="SUMCAPIN_550FEMPTO" value="01011" desc="550fF." />
+        <value name="SUMCAPIN_600FEMPTO" value="01100" desc="600fF." />
+        <value name="SUMCAPIN_650FEMPTO" value="01101" desc="650fF." />
+        <value name="SUMCAPIN_700FEMPTO" value="01110" desc="700fF." />
+        <value name="SUMCAPIN_750FEMPTO" value="01111" desc="750fF." />
+        <value name="SUMCAPIN_800FEMPTO" value="10000" desc="800fF." />
+        <value name="SUMCAPIN_850FEMPTO" value="10001" desc="850fF." />
+        <value name="SUMCAPIN_900FEMPTO" value="10010" desc="900fF." />
+        <value name="SUMCAPIN_950FEMPTO" value="10011" desc="950fF." />
+        <value name="SUMCAPIN_1000FEMPTO" value="10100" desc="1000fF." />
+        <value name="SUMCAPIN_1050FEMPTO" value="10101" desc="1050fF." />
+        <value name="SUMCAPIN_1100FEMPTO" value="10110" desc="1100fF." />
+        <value name="SUMCAPIN_1150FEMPTO" value="10111" desc="1150fF." />
+        <value name="SUMCAPIN_1200FEMPTO" value="11000" desc="1200fF." />
+        <value name="SUMCAPIN_1250FEMPTO" value="11001" desc="1250fF." />
+        <value name="SUMCAPIN_1300FEMPTO" value="11010" desc="1300fF." />
+        <value name="SUMCAPIN_1350FEMPTO" value="11011" desc="1350fF." />
+        <value name="SUMCAPIN_1400FEMPTO" value="11100" desc="1400fF." />
+        <value name="SUMCAPIN_1450FEMPTO" value="11101" desc="1450fF." />
+        <value name="SUMCAPIN_1500FEMPTO" value="11110" desc="1500fF." />
+        <value name="SUMCAPIN_1550FEMPTO" value="11111" desc="1550fF." />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR13" address="0x588D" bitWidth="8" desc="Delta Sigma Modulator Control Register 13" />
+    <register name="Microphone_DSM_CR14" address="0x588E" bitWidth="8" desc="Delta Sigma Modulator Control Register 14">
+      <field name="opamp1_bw" from="7" to="4" access="RW" resetVal="" desc="First Stage Opamp Bandwidth Control (Risk Mitigation not for User control). Table gives value for Modulator input bw[3:0].">
+        <value name="OPAMP1_BW_0x0" value="0000" desc="(default)" />
+        <value name="OPAMP1_BW_0x1" value="0001" desc="(used with 1.5X power)" />
+        <value name="OPAMP1_BW_0x2" value="0010" desc="reserved" />
+        <value name="OPAMP1_BW_0x3" value="0011" desc="(used with 2X power)" />
+        <value name="OPAMP1_BW_0x4" value="0100" desc="reserved" />
+        <value name="OPAMP1_BW_0x5" value="0101" desc="reserved" />
+        <value name="OPAMP1_BW_0x6" value="0110" desc="reserved" />
+        <value name="OPAMP1_BW_0x7" value="0111" desc="(used with 2.5X power)" />
+        <value name="OPAMP1_BW_0x8" value="1000" desc="(higher BW, 1.25X power)" />
+        <value name="OPAMP1_BW_0x9" value="1001" desc="(lower noise)" />
+        <value name="OPAMP1_BW_0xA" value="1010" desc="reserved" />
+        <value name="OPAMP1_BW_0xB" value="1011" desc="reserved" />
+        <value name="OPAMP1_BW_0xC" value="1100" desc="reserved" />
+        <value name="OPAMP1_BW_0xD" value="1101" desc="reserved" />
+        <value name="OPAMP1_BW_0xE" value="1110" desc="reserved" />
+        <value name="OPAMP1_BW_0xF" value="1111" desc="reserved" />
+      </field>
+      <field name="power1" from="2" to="0" access="RW" resetVal="" desc="First Stage Opamp Power level control.">
+        <value name="POWER1_0" value="000" desc="Low (44uA)" />
+        <value name="POWER1_1" value="001" desc="Medium (123uA)" />
+        <value name="POWER1_2" value="010" desc="High (492uA)" />
+        <value name="POWER1_3" value="011" desc="1.5X (750uA)" />
+        <value name="POWER1_4" value="100" desc="2X (1mA)" />
+        <value name="POWER1_5" value="101" desc="C/2 @ 3MSPS (277uA)" />
+        <value name="POWER1_6" value="110" desc="C/4 @ 3MSPS (185uA)" />
+        <value name="POWER1_7" value="111" desc="2.5X (1.5mA)" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR15" address="0x588F" bitWidth="8" desc="Delta Sigma Modulator Control Register 15">
+      <field name="power_comp" from="5" to="4" access="RW" resetVal="" desc="The power control for the quantizer block.">
+        <value name="POWER_COMP_VERYLOW" value="00" desc="very low (2.2uA)" />
+        <value name="POWER_COMP_NORMAL" value="01" desc="Normal (8.6uA)" />
+        <value name="POWER_COMP_6MHZ" value="10" desc="6MHz (17uA)" />
+        <value name="POWER_COMP_12MHZ" value="11" desc="12MHz (35uA)" />
+      </field>
+      <field name="power2_3" from="2" to="0" access="RW" resetVal="" desc="The power control for the second and third integrator stages.">
+        <value name="POWER2_3_LOW" value="000" desc="LOW (4uA)" />
+        <value name="POWER2_3_MEDIUM" value="001" desc="MEDIUM (17uA)" />
+        <value name="POWER2_3_HIGH" value="010" desc="HIGH (68uA)" />
+        <value name="POWER2_3_1P5X" value="011" desc="1.5X (100uA)" />
+        <value name="POWER2_3_2X" value="100" desc="2X (135uA)" />
+        <value name="POWER2_3_HIGH_5" value="101" desc="HIGH (68uA)" />
+        <value name="POWER2_3_HIGH_6" value="110" desc="HIGH (68uA)" />
+        <value name="POWER2_3_HIGH_7" value="111" desc="HIGH (68uA)" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR16" address="0x5890" bitWidth="8" desc="Delta Sigma Modulator Control Register 16">
+      <field name="power_sum" from="6" to="4" access="RW" resetVal="" desc="The power control for the summer block.">
+        <value name="POWER_SUM_LOW" value="000" desc="LOW (4uA)" />
+        <value name="POWER_SUM_MEDIUM" value="001" desc="MEDIUM (17uA)" />
+        <value name="POWER_SUM_HIGH" value="010" desc="HIGH (68uA)" />
+        <value name="POWER_SUM_1P5X" value="011" desc="1.5X (100uA)" />
+        <value name="POWER_SUM_2X" value="100" desc="2X (135uA)" />
+        <value name="POWER_SUM_HIGH_5" value="101" desc="HIGH (68uA)" />
+        <value name="POWER_SUM_HIGH_6" value="110" desc="HIGH (68uA)" />
+        <value name="POWER_SUM_HIGH_7" value="111" desc="HIGH (68uA)" />
+      </field>
+      <field name="en_cp" from="3" to="3" access="RW" resetVal="" desc="     Enable charge pump.">
+        <value name="CP_DISABLE" value="0" desc="Disable charge pump" />
+        <value name="CP_ENABLE" value="1" desc="Enable charge pump" />
+      </field>
+      <field name="cp_pwrctl" from="2" to="0" access="RW" resetVal="" desc="Charge Pump Power Control Modes.">
+        <value name="CP_PWRCTL_TURBO" value="000" desc="Charge pump operating in Turbo Power (560uA) mode" />
+        <value name="CP_PWRCTL_2X" value="001" desc="Charge pump operating in 6MHz (300uA) mode" />
+        <value name="CP_PWRCTL_HIGH" value="010" desc="Charge pump operating in High power (170uA) mode" />
+        <value name="CP_PWRCTL_MEDIUM" value="011" desc="Charge pump operating in Medium power (70uA) mode" />
+        <value name="CP_PWRCTL_LOW" value="100" desc="Charge pump operating in Low Power (30uA) mode" />
+        <value name="CP_PWRCTL_5" value="101" desc="Reserved" />
+        <value name="CP_PWRCTL_6" value="110" desc="Reserved" />
+        <value name="CP_PWRCTL_7" value="111" desc="Reserved" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CR17" address="0x5891" bitWidth="8" desc="Delta Sigma Modulator Control Register 17">
+      <field name="pwr_ctrl_vref_inn" from="7" to="6" access="RW" resetVal="" desc="Power control modes for REFBUF1 (the reference buffer that connects ADC reference to the negative input MUX of the channel).">
+        <value name="PWR_CTRL_VREF_INN_LOW" value="00" desc="VREF Buffer (Input mux path) is operating in Low Power (26uA) mode" />
+        <value name="PWR_CTRL_VREF_INN_MEDIUM" value="01" desc="VREF Buffer (Input mux path) is operating in Medium Power (32uA) mode" />
+        <value name="PWR_CTRL_VREF_INN_HIGH" value="10" desc="VREF Buffer (Input mux path) is operating in High Power (118uA) mode" />
+        <value name="PWR_CTRL_VREF_INN_TURBO" value="11" desc="VREF Buffer (Input mux path) is operating in Turbo Power (232uA) mode" />
+      </field>
+      <field name="pwr_ctrl_vcm" from="5" to="4" access="RW" resetVal="" desc="Power Control for the Voltage Common Mode Buffer for the Sigma Delta ADC.">
+        <value name="PWR_CTRL_VCM_0" value="00" desc="VCM Buffer is operating in Low Power (18 uA) mode" />
+        <value name="PWR_CTRL_VCM_1" value="01" desc="VCM Buffer is operating in Medium Power (28 uA) mode" />
+        <value name="PWR_CTRL_VCM_2" value="10" desc="VCM Buffer is operating in High Power (55 uA) mode" />
+        <value name="PWR_CTRL_VCM_3" value="11" desc="VCM Buffer is operating in Turbo Power (114 uA) mode" />
+      </field>
+      <field name="pwr_ctrl_vref" from="3" to="2" access="RW" resetVal="" desc="Power Control for the Voltage Reference Buffer for the Sigma Delta ADC.">
+        <value name="PWR_CTRL_VREF_0" value="00" desc="VREF Buffer is operating in Low Power (26 uA) mode" />
+        <value name="PWR_CTRL_VREF_1" value="01" desc="VREF Buffer is operating in Medium Power (32 uA) mode" />
+        <value name="PWR_CTRL_VREF_2" value="10" desc="VREF Buffer is operating in High Power (118 uA) mode" />
+        <value name="PWR_CTRL_VREF_3" value="11" desc="VREF Buffer is operating in Turbo Power (232 uA) mode" />
+      </field>
+      <field name="en_buf_vcm" from="1" to="1" access="RW" resetVal="" desc="Enable/Disable control for ADC (Internal)Reference Buffer.">
+        <value name="EN_BUF_VCM_0" value="0" desc="The ADC Output common mode (VCM) voltage buffer is powered down" />
+        <value name="EN_BUF_VCM_1" value="1" desc="The ADC Output common mode (VCM) voltage buffer is NOT powered down" />
+      </field>
+      <field name="en_buf_vref" from="0" to="0" access="RW" resetVal="" desc="Enable/Disable control for ADC (Internal)Reference Buffer.">
+        <value name="EN_BUF_VREF_0" value="00" desc="The Internal Reference Voltage Buffer is powered down" />
+        <value name="EN_BUF_VREF_1" value="01" desc="The Internal Reference Voltage Buffer is NOT powered down" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_REF0" address="0x5892" bitWidth="8" desc="Delta Sigma Modulator Reference Register 0">
+      <field name="vcmsel" from="7" to="6" access="RW" resetVal="" desc="Output common mode selection for modulator">
+        <value name="VCMSEL_0" value="0" desc="No selection is made for VCM" />
+        <value name="VCMSEL_1" value="1" desc="0.8V from bandgap trim buffer is being selected as VCM (output common mode) for the DSM opamps" />
+        <value name="VCMSEL_2" value="0" desc="0.7V from bandgap trim buffer is being selected as VCM (output common mode)" />
+        <value name="VCMSEL_3" value="1" desc="Vssd being selected as VCM (output common mode) for the DSM opamps" />
+      </field>
+      <field name="vcm_res_div_en" from="5" to="5" access="RW" resetVal="" desc="If enabled it allows the resistor divided value of (Vpwra/2) to a selectable voltage for the VCM Mux">
+        <value name="VCM_RES_DIV_DISABLE" value="0" desc="VCM resistor divider disabled" />
+        <value name="VCM_RES_DIV_ENABLE" value="1" desc="VCM resistor divider enabled" />
+      </field>
+      <field name="vref_res_div_en" from="4" to="4" access="RW" resetVal="" desc="If enabled it allows the resistor divided value of (Vda/4) to a selectable voltage for the RefMux">
+        <value name="VREF_RES_DIV_DISABLE" value="0" desc="VREF resistor divider disabled" />
+        <value name="VREF_RES_DIV_ENABLE" value="1" desc="VREF resistor divider enabled" />
+      </field>
+      <field name="en_buf_vref_inn" from="3" to="3" access="RW" resetVal="" desc="Enable/Disable control for ADC (internal) REFBUF1 Buffer; This buffers the ADC reference before being sent to INN Mux." />
+      <field name="refmux" from="2" to="0" access="RW" resetVal="" desc="Mux control that allows for selecting one among the various available internal reference values">
+        <value name="REFMUX_0" value="000" desc="No Selection made for VCM" />
+        <value name="REFMUX_1" value="001" desc="VDAC0 output is the reference for the DSM" />
+        <value name="REFMUX_2" value="010" desc="Vda/4 is selected as the reference for the DSM (Vda is the external voltage supply)" />
+        <value name="REFMUX_3" value="011" desc="Vda/3 is selected as the reference for the DSM (Vda is the external voltage supply)" />
+        <value name="REFMUX_4" value="100" desc="internal precision bandgap reference of 1.024 (typ) is selected as the DSM reference" />
+        <value name="REFMUX_5" value="101" desc="internal precision bandgap reference of 1.2V (typ) is selected as the DSM reference" />
+        <value name="REFMUX_6" value="110" desc="N/A" />
+        <value name="REFMUX_7" value="111" desc="N/A" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_REF1" address="0x5893" bitWidth="8" desc="Delta Sigma Modulator Reference Register 1">
+      <field name="dac_gnd_sel" from="0" to="0" access="RW" resetVal="" desc="Selects DSM Reference DAC Capacitor Ground.">
+        <value name="DSM_DAC_GND_SEL_INT" value="0" desc="select DSM internal vssa" />
+        <value name="DSM_DAC_GND_SEL_EXT" value="1" desc="select external ground (AGL6)" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_REF2" address="0x5894" bitWidth="8" desc="Delta Sigma Modulator Reference Register 2">
+      <field name="s7_en" from="7" to="7" access="RW" resetVal="" desc="If Set, closes the S7 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s6_en" from="6" to="6" access="RW" resetVal="" desc="If Set, closes the S6 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s5_en" from="5" to="5" access="RW" resetVal="" desc="If Set, closes the S5 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s4_en" from="4" to="4" access="RW" resetVal="" desc="If Set, closes the S4 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s3_en" from="3" to="3" access="RW" resetVal="" desc="If Set, closes the S3 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s2_en" from="2" to="2" access="RW" resetVal="" desc="If Set, closes the S2 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s1_en" from="1" to="1" access="RW" resetVal="" desc="If Set, closes the S1 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s0_en" from="0" to="0" access="RW" resetVal="" desc="If Set, closes the S0 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+    </register>
+    <register name="Microphone_DSM_REF3" address="0x5895" bitWidth="8" desc="Delta Sigma Modulator Reference Register 3">
+      <field name="s13_en" from="5" to="5" access="RW" resetVal="" desc="If Set, closes the S13 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s12_en" from="4" to="4" access="RW" resetVal="" desc="If Set, closes the S12 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s11_en" from="3" to="3" access="RW" resetVal="" desc="If Set, closes the S11 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s10_en" from="2" to="2" access="RW" resetVal="" desc="If Set, closes the S10 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s9_en" from="1" to="1" access="RW" resetVal="" desc="If Set, closes the S9 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+      <field name="s8_en" from="0" to="0" access="RW" resetVal="" desc="If Set, closes the S8 switch in figure Sigma Delta Channel Analog Reference Selection in the DSM chapter; See sub-section Analog Reference Options for the Sigma Delta Channel." />
+    </register>
+    <register name="Microphone_DSM_DEM0" address="0x5896" bitWidth="8" desc="Delta Sigma Modulator Dynamic Element Matching Register 0">
+      <field name="demtest_src" from="4" to="4" access="RW" resetVal="" desc="Select demtest source.">
+        <value name="DEMTEST_SRC_REG" value="0" desc="ANAIF register source selected - DSM#_DEM1.demtest[7:0]." />
+        <value name="DEMTEST_SRC_UDB" value="1" desc="UDB array source selected - dsi_anaif_dft[7:0]." />
+      </field>
+      <field name="adc_test_en" from="3" to="3" access="RW" resetVal="" desc="Enable/Disable All test modes in Sigma Delta Channel.">
+        <value name="ADC_TEST_EN_0" value="0" desc="Disable all test modes for the sigma delta channel." />
+        <value name="ADC_TEST_EN_1" value="1" desc="Enable all test modes for the sigma delta channel." />
+      </field>
+      <field name="en_dem" from="2" to="2" access="RW" resetVal="" desc="Enable DEM.">
+        <value name="EN_DEM_DISABLE" value="0" desc="Disable DEM" />
+        <value name="EN_DEM_ENABLE" value="1" desc="Enable DEM" />
+      </field>
+      <field name="en_scrambler1" from="1" to="1" access="RW" resetVal="" desc="Enable Scrambler 1.">
+        <value name="EN_SCRAMBLER1_DISABLE" value="0" desc="Disable Scrambler 1" />
+        <value name="EN_SCRAMBLER1_ENABLE" value="1" desc="Enable Scrambler 1" />
+      </field>
+      <field name="en_scrambler0" from="0" to="0" access="RW" resetVal="" desc="Enable Scrambler 0.">
+        <value name="EN_SCRAMBLER0_DISABLE" value="0" desc="Disable Scrambler 0" />
+        <value name="EN_SCRAMBLER0_ENABLE" value="1" desc="Enable Scrambler 0" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_DEM1" address="0x5897" bitWidth="8" desc="Delta Sigma Modulator Dynamic Element Matching Register 1">
+      <field name="demtest" from="7" to="0" access="RW" resetVal="" desc="Register control for the DAC unit elements inside the first integrator. This can be used when bit DSM.DEM0[3], adc_test_en, is set. If the adc_test_en is not set the the control logic inside the modulator determines how the DAC unit elements are controlled. This is meant for static testing purposes." />
+    </register>
+    <register name="Microphone_DSM_TST0" address="0x5898" bitWidth="8" desc="Delta Sigma Modulator Test Register 0">
+      <field name="dig_test_sel" from="6" to="4" access="RW" resetVal="" desc="To test various digital outputs to digital muxes (for DFT).">
+        <value name="DIG_TEST_SEL_0" value="000" desc="test_dig_out = vhi" />
+        <value name="DIG_TEST_SEL_1" value="001" desc="test_dig_out = hi" />
+        <value name="DIG_TEST_SEL_2" value="010" desc="test_dig_out = med" />
+        <value name="DIG_TEST_SEL_3" value="011" desc="test_dig_out = low" />
+        <value name="DIG_TEST_SEL_4" value="100" desc="test_dig_out = sign" />
+        <value name="DIG_TEST_SEL_5" value="101" desc="test_dig_out = reset_ov" />
+        <value name="DIG_TEST_SEL_6" value="110" desc="test_dig_out = TESTMODE and Phi1 (sampling clock phase)" />
+        <value name="DIG_TEST_SEL_7" value="111" desc="test_dig_out = TESTMODE and fchclk (chopping clock)" />
+      </field>
+      <field name="refsel_ctrl" from="3" to="0" access="RW" resetVal="" desc="This is the 4-bit encoded value which selects one among the 15 important DFT observable points inside the DSM. 4'h0 (0000) through 4'ha (1010) selects between various tap points in the quantizer resistor ladder. 4'hb (1011) through 4'he (1110) selects special points inside the DSM.">
+        <value name="REFSEL_CTRL_0" value="0000" desc="(9/32)*Vref" />
+        <value name="REFSEL_CTRL_1" value="0001" desc="(11/32)*Vref" />
+        <value name="REFSEL_CTRL_2" value="0010" desc="(12/32)*Vref" />
+        <value name="REFSEL_CTRL_3" value="0011" desc="(13/32)*Vref" />
+        <value name="REFSEL_CTRL_4" value="0100" desc="(15/32)*Vref" />
+        <value name="REFSEL_CTRL_5" value="0101" desc="(16/32)*Vref" />
+        <value name="REFSEL_CTRL_6" value="0110" desc="(17/32)*Vref" />
+        <value name="REFSEL_CTRL_7" value="0111" desc="(19/32)*Vref" />
+        <value name="REFSEL_CTRL_8" value="1000" desc="(20/32)*Vref" />
+        <value name="REFSEL_CTRL_9" value="1001" desc="(21/32)*Vref" />
+        <value name="REFSEL_CTRL_10" value="1010" desc="(23/32)*Vref" />
+        <value name="REFSEL_CTRL_11" value="1011" desc="Selects VICM (Input Common Mode) applied to DSM to be available at Ref_out DFT point" />
+        <value name="REFSEL_CTRL_12" value="1100" desc="Selects Vb0 (2nd and 3rd integrator Opamp Bias Voltage) inside the DSM to Ref_out DFT point" />
+        <value name="REFSEL_CTRL_13" value="1101" desc="Selects VRCM (Half of applied Reference) inside the DSM to Ref_out DFT point" />
+        <value name="REFSEL_CTRL_14" value="1110" desc="Selects vbias0_int, an internal bias point from inside the DSM to Ref_out DFT point" />
+        <value name="REFSEL_CTRL_15" value="1111" desc="Not a valid selection" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_TST1" address="0x5899" bitWidth="8" desc="Delta Sigma Modulator Test Register 1" />
+    <register name="Microphone_DSM_BUF0" address="0x589A" bitWidth="8" desc="Delta Sigma Modulator Buffer Register 0">
+      <field name="rail_rail_en" from="2" to="2" access="RW" resetVal="" desc="Selects Rail-to-Rail Mode.">
+        <value name="RAIL_RAIL_EN_DISABLE" value="0" desc="Level shifted mode" />
+        <value name="RAIL_RAIL_EN_ENABLE" value="1" desc="Rail-to-Rail mode" />
+      </field>
+      <field name="bypass_p" from="1" to="1" access="RW" resetVal="" desc="Remove positive half of the buffer from signal path.">
+        <value name="BYPASS_P_0" value="0" desc="The buffer in the positive half remains on the signal path (Refer Fig 33-2)" />
+        <value name="BYPASS_P_1" value="1" desc="bypass the buffer on the positive half of the signal path (Refer Fig 33-2)" />
+      </field>
+      <field name="enable_p" from="0" to="0" access="RW" resetVal="" desc="Buffer Positive Half Enable.">
+        <value name="ENABLE_P_0" value="0" desc="power down buffer in positive half" />
+        <value name="ENABLE_P_1" value="1" desc="enable positive half of buffer" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_BUF1" address="0x589B" bitWidth="8" desc="Delta Sigma Modulator Buffer Register 1">
+      <field name="gain" from="3" to="2" access="RW" resetVal="" desc="Gain settings of 1,2,4,8 are supported.">
+        <value name="GAIN_1X" value="00" desc="1x" />
+        <value name="GAIN_2X" value="01" desc="2x" />
+        <value name="GAIN_4X" value="10" desc="4x" />
+        <value name="GAIN_8X" value="11" desc="8x" />
+      </field>
+      <field name="bypass_n" from="1" to="1" access="RW" resetVal="" desc="Remove negative half of the buffer from signal path.">
+        <value name="BYPASS_N_0" value="0" desc="The buffer in the negative half remains on the signal path (Refer Fig 33-2)" />
+        <value name="BYPASS_N_1" value="1" desc="bypass the buffer on the negative half of the signal path (Refer Fig 33-2)" />
+      </field>
+      <field name="enable_n" from="0" to="0" access="RW" resetVal="" desc="Buffer Negative Half Enable.">
+        <value name="ENABLE_N_0" value="0" desc="power down buffer in negative half" />
+        <value name="ENABLE_N_1" value="1" desc="enable negat half of buffer" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_BUF2" address="0x589C" bitWidth="8" desc="Delta Sigma Modulator Buffer Register 2">
+      <field name="add_extra_rc" from="1" to="1" access="RW" resetVal="" desc="If enabled an additional RC is included at the output of the buffer differentially, to lower noise at the expense of settling else normal settling. See s8hizbuf BROS for more information." />
+      <field name="lowpower_en" from="0" to="0" access="RW" resetVal="" desc="Enables the lower power mode of operation. The normal power mode implies 600uA typical current consumption per opamp in the buffer. See s8hizbuf BROS for more information.">
+        <value name="LOWPOWER_EN_NORMAL" value="0" desc="Input buffer operated in normal power mode" />
+        <value name="LOWPOWER_EN_LOW" value="1" desc="Input buffer operated in low (1/4th of normal power) power mode" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_BUF3" address="0x589D" bitWidth="8" desc="Delta Sigma Modulator Buffer Register 3">
+      <field name="buf_chop_en" from="3" to="3" access="RW" resetVal="" desc="Enable/ Disable Chopping of the input buffer (TYPE A or B as selected in DSM_BUF0 register).">
+        <value name="BUF_CHOP_EN_0" value="0" desc="Disable Chopping of the input buffer" />
+        <value name="BUF_CHOP_EN_1" value="1" desc="Enable Chopping of the input buffer" />
+      </field>
+      <field name="buf_fchop" from="2" to="0" access="RW" resetVal="" desc="Input Buffer Chopping frequency control.">
+        <value name="BUF_FCHOP_0" value="000" desc="chopping frequency is fs/2" />
+        <value name="BUF_FCHOP_1" value="001" desc="chopping frequency is fs/4" />
+        <value name="BUF_FCHOP_2" value="010" desc="chopping frequency is fs/8" />
+        <value name="BUF_FCHOP_3" value="011" desc="chopping frequency is fs/16" />
+        <value name="BUF_FCHOP_4" value="100" desc="chopping frequency is fs/32" />
+        <value name="BUF_FCHOP_5" value="101" desc="chopping frequency is fs/64" />
+        <value name="BUF_FCHOP_6" value="110" desc="chopping frequency is fs/128" />
+        <value name="BUF_FCHOP_7" value="111" desc="chopping frequency is fs/256" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_MISC" address="0x589E" bitWidth="8" desc="Delta Sigma Modulator Miscallaneous Register">
+      <field name="swvn_src" from="3" to="3" access="RW" resetVal="" desc="negative input routing control source.">
+        <value name="DSM_SWVN_SRC_REG" value="0" desc="ANAIF DSM routing registers" />
+        <value name="DSM_SWVN_SRC_UDB" value="1" desc="UDB" />
+      </field>
+      <field name="swvp_src" from="2" to="2" access="RW" resetVal="" desc="positive input routing control source.">
+        <value name="DSM_SWVP_SRC_REG" value="0" desc="ANAIF DSM routing registers" />
+        <value name="DSM_SWVP_SRC_UDB" value="1" desc="UDB" />
+      </field>
+      <field name="sel_iclk_cp" from="0" to="0" access="RW" resetVal="" desc="Select Charge Pump Internal Clock.">
+        <value name="SEL_ICLK_CP_EXTERNAL" value="0" desc="External (DSI) Charge Pump Clock selected" />
+        <value name="SEL_ICLK_CP_INTERNAL" value="1" desc="Internal Charge Pump Clock selected" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_CLK" address="0x5B07" bitWidth="8" desc="Delta Sigma Modulator Clock Selection Register">
+      <field name="bypass_sync" from="4" to="4" access="RW" resetVal="" desc="Bypass Synchronization">
+        <value name="BYPASS_SYNC_0" value="0" desc="Synchronization not bypassed (Synchronization enabled)" />
+        <value name="BYPASS_SYNC_1" value="1" desc="Synchronization bypassed (Synchronization disabled)" />
+      </field>
+      <field name="clk_en" from="3" to="3" access="RW" resetVal="" desc="Clock gating control">
+        <value name="CLK_EN_0" value="0" desc="disable clock" />
+        <value name="CLK_EN_1" value="1" desc="enable clock" />
+      </field>
+      <field name="mx_clk" from="2" to="0" access="RW" resetVal="" desc="Clock Selection">
+        <value name="MX_CLK_0" value="000" desc="Select clk_a0 and clk_a0_dig" />
+        <value name="MX_CLK_1" value="001" desc="Select clk_a1 and clk_a1_dig" />
+        <value name="MX_CLK_2" value="010" desc="Select clk_a2 and clk_a2_dig" />
+        <value name="MX_CLK_3" value="011" desc="Select clk_a3 and clk_a3_dig" />
+        <value name="MX_CLK_4" value="100" desc="Select UDB generated clock" />
+        <value name="MX_CLK_5" value="101" desc="Reserved" />
+        <value name="MX_CLK_6" value="110" desc="Reserved" />
+        <value name="MX_CLK_7" value="111" desc="Reserved" />
+      </field>
+    </register>
+    <register name="Microphone_DSM_OUT0" address="0x5B88" bitWidth="8" desc="Delta Sigma Modulator Output Register 0">
+      <field name="dout" from="7" to="0" access="RW" resetVal="" desc="DSM output." />
+    </register>
+    <register name="Microphone_DSM_OUT1" address="0x5B89" bitWidth="8" desc="Delta Sigma Modulator Output Register 1">
+      <field name="ovdcause" from="5" to="5" access="RW" resetVal="" desc="Overload Cause">
+        <value name="OVDCAUSE_0" value="0" desc="0s overload" />
+        <value name="OVDCAUSE_1" value="1" desc="1s overload" />
+      </field>
+      <field name="ovdflag" from="4" to="4" access="RW" resetVal="" desc="Overload detected" />
+      <field name="dout2scomp" from="3" to="0" access="RW" resetVal="" desc="DSM Output Register 1">
+        <value name="DSM_DOUT2SCOMP_0" value="0000" desc="NA (qlev=00); 0 (qlev=01); 0 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_1" value="0001" desc="+1 (qlev=00); +1 (qlev=01); +1 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_2" value="0010" desc="NA (qlev=00); NA (qlev=01); +2 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_3" value="0011" desc="NA (qlev=00); NA (qlev=01); +3 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_4" value="0100" desc="NA (qlev=00); NA (qlev=01); +4 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_5" value="0101" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_6" value="0110" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_7" value="0111" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_8" value="1000" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_9" value="1001" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_10" value="1010" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_11" value="1011" desc="NA (qlev=00); NA (qlev=01); NA (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_12" value="1100" desc="NA (qlev=00); NA (qlev=01); -4 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_13" value="1101" desc="NA (qlev=00); NA (qlev=01); -3 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_14" value="1110" desc="NA (qlev=00); NA (qlev=01); -2 (qlev=10)" />
+        <value name="DSM_DOUT2SCOMP_15" value="1111" desc="-1 (qlev=00); -1 (qlev=01); -1 (qlev=10)" />
+      </field>
+    </register>
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="FULL" value="0" desc="" />
@@ -116,7 +1004,7 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6576" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -228,18 +1116,18 @@
     <block name="ep_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="ep_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="sof_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ep5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="USB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="bus_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="arb_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ep2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="dp_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ep4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ep3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Dm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="ep_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Dp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ep4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="VBUS" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="USB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Dm" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="dp_int" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Dp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <register name="USBFS_EP0_DR0_REG" address="0x6000" bitWidth="8" desc="bmRequestType" />
     <register name="USBFS_EP0_DR1_REG" address="0x6001" bitWidth="8" desc="bRequest" />
     <register name="USBFS_EP0_DR2_REG" address="0x6002" bitWidth="8" desc="wValueLo" />
@@ -248,7 +1136,12 @@
     <register name="USBFS_EP0_DR5_REG" address="0x6005" bitWidth="8" desc="wIndexHi" />
     <register name="USBFS_EP0_DR6_REG" address="0x6006" bitWidth="8" desc="lengthLo" />
     <register name="USBFS_EP0_DR7_REG" address="0x6007" bitWidth="8" desc="lengthHi" />
+    <register name="USBFS_CR0_REG" address="0x6008" bitWidth="8" desc="USB Control Register 0" />
+    <register name="USBFS_CR1_REG" address="0x6009" bitWidth="8" desc="USB Control Register 1" />
     <register name="USBFS_SIE_EP1_CR0_REG" address="0x600E" bitWidth="8" desc="The Endpoint1 Control Register" />
+    <register name="USBFS_USBIO_CR0_REG" address="0x6010" bitWidth="8" desc="USBIO Control Register 0" />
+    <register name="USBFS_USBIO_CR2_REG" address="0x6011" bitWidth="8" desc="USBIO Control Register 2" />
+    <register name="USBFS_USBIO_CR1_REG" address="0x6012" bitWidth="8" desc="USBIO Control Register 1" />
     <register name="USBFS_SIE_EP2_CR0_REG" address="0x601E" bitWidth="8" desc="The Endpoint2 Control Register" />
     <register name="USBFS_SIE_EP3_CR0_REG" address="0x602E" bitWidth="8" desc="The Endpoint3 Control Register" />
     <register name="USBFS_SIE_EP4_CR0_REG" address="0x603E" bitWidth="8" desc="The Endpoint4 Control Register" />
@@ -261,11 +1154,42 @@
   <block name="DOUT" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Control" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Control" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="Control_CONTROL_REG" address="0x647B" bitWidth="8" desc="" />
+  </block>
   <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="KEY_STATUS_REG" address="0x646B" bitWidth="8" desc="" />
+    <register name="KEY_MASK_REG" address="0x648B" bitWidth="8" desc="" />
+    <register name="KEY_STATUS_AUX_CTL_REG" address="0x649B" bitWidth="8" desc="">
+      <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="ENABLED" value="1" desc="Enable counter" />
+        <value name="DISABLED" value="0" desc="Disable counter" />
+      </field>
+      <field name="INTRENBL" from="4" to="4" access="RW" resetVal="" desc="Enables or disables the Interrupt">
+        <value name="ENABLED" value="1" desc="Interrupt enabled" />
+        <value name="DISABLED" value="0" desc="Interrupt disabled" />
+      </field>
+      <field name="FIFO1LEVEL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="ENABLED" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+        <value name="DISABLED" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+      </field>
+      <field name="FIFO0LEVEL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="ENABLED" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+        <value name="DISABLED" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+      </field>
+      <field name="FIFO1CLEAR" from="1" to="1" access="RW" resetVal="" desc="FIFO clear">
+        <value name="ENABLED" value="1" desc="Clear FIFO state" />
+        <value name="DISABLED" value="0" desc="Normal FIFO operation" />
+      </field>
+      <field name="FIFO0CLEAR" from="0" to="0" access="RW" resetVal="" desc="FIFO clear">
+        <value name="ENABLED" value="1" desc="Clear FIFO state" />
+        <value name="DISABLED" value="0" desc="Normal FIFO operation" />
+      </field>
+    </register>
+  </block>
   <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QSC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="AUDIO_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />

@@ -24,7 +24,7 @@ https://github.com/downloads/ham21/peaberry/Windows-USB-Driver-1.2.5.0.zip
 
 ## Firmware
 
-The project was built with PSoC Creator 2.0:
+The project was built with PSoC Creator 2.1:
 http://www.cypress.com/
 
 It is normal to get errors about missing files until you have built
