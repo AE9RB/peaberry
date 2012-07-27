@@ -974,22 +974,7 @@
     </register>
   </block>
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="FULL" value="0" desc="" />
-        <value name="NOT_FULL" value="1" desc="" />
-      </field>
-      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
-        <value name="NO_UNDERFLOW" value="0" desc="" />
-        <value name="UNDERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="RX_STATUS_REG" address="0x6466" bitWidth="8" desc="">
+    <register name="RX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="EMPTY" value="0" desc="" />
@@ -1004,7 +989,22 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6576" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6466" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="FULL" value="0" desc="" />
+        <value name="NOT_FULL" value="1" desc="" />
+      </field>
+      <field name="UNDFL" from="0" to="0" access="R" resetVal="" desc="FIFO Underflow Error">
+        <value name="NO_UNDERFLOW" value="0" desc="" />
+        <value name="UNDERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x6476" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -1021,20 +1021,21 @@
   </block>
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadSampGenerator_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <block name="cydff_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="demux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cydff_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="not_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -1042,13 +1043,14 @@
     <block name="not_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="not_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="and_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="and_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="xor_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="mux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="and_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="and_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="and_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="DIN" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="MIC" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -1155,15 +1157,15 @@
   <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="XTX" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Control" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="Control_CONTROL_REG" address="0x647B" bitWidth="8" desc="" />
+    <register name="Control_CONTROL_REG" address="0x6474" bitWidth="8" desc="" />
   </block>
   <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="KEY_STATUS_REG" address="0x646B" bitWidth="8" desc="" />
-    <register name="KEY_MASK_REG" address="0x648B" bitWidth="8" desc="" />
-    <register name="KEY_STATUS_AUX_CTL_REG" address="0x649B" bitWidth="8" desc="">
+    <register name="KEY_STATUS_REG" address="0x646A" bitWidth="8" desc="" />
+    <register name="KEY_MASK_REG" address="0x648A" bitWidth="8" desc="" />
+    <register name="KEY_STATUS_AUX_CTL_REG" address="0x649A" bitWidth="8" desc="">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />
