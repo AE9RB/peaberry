@@ -25,16 +25,22 @@
 
 uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 
+// The allowed range of 975-1010 needs to account for manufacturing
+// variances in the IMO.  Supposedly, +-0.25%, but there's more...
+// When the MiniProg3 is attached to the device, the IMO runs at
+// a slightly different rate (or the MiniProg3 clock is used).
+// So do not rely on the debugger to find the center.
+
 CY_ISR(isr_up) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c<992) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+    if (c<1010) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
 }
 
 CY_ISR(isr_dn) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c>983) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
+    if (c>975) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
 }
 
 void SyncSOF_Start(void) {
