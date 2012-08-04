@@ -75,6 +75,7 @@ void Mic_Start(void)
 
 uint8* Mic_Buf(void) {
     static uint8 debounce = 0, use = 0;
-    USBAudio_SyncBufs(Mic_DMA_Buf, &use, &debounce);
+    static int8 distance = 0;
+    USBAudio_SyncBufs(Mic_DMA_Buf, &use, &debounce, &distance);
     return Mic_Buff[use];
 }

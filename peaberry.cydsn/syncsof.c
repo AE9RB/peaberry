@@ -25,7 +25,7 @@
 
 uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 
-// The allowed range of 975-1010 needs to account for manufacturing
+// The allowed PWM range needs to account for manufacturing
 // variances in the IMO.  Supposedly, +-0.25%, but there's more...
 // When the MiniProg3 is attached to the device, the IMO runs at
 // a slightly different rate (or the MiniProg3 clock is used).
@@ -34,13 +34,13 @@ uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 CY_ISR(isr_up) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c<1010) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+    if (c<1015) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
 }
 
 CY_ISR(isr_dn) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c>975) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
+    if (c>970) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
 }
 
 void SyncSOF_Start(void) {
@@ -53,11 +53,6 @@ void SyncSOF_Start(void) {
         SyncSOF_PWM_Start();
         SyncSOF_Counter_Start();
 
-        pup_isr_Start();
-        pup_isr_SetVector(isr_up);
-
-        pdn_isr_Start();
-        pdn_isr_SetVector(isr_dn);
 
         chan1 = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
         td1 = CyDmaTdAllocate();
@@ -71,29 +66,35 @@ void SyncSOF_Start(void) {
         CyDmaTdSetAddress(td2, LO16(&slowerp), LO16(&FASTCLK_PLL_P));
         CyDmaChSetInitialTd(chan2, td2);
         
+        CyDmaChEnable(chan1, 1);
+        CyDmaChEnable(chan2, 1);
+
         initialized = 1;
     }
-    CyDmaChEnable(chan1, 1);
-    CyDmaChEnable(chan2, 1);
+
+    pup_isr_Start();
+    pup_isr_SetVector(isr_up);
+
+    pdn_isr_Start();
+    pdn_isr_SetVector(isr_dn);
 }
 
 void SyncSOF_Stop(void) {
-    CyDmaChDisable(chan1);
-    CyDmaChDisable(chan2);
+    pup_isr_Stop();
+    pdn_isr_Stop();
 }
 
 // Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.
 // The counter uses a range of 18434-18427.
 // The deadzone was determined by experimentation on a dev kit. It is large enough
 // to not change the divider too often but small enough to keep the PLL from drifting.
-// The center, which has to account for the time SOF is high, was found by 
-// experimentation using the following functions inserted into USBAudio_SyncBufs.
+// The default center was found by logging USB/DMA buffer slips.
 
 void SyncSOF_Slower(void) {
     uint16 p, c;
-    p = SyncSOF_Counter_ReadPeriod();
-    if (p < 18428) return;
     c = SyncSOF_Counter_ReadCompare();
+    if (c < 18427) return;
+    p = SyncSOF_Counter_ReadPeriod();
     if ((p&0x0001) == (c&0x0001)) {
         SyncSOF_Counter_WritePeriod(p-1);
     } else {
@@ -103,9 +104,9 @@ void SyncSOF_Slower(void) {
 
 void SyncSOF_Faster(void) {
     uint16 p, c;
-    c = SyncSOF_Counter_ReadCompare();
-    if (c > 18434) return;
     p = SyncSOF_Counter_ReadPeriod();
+    if (p > 18434) return;
+    c = SyncSOF_Counter_ReadCompare();
     if ((p&0x0001) == (c&0x0001)) {
         SyncSOF_Counter_WriteCompare(c+1);
     } else {
