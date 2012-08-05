@@ -33,6 +33,12 @@ void main()
     PCM3060_Start();
 
     for(;;) {
+    
+        if (KEY_Read() & 0x04) {
+            Control_Write(Control_Read() | CONTROL_RX_REVERSE);
+        } else {
+            Control_Write(Control_Read() & ~CONTROL_RX_REVERSE);
+        }
 	
         // monitor VBUS to comply with USB spec
         if (USBFS_VBusPresent()) {
