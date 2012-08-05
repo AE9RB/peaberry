@@ -93,7 +93,7 @@ void SyncSOF_Stop(void) {
 void SyncSOF_Slower(void) {
     uint16 p, c;
     c = SyncSOF_Counter_ReadCompare();
-    if (c < 18427) return;
+    if (c < 18426) return;
     p = SyncSOF_Counter_ReadPeriod();
     if ((p&0x0001) == (c&0x0001)) {
         SyncSOF_Counter_WritePeriod(p-1);
@@ -105,7 +105,7 @@ void SyncSOF_Slower(void) {
 void SyncSOF_Faster(void) {
     uint16 p, c;
     p = SyncSOF_Counter_ReadPeriod();
-    if (p > 18434) return;
+    if (p > 18435) return;
     c = SyncSOF_Counter_ReadCompare();
     if ((p&0x0001) == (c&0x0001)) {
         SyncSOF_Counter_WriteCompare(c+1);

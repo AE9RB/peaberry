@@ -26,46 +26,50 @@
 // For the unused speaker or transmit USB data.
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
+int8 nd(use, dma) {
+    use *= 2;
+    if (dma < use) dma += DMA_AUDIO_BUFS;
+    return use - dma;
+}
+
 // Using only four USB buffers with fine tuning of the SOF sync,
 // we can reduce overruns and underruns so they almost never happen.
 void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
-    uint8 dma_adjusted;
-    int8 new_distance, delta_distance;
+    uint8 dma_adjusted, buf;
+    int8 delta_distance, new_distance;
     
-    new_distance = *use * 2 - dma;    
+    buf = dma / 2;
     if (dma & 0x01) {
-        dma /= 2;
-        dma_adjusted = dma + 1;
+        dma_adjusted = buf + 1;
     } else {
-        dma /= 2;
-        dma_adjusted = dma;
+        dma_adjusted = buf;
     }
     if (dma_adjusted >= USB_AUDIO_BUFS) dma_adjusted -= USB_AUDIO_BUFS;
-    if (dma == *use || dma_adjusted == *use) {
+    if (buf == *use || dma_adjusted == *use) {
         // underrun
         *use += USB_AUDIO_BUFS / 2;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        *distance = new_distance;
+        *distance = nd(*use, dma);
         return;
     }
     if (++*use == USB_AUDIO_BUFS) *use = 0;
-    if (*use == dma) {
+    if (*use == buf) {
         // overrun
         *use += USB_AUDIO_BUFS / 2;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        *distance = new_distance;
+        *distance = nd(*use, dma);
         return;
     }
     // fine tune sof timer based on buffer slip
+    new_distance = nd(*use, dma);
     delta_distance = *distance - new_distance;
-    if (delta_distance < 2 && delta_distance > -2) return;
+    if (!delta_distance) return;
     if (delta_distance > 0) {
         SyncSOF_Slower();
-        (*distance)--;
     } else {
         SyncSOF_Faster();
-        (*distance)++;
     }
+    *distance = new_distance;
 }
 
 extern uint8 USBFS_currentVolume[];
