@@ -73,9 +73,15 @@ void Mic_Start(void)
     Microphone_StartConvert();
 }
 
-uint8* Mic_Buf(void) {
+uint8* Mic_Buf(uint8* reset) {
     static uint8 use = 0;
     static int8 distance = 0;
-    USBAudio_SyncBufs(Mic_DMA_Buf, &use, &distance);
+    uint8 dma;
+    dma = Mic_DMA_Buf;
+    if (*reset) {
+        use = dma/2;
+        *reset = 0;
+    }
+    USBAudio_SyncBufs(dma, &use, &distance);
     return Mic_Buff[use];
 }

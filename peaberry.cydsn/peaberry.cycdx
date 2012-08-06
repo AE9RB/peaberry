@@ -97,7 +97,7 @@
       <register name="SyncSOF_Counter_COUNTER" address="0x6400" bitWidth="16" desc="UDB.A0 - Current Counter Value" />
       <register name="SyncSOF_Counter_PERIOD" address="0x6420" bitWidth="16" desc="UDB.D0 - Assigned Period" />
       <register name="SyncSOF_Counter_COMPARE" address="0x6430" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" />
-      <register name="SyncSOF_Counter_Control_Reg" address="0x6471" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value">
+      <register name="SyncSOF_Counter_Control_Reg" address="0x6470" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value">
         <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable Counter" />
         <field name="CTRL_CAPMODE" from="4" to="3" access="RW" resetVal="" desc="Capture mode" />
         <field name="CTRL_CMPMODE" from="2" to="0" access="RW" resetVal="" desc="Compare mode" />
@@ -146,7 +146,7 @@
   <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6465" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="FULL" value="0" desc="" />

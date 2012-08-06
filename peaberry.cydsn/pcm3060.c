@@ -170,17 +170,29 @@ void DmaTxConfiguration(void) {
 }
 
 
-uint8* PCM3060_TxBuf(void) {
+uint8* PCM3060_TxBuf(uint8* reset) {
     static uint8 use = 0;
     static int8 distance = 0;
-    USBAudio_SyncBufs(TxI2S_DMA_Buf, &use, &distance);
+    uint8 dma;
+    dma = TxI2S_DMA_Buf;
+    if (*reset) {
+        use = dma/2;
+        *reset = 0;
+    }
+    USBAudio_SyncBufs(dma, &use, &distance);
     return TxI2S_Buff[use];
 }
 
-uint8* PCM3060_RxBuf(void) {
+uint8* PCM3060_RxBuf(uint8* reset) {
     static uint8 use = 0;
     static int8 distance = 0;
-    USBAudio_SyncBufs(RxI2S_DMA_Buf, &use, &distance);
+    uint8 dma;
+    dma = RxI2S_DMA_Buf;
+    if (*reset) {
+        use = dma/2;
+        *reset = 0;
+    }
+    USBAudio_SyncBufs(dma, &use, &distance);
     return RxI2S_Buff[use];
 }
 
