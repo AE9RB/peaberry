@@ -85,7 +85,7 @@ void SyncSOF_Stop(void) {
 }
 
 // Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.
-// The counter uses a range of 18433-18428.
+// The counter uses a range of 18434-18427.
 // The deadzone was determined by experimentation on a dev kit. It is large enough
 // to not change the divider too often but small enough to keep the PLL from drifting.
 // The default center was found by logging USB/DMA buffer slips.
