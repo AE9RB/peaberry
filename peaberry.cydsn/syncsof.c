@@ -34,13 +34,13 @@ uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 CY_ISR(isr_up) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c<1015) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+    if (c<1020) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
 }
 
 CY_ISR(isr_dn) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c>970) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
+    if (c>960) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c-1);
 }
 
 void SyncSOF_Start(void) {
@@ -84,21 +84,13 @@ void SyncSOF_Stop(void) {
     pdn_isr_Stop();
 }
 
-// Ideal clock is 36.864 MHz. But really we want 18432 cycles/2 per USB frame.
-// The deadzone was determined by experimentation on a dev kit. It is large enough
-// to not change the divider too often but small enough to keep the PLL from drifting.
-// The default center was found by logging USB/DMA buffer slips.
-
 void SyncSOF_Slower(void) {
     uint16 p, c;
     c = SyncSOF_Counter_ReadCompare();
     if (c < 18426) return;
     p = SyncSOF_Counter_ReadPeriod();
-    if ((p&0x0001) == (c&0x0001)) {
-        SyncSOF_Counter_WritePeriod(p-1);
-    } else {
-        SyncSOF_Counter_WriteCompare(c-1);
-    }
+    SyncSOF_Counter_WritePeriod(p-1);
+    SyncSOF_Counter_WriteCompare(c-1);
 }
 
 void SyncSOF_Faster(void) {
@@ -106,9 +98,6 @@ void SyncSOF_Faster(void) {
     p = SyncSOF_Counter_ReadPeriod();
     if (p > 18436) return;
     c = SyncSOF_Counter_ReadCompare();
-    if ((p&0x0001) == (c&0x0001)) {
-        SyncSOF_Counter_WriteCompare(c+1);
-    } else {
-        SyncSOF_Counter_WritePeriod(p+1);
-    }
+    SyncSOF_Counter_WriteCompare(c+1);
+    SyncSOF_Counter_WritePeriod(p+1);
 }
