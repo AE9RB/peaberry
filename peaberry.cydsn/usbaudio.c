@@ -27,7 +27,7 @@
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 int8 nd(use, dma) {
-    use *= 2;
+    use *= DMA_USB_RATIO;
     if (dma < use) dma += DMA_AUDIO_BUFS;
     return use - dma;
 }
@@ -40,8 +40,8 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
     uint8 dma_adjusted, buf;
     int8 delta_distance, new_distance;
     
-    buf = dma / 2;
-    if (dma & 0x01) {
+    buf = dma / DMA_USB_RATIO;
+    if (dma & (DMA_USB_RATIO-1)) {
         dma_adjusted = buf + 1;
     } else {
         dma_adjusted = buf;

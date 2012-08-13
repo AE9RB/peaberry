@@ -104,7 +104,7 @@ void SyncSOF_Slower(void) {
 void SyncSOF_Faster(void) {
     uint16 p, c;
     p = SyncSOF_Counter_ReadPeriod();
-    if (p > 18435) return;
+    if (p > 18436) return;
     c = SyncSOF_Counter_ReadCompare();
     if ((p&0x0001) == (c&0x0001)) {
         SyncSOF_Counter_WriteCompare(c+1);

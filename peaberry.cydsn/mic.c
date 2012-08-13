@@ -21,10 +21,9 @@ CY_ISR(Mic_DMA_done) {
     uint8 td, bufnum, i;
     uint16 b, *buf;
     
-    // This conversion could be verilog if more CPU is needed
-    buf = (uint16*)Mic_Buff[bufnum/2];
-    if (bufnum & 0x01) buf += MIC_BUF_SIZE / 4;
-    for (i = MIC_BUF_SIZE / 4; i; ) {
+    buf = (uint16*)Mic_Buff[Mic_DMA_Buf/DMA_USB_RATIO];
+    buf += MIC_BUF_SIZE / (DMA_USB_RATIO*2) * (Mic_DMA_Buf & (DMA_USB_RATIO-1));
+    for (i = MIC_BUF_SIZE / (DMA_USB_RATIO*2); i; ) {
         b = buf[--i];
         // DelSig will overflow (see datasheet)
         if (b & 0xF000) b = 2047;
@@ -48,23 +47,23 @@ CY_ISR(Mic_DMA_done) {
 
 void Mic_Start(void)
 {
-	uint8 i, n;
+    uint8 i, j, n;
 
     Mic_Buff_Chan = Mic_Buff_DmaInitialize(2, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
-	for (i=0; i < DMA_AUDIO_BUFS; i++) Mic_Buff_TD[i] = CyDmaTdAllocate();
-	for (i=0; i < DMA_AUDIO_BUFS; i++) {
-	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/2, Mic_Buff_TD[i+1], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
-	    CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/2]));
-        i++;
-	 	n = i + 1;
-		if (n >= DMA_AUDIO_BUFS) n=0;
-	    CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/2, Mic_Buff_TD[n], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );	
-	    CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/2] + MIC_BUF_SIZE/2));
-	}
-	CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD[0]);
-	
+    for (i=0; i < DMA_AUDIO_BUFS; i++) Mic_Buff_TD[i] = CyDmaTdAllocate();
+    for (i=0; i < DMA_AUDIO_BUFS; ) {
+        for (j=0; j < DMA_USB_RATIO; j++) {
+             n = i + 1;
+            if (n >= DMA_AUDIO_BUFS) n=0;
+            CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/DMA_USB_RATIO, Mic_Buff_TD[n], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );    
+            CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/DMA_USB_RATIO] + MIC_BUF_SIZE/DMA_USB_RATIO * j));
+            i++;
+        }
+    }
+    CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD[0]);
+    
     Mic_DMA_Buf = 0;
-	Mic_done_isr_Start();
+    Mic_done_isr_Start();
     Mic_done_isr_SetVector(Mic_DMA_done);
 
     CyDmaChEnable(Mic_Buff_Chan, 1u);
@@ -79,7 +78,7 @@ uint8* Mic_Buf(uint8* reset) {
     uint8 dma;
     dma = Mic_DMA_Buf;
     if (*reset) {
-        use = dma/2;
+        use = dma/DMA_USB_RATIO;
         *reset = 0;
     }
     USBAudio_SyncBufs(dma, &use, &distance);

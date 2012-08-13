@@ -28,10 +28,9 @@
 #define MIC_BUF_SIZE (48u * 2)
 // Four buffers is the minimum required to sync USB Audio.
 #define USB_AUDIO_BUFS 4
-// The four buffers are treated as eight half-buffers by the DelSig DMA
-// so we can avoid any race conditions where the DelSig catches up
-// while we are preparing for the next USB transfer.
-#define DMA_AUDIO_BUFS (USB_AUDIO_BUFS * 2)
+// The USB buffers are sub-addressable by the DMA
+#define DMA_USB_RATIO 4
+#define DMA_AUDIO_BUFS (USB_AUDIO_BUFS * DMA_USB_RATIO)
 
 // Visibility into USBFS
 extern uint8 USBFS_initVar;
