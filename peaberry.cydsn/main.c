@@ -31,14 +31,8 @@ void main()
     Si570_Start();
     Mic_Start();
     PCM3060_Start();
-
-    for(;;) {
     
-        if (KEY_Read() & 0x04) {
-            Control_Write(Control_Read() | CONTROL_RX_REVERSE);
-        } else {
-            Control_Write(Control_Read() & ~CONTROL_RX_REVERSE);
-        }
+    for(;;) {
 	
         // monitor VBUS to comply with USB spec
         if (USBFS_VBusPresent()) {

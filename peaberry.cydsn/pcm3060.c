@@ -300,10 +300,14 @@ void PCM3060_Main(void) {
         break;
     case 13:
         Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
+        i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
+        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~0x10 );
         state = 0;
         break;
     case 23:
         Control_Write(Control_Read() | CONTROL_TX_ENABLE);
+        i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
+        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | 0x10 );
         state = 0;
         break;
     case 33:
