@@ -18,9 +18,17 @@
 #include <device.h>
 
 // Control register bits
-#define CONTROL_LO_DIV_BY_8  0x01
-#define CONTROL_RX_REVERSE   0x02
-#define CONTROL_TX_ENABLE    0x04
+#define CONTROL_TX_ENABLE    0x01
+
+// Status register bits
+#define KEY_0  0x01
+#define KEY_1  0x02
+#define RX_REV 0x04
+
+// IQ Generator bits
+#define IQ_GEN_TX       0x10
+#define IQ_GEN_DIV_MASK 0x07
+
 
 // 48 24-bit stereo samples every 1 ms
 #define I2S_BUF_SIZE (48u * 3 * 2)

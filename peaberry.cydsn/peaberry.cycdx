@@ -146,6 +146,21 @@
   <block name="TxI2S_Swap" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_100" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="RX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
+      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
+      </field>
+    </register>
     <register name="TX_STATUS_REG" address="0x6466" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
@@ -161,22 +176,7 @@
         <value name="UNDERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="RX_STATUS_REG" address="0x6467" bitWidth="8" desc="">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
-      <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="F0" from="1" to="1" access="R" resetVal="" desc="FIFO 0 state">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="OVRFL" from="0" to="0" access="R" resetVal="" desc="FIFO Overflow Error">
-        <value name="NO_OVERFLOW" value="0" desc="" />
-        <value name="OVERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="CONTROL_REG" address="0x6476" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6475" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -1123,15 +1123,15 @@
   <block name="BCK" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="IQGen" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Control" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="Control_CONTROL_REG" address="0x6473" bitWidth="8" desc="" />
+    <register name="Control_CONTROL_REG" address="0x6477" bitWidth="8" desc="" />
   </block>
   <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SPKR_R" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="KEY_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="KEY" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="KEY_STATUS_REG" address="0x6567" bitWidth="8" desc="" />
-    <register name="KEY_MASK_REG" address="0x6587" bitWidth="8" desc="" />
-    <register name="KEY_STATUS_AUX_CTL_REG" address="0x6597" bitWidth="8" desc="">
+  <block name="Status" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <register name="Status_STATUS_REG" address="0x6467" bitWidth="8" desc="" />
+    <register name="Status_MASK_REG" address="0x6487" bitWidth="8" desc="" />
+    <register name="Status_STATUS_AUX_CTL_REG" address="0x6497" bitWidth="8" desc="">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />

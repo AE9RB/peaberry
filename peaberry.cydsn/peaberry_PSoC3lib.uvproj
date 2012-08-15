@@ -759,16 +759,6 @@
               <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
             </File>
             <File>
-              <FileName>KEY.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\KEY.c</FilePath>
-            </File>
-            <File>
-              <FileName>KEY.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_VBUS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
@@ -947,6 +937,16 @@
               <FileName>TxI2S_Zero_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Status.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Status.c</FilePath>
+            </File>
+            <File>
+              <FileName>Status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1709,16 +1709,6 @@
               <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
             </File>
             <File>
-              <FileName>KEY.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\KEY.c</FilePath>
-            </File>
-            <File>
-              <FileName>KEY.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\KEY.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_VBUS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
@@ -1897,6 +1887,16 @@
               <FileName>TxI2S_Zero_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Zero_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Status.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Status.c</FilePath>
+            </File>
+            <File>
+              <FileName>Status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
             </File>
           </Files>
         </Group>

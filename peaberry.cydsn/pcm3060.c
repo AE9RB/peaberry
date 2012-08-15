@@ -17,7 +17,7 @@
 #define PCM3060_ADDR 0x46
 
 // Delay a whole sample to swap endians on 24-bit words using DMA.
-void LoadSwapOrder(uint8* a) {
+void LoadSwapOrderNorm(uint8* a) {
     a[0] = 5;
     a[1] = 4;
     a[2] = 3;
@@ -29,9 +29,24 @@ void LoadSwapOrder(uint8* a) {
     a[8] = 0;
 }
 
+void LoadSwapOrderRev(uint8* a) {
+    a[0] = 11;
+    a[1] = 10;
+    a[2] = 9;
+    a[3] = 8;
+    a[4] = 7;
+    a[5] = 6;
+    a[6] = 5;
+    a[7] = 4;
+    a[8] = 3;
+    a[9] = 2;
+    a[10] = 1;
+    a[11] = 0;
+}
+
 
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[DMA_AUDIO_BUFS];
-volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[9], RxI2S_Move, RxI2S_DMA_Buf;
+volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move, RxI2S_DMA_Buf;
 
 CY_ISR(RxI2S_DMA_done) {
     uint8 td, bufnum;
@@ -49,25 +64,32 @@ CY_ISR(RxI2S_DMA_done) {
 
 void DmaRxConfiguration(void)
 {
-    uint8 RxI2S_Swap_Chan, RxI2S_Stage_Chan, RxI2S_Stage_TD[9], RxI2S_Swap_TD[9];
-    uint8 i, j, n, order[9];
-    LoadSwapOrder(order);
+    uint8 RxI2S_Swap_Chan, RxI2S_Stage_Chan, RxI2S_Stage_TD[12], RxI2S_Swap_TD[12];
+    uint8 i, j, n, swapsize, order[12];
+
+    if (Status_Read() & RX_REV) {
+        LoadSwapOrderRev(order);
+        swapsize = 12;
+    } else {
+        LoadSwapOrderNorm(order);
+        swapsize = 9;
+    }
 
     RxI2S_Stage_Chan = RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0; i < 9; i++) RxI2S_Stage_TD[i]=CyDmaTdAllocate();
-    for (i=0; i < 9; i++) {
+    for (i=0; i < swapsize; i++) RxI2S_Stage_TD[i]=CyDmaTdAllocate();
+    for (i=0; i < swapsize; i++) {
         n = i + 1;
-        if (n >= 9) n=0;
+        if (n >= swapsize) n=0;
         CyDmaTdSetConfiguration(RxI2S_Stage_TD[i], 1, RxI2S_Stage_TD[n], RxI2S_Stage__TD_TERMOUT_EN );
         CyDmaTdSetAddress(RxI2S_Stage_TD[i], LO16(I2S_RX_FIFO_0_PTR), LO16(&RxI2S_Swap[i]));
     }
     CyDmaChSetInitialTd(RxI2S_Stage_Chan, RxI2S_Stage_TD[0]);
 
     RxI2S_Swap_Chan = RxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0; i < 9; i++) RxI2S_Swap_TD[i]=CyDmaTdAllocate();
-    for (i=0; i < 9; i++) {
+    for (i=0; i < swapsize; i++) RxI2S_Swap_TD[i]=CyDmaTdAllocate();
+    for (i=0; i < swapsize; i++) {
         n = i + 1;
-        if (n >= 9) n=0;
+        if (n >= swapsize) n=0;
         CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], RxI2S_Swap__TD_TERMOUT_EN);
         CyDmaTdSetAddress(RxI2S_Swap_TD[i], LO16(&RxI2S_Swap[order[i]]), LO16(&RxI2S_Move));
     }
@@ -118,7 +140,7 @@ CY_ISR(TxI2S_DMA_done) {
 void DmaTxConfiguration(void) {
     uint8 TxI2S_Swap_Chan, TxI2S_Swap_TD[9], TxI2S_Stage_Chan, TxI2S_Stage_TD[9];
     uint8 i, j, n, order[9], TxI2S_Zero_Chan, TxI2S_Zero_TD;
-    LoadSwapOrder(order);
+    LoadSwapOrderNorm(order);
     
     TxI2S_Swap_Chan = TxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_PERIPH_BASE));
     for (i=0; i < 9; i++) TxI2S_Swap_TD[i]=CyDmaTdAllocate();
@@ -301,13 +323,13 @@ void PCM3060_Main(void) {
     case 13:
         Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
         i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
-        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~0x10 );
+        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_TX );
         state = 0;
         break;
     case 23:
         Control_Write(Control_Read() | CONTROL_TX_ENABLE);
         i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
-        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | 0x10 );
+        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | IQ_GEN_TX );
         state = 0;
         break;
     case 33:
