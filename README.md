@@ -33,4 +33,4 @@ have been excluded from the git repository.
 
 ## Schematic
 
-https://github.com/downloads/ham21/peaberry/SchematicV1.pdf
+https://github.com/downloads/ham21/peaberry/Schematic.pdf
