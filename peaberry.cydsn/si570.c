@@ -16,8 +16,8 @@
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
-#define MIN_LO 2.5 // minimum with additional divide by 4
-#define DIV_LO 10.0 // Tunes 600m-160m without violating Si570 spec.
+#define MIN_LO 1.0 
+#define DIV_LO 10.0 // Engage extra dividers below this.
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
@@ -200,12 +200,13 @@ void Si570_Main(void) {
         i = SI570_DCO_CENTER / (fout * state);
         if (i > 1 && (i&1)) i++;
         testdco = fout * state * i;
+        state++;
+        if (i>128) break;
         if (testdco > SI570_DCO_MIN && testdco < dco) {
             dco = testdco;
             n1 = i;
-            hsdiv = state;
+            hsdiv = state - 1;
         }
-        state++;
         break;            
     }
 
