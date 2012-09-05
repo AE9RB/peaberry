@@ -34,7 +34,7 @@ uint8 fasterp, slowerp, chan1, chan2, initialized = 0;
 CY_ISR(isr_up) {
     uint16 c;
     c = CY_GET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR);
-    if (c<1020) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
+    if (c<1015) CY_SET_REG16(SyncSOF_PWM_COMPARE1_LSB_PTR, c+1);
 }
 
 CY_ISR(isr_dn) {
@@ -77,6 +77,7 @@ void SyncSOF_Start(void) {
 
     pdn_isr_Start();
     pdn_isr_SetVector(isr_dn);
+
 }
 
 void SyncSOF_Stop(void) {

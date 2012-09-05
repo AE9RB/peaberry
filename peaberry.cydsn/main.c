@@ -31,6 +31,7 @@ void main()
     Si570_Start();
     Mic_Start();
     PCM3060_Start();
+    CY_SET_REG8(IQGen_Counter__CONTROL_AUX_CTL_REG, 0x20);
     
     for(;;) {
 	

@@ -16,75 +16,64 @@
 // ========================================
 `include "cypress.v"
 //`#end` -- edit above this line, do not edit this line
+// Generated on 09/03/2012 at 14:49
+// Component: IQGen
+module IQGen (
+	output [1:0] qsd,
+	output [1:0] qse,
+	input   clock
+);
 
 //`#start body` -- edit after this line, do not edit this line
 
-module IQGen (clock, qsd, qse);
-    input clock;
-    output [1:0] qsd;
-    output [1:0] qse;
-
-    reg [1:0] qsdi;
-    reg [1:0] qsd;
-    reg [1:0] qse;
-    reg [2:0] qsd_counter;
-    reg [2:0] qse_counter;
     wire [7:0] settings;
-
-    cy_psoc3_control # (.cy_init_value (8'b1001), .cy_force_order(1))
+    cy_psoc3_control # (.cy_init_value(8'b0), .cy_force_order(1))
     Settings ( .control(settings) );
+
+    wire [6:0] count;
+    cy_psoc3_count7 #(.cy_period(7'b0011111))
+    Counter (
+        /* input        */ .clock(clock),
+        /* input        */ .reset(1'b0),
+        /* input        */ .load(1'b0),
+        /* input        */ .enable(1'b1),
+        /* output [6:0] */ .count(count),
+        /* output       */ .tc()
+    );
+
+    // This unusual construct is my attempt to reserve a whole byte
+    // in order to keep anyone else from routing signals nearby.
+    reg [7:0] data;
+    localparam qsd1 = 1;
+    localparam qsd0 = 2;
+    localparam qse1 = 6;
+    localparam qse0 = 5;
+
+    assign qsd = {data[qsd1], data[qsd0]};
+    assign qse = {data[qse1], data[qse0]};
+
+    wire dividelower = settings[0] == 1'b1;
+    wire transmit = settings[1] == 1'b1;
+    wire runlower = count[2:0]==3'b0;
+    wire execute = !dividelower || runlower;
+    wire nextbit = dividelower ? count[4] : count[1];
     
     always @(posedge clock)
     begin
-        if (qsd_counter == settings[2:0])
+        if (execute)
         begin
-            qsd_counter <= 3'b0;
-            qsdi[0] <= ~qsdi[0];
-        end
-        else
-        begin
-            if (qsd_counter == {1'b0, settings[2:1]})
-                qsdi[1] <= qsdi[0];
-            qsd_counter <= qsd_counter + 1;
-        end
-
-        if (1'b1 == settings[3])
-        begin
-            qsd[1] <= qsdi[0];
-            qsd[0] <= qsdi[1];
-        end
-        else
-        begin
-            qsd[1:0] <= qsdi[1:0];
-        end
-        
-        if (1'b1 == settings[4])
-        begin
-            if (qse_counter == settings[2:0])
-            begin
-                qse_counter <= 3'b0;
-                qse[1] <= ~qse[1];
-            end
+            {data[qsd1], data[qsd0]} <= {nextbit, data[qsd1]};
+            if (transmit)
+                {data[qse1], data[qse0]} <= {nextbit, data[qse1]};
             else
-            begin
-                if (qse_counter == {1'b0, settings[2:1]})
-                    qse[0] <= qse[1];
-                qse_counter <= qse_counter + 1;
-            end
+                {data[qse1], data[qse0]} <= 2'b00;
         end
-        else
-        begin
-            qse[1:0] <= 2'b00;
-        end
-
     end
-
-endmodule
 
 //`#end` -- edit above this line, do not edit this line
 
+endmodule
 //`#start footer` -- edit after this line, do not edit this line
 //`#end` -- edit above this line, do not edit this line
 
 
-//[] END OF FILE

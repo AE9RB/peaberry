@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <peaberry.h>
+#include <stdlib.h>
 
 #define RX_ENDPOINT              2
 #define RX_INTERFACE             2
@@ -27,9 +28,14 @@
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 int8 nd(use, dma) {
+    int8 i1, i2;
     use *= DMA_USB_RATIO;
+    i1 = use - dma;
     if (dma < use) dma += DMA_AUDIO_BUFS;
-    return use - dma;
+    else use += DMA_AUDIO_BUFS;
+    i2 = use - dma;
+    if (abs(i1) < abs(i2)) return i1;
+    return i2;
 }
 
 // Using only four USB buffers with fine tuning of the SOF sync,
@@ -65,14 +71,18 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
     // fine tune sof timer based on buffer slip
     new_distance = nd(*use, dma);
     if (!hold_timer || hold_on == use) {
-        hold_on = use; // only adjust from one source at a time
         hold_timer = 10; // must be greater than number of interfaces
-        delta_distance = *distance - new_distance;
-        if (!delta_distance) return;
-        if (delta_distance > 0) {
-            SyncSOF_Slower();
+        if (hold_on != use) {
+            // changing to a new master
+            hold_on = use;
         } else {
-            SyncSOF_Faster();
+            delta_distance = *distance - new_distance;
+            if (!delta_distance) return;
+            if (delta_distance > 0) {
+                SyncSOF_Slower();
+            } else {
+                SyncSOF_Faster();
+            }
         }
     } else {
         if (hold_timer) hold_timer--;

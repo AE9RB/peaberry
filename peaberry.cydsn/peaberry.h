@@ -26,8 +26,8 @@
 #define RX_REV 0x04
 
 // IQ Generator bits
-#define IQ_GEN_TX       0x10
-#define IQ_GEN_DIV_MASK 0x07
+#define IQ_GEN_TX     0x02
+#define IQ_GEN_DIV    0x01
 
 
 // 48 24-bit stereo samples every 1 ms

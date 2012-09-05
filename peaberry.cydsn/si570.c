@@ -16,8 +16,8 @@
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
-#define MIN_LO 1.0 
-#define DIV_LO 10.0 // Engage extra dividers below this.
+#define MIN_LO 0.480 
+#define DIV_LO 4.0 // Engage extra dividers below this.
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
@@ -133,7 +133,7 @@ void Si570_Main(void) {
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
             Divide_Lower = (fout < DIV_LO);
-            if (Divide_Lower) fout *= 4;
+            if (Divide_Lower) fout *= 8;
             Locked_I2C = 1;
             dco = SI570_DCO_MAX;
             state = 4;
@@ -172,9 +172,9 @@ void Si570_Main(void) {
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
         i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
         if (Divide_Lower) {
-            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_DIV_MASK | 0x07 );
+            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | IQ_GEN_DIV );
         } else {
-            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_DIV_MASK | 0x01 );
+            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_DIV );
         }
         state++;
         break;
