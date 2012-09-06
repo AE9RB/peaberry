@@ -46,27 +46,26 @@ module IQGen (
     // This unusual construct is my attempt to reserve a whole byte
     // in order to keep anyone else from routing signals nearby.
     reg [7:0] data;
-    localparam qsd1 = 1;
+    localparam qsd1 = 6;
     localparam qsd0 = 2;
-    localparam qse1 = 6;
-    localparam qse0 = 5;
-
+    localparam qse1 = 4;
+    localparam qse0 = 0;
     assign qsd = {data[qsd1], data[qsd0]};
     assign qse = {data[qse1], data[qse0]};
-    assign tx = settings[1] == 1'b1;
 
-    wire dividelower = settings[0] == 1'b1;
-    wire runlower = count[2:0]==3'b0;
-    wire execute = !dividelower || runlower;
+    // Another trick to reduce noise is to adjust positions
+    // in the settings register for different PLD layouts.
+    wire dividelower = settings[0];
     wire rxbit = dividelower ? count[4] : count[1];
-    wire txbit = tx ? nextrxbit : 1'b0;
-    
+    assign tx = settings[1];
+    wire txbit = tx ? rxbit : 1'b0;
+
     always @(posedge clock)
     begin
-        if (execute)
+        if (count[2:0]==3'b0 || !dividelower)
         begin
-            {data[qsd1], data[qsd0]} <= {rxbit, data[qsd1]};
-            {data[qse1], data[qse0]} <= {txbit, data[qse1]};
+            {data[qsd1], data[qsd0]} <= {data[qsd0], rxbit};
+            {data[qse1], data[qse0]} <= {data[qse0], txbit};
         end
     end
 
