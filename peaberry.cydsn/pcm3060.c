@@ -262,7 +262,7 @@ void PCM3060_Main(void) {
     switch (state) {
     case 0:
         if (!Locked_I2C) {
-            if (Control_Read() & CONTROL_TX_ENABLE) {
+            if (IQGen_GetTransmit()) {
                 if (!TX_Request) {
                     state = 10;
                     volume = 53;
@@ -321,15 +321,11 @@ void PCM3060_Main(void) {
         if (!TxBufCountdown) state++;
         break;
     case 13:
-        Control_Write(Control_Read() & ~CONTROL_TX_ENABLE);
-        i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
-        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_TX );
+        IQGen_SetTransmit(0);
         state = 0;
         break;
     case 23:
-        Control_Write(Control_Read() | CONTROL_TX_ENABLE);
-        i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
-        CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | IQ_GEN_TX );
+        IQGen_SetTransmit(1);
         state = 0;
         break;
     case 33:

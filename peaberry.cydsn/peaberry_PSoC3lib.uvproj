@@ -749,16 +749,6 @@
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
-            </File>
-            <File>
-              <FileName>Control.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_VBUS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
@@ -947,6 +937,16 @@
               <FileName>Status.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
+            </File>
+            <File>
+              <FileName>IQGen_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\IQGen_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>IQGen_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1699,16 +1699,6 @@
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
-            </File>
-            <File>
-              <FileName>Control.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_VBUS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS.c</FilePath>
@@ -1897,6 +1887,16 @@
               <FileName>Status.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
+            </File>
+            <File>
+              <FileName>IQGen_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\IQGen_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>IQGen_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
             </File>
           </Files>
         </Group>

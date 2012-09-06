@@ -1,3 +1,4 @@
+
 //`#start header` -- edit after this line, do not edit this line
 // ========================================
 // Copyright 2012 David Turnbull AE9RB
@@ -16,11 +17,12 @@
 // ========================================
 `include "cypress.v"
 //`#end` -- edit above this line, do not edit this line
-// Generated on 09/03/2012 at 14:49
+// Generated on 09/05/2012 at 18:13
 // Component: IQGen
 module IQGen (
 	output [1:0] qsd,
 	output [1:0] qse,
+	output  tx,
 	input   clock
 );
 
@@ -51,29 +53,24 @@ module IQGen (
 
     assign qsd = {data[qsd1], data[qsd0]};
     assign qse = {data[qse1], data[qse0]};
+    assign tx = settings[1] == 1'b1;
 
     wire dividelower = settings[0] == 1'b1;
-    wire transmit = settings[1] == 1'b1;
     wire runlower = count[2:0]==3'b0;
     wire execute = !dividelower || runlower;
-    wire nextbit = dividelower ? count[4] : count[1];
+    wire rxbit = dividelower ? count[4] : count[1];
+    wire txbit = tx ? nextrxbit : 1'b0;
     
     always @(posedge clock)
     begin
         if (execute)
         begin
-            {data[qsd1], data[qsd0]} <= {nextbit, data[qsd1]};
-            if (transmit)
-                {data[qse1], data[qse0]} <= {nextbit, data[qse1]};
-            else
-                {data[qse1], data[qse0]} <= 2'b00;
+            {data[qsd1], data[qsd0]} <= {rxbit, data[qsd1]};
+            {data[qse1], data[qse0]} <= {txbit, data[qse1]};
         end
     end
 
 //`#end` -- edit above this line, do not edit this line
-
 endmodule
 //`#start footer` -- edit after this line, do not edit this line
 //`#end` -- edit above this line, do not edit this line
-
-

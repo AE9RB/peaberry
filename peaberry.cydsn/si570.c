@@ -170,12 +170,7 @@ void Si570_Main(void) {
         Si570_Buf[0] = 135;
         Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
-        i = CY_GET_REG8(IQGen_Settings__CONTROL_REG);
-        if (Divide_Lower) {
-            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i | IQ_GEN_DIV );
-        } else {
-            CY_SET_REG8(IQGen_Settings__CONTROL_REG, i & ~IQ_GEN_DIV );
-        }
+        IQGen_SetDivider(Divide_Lower);
         state++;
         break;
     case 13: // waiting on I2C
