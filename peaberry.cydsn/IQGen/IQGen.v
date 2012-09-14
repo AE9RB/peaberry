@@ -28,6 +28,15 @@ module IQGen (
 
 //`#start body` -- edit after this line, do not edit this line
 
+    wire counter_clock;
+    cy_psoc3_udb_clock_enable_v1_0 #(.sync_mode(`FALSE)) 
+    ClockSyncBypass
+    (
+        /* input  */    .clock_in(clock),
+        /* input  */    .enable(1'b1),
+        /* output */    .clock_out(counter_clock)
+    ); 
+
     wire [7:0] settings;
     cy_psoc3_control # (.cy_init_value(8'b0), .cy_force_order(1))
     Settings ( .control(settings) );
@@ -35,7 +44,7 @@ module IQGen (
     wire [6:0] count;
     cy_psoc3_count7 #(.cy_period(7'b0011111))
     Counter (
-        /* input        */ .clock(clock),
+        /* input        */ .clock(counter_clock),
         /* input        */ .reset(1'b0),
         /* input        */ .load(1'b0),
         /* input        */ .enable(1'b1),
@@ -43,26 +52,22 @@ module IQGen (
         /* output       */ .tc()
     );
 
-    // This unusual construct is my attempt to reserve a whole byte
-    // in order to keep anyone else from routing signals nearby.
-    reg [7:0] data;
-    localparam qsd1 = 6;
-    localparam qsd0 = 2;
-    localparam qse1 = 4;
-    localparam qse0 = 0;
+    reg [3:0] data;
+    localparam qsd1 = 2;
+    localparam qsd0 = 1;
+    localparam qse1 = 0;
+    localparam qse0 = 3;
     assign qsd = {data[qsd1], data[qsd0]};
     assign qse = {data[qse1], data[qse0]};
-
-    // Another trick to reduce noise is to adjust positions
-    // in the settings register for different PLD layouts.
+    
     wire dividelower = settings[0];
     wire rxbit = dividelower ? count[4] : count[1];
-    assign tx = settings[1];
+    assign tx = settings[4];
     wire txbit = tx ? rxbit : 1'b0;
 
-    always @(posedge clock)
+    always @(posedge counter_clock)
     begin
-        if (count[2:0]==3'b0 || !dividelower)
+        if (!dividelower || count[2:0]==3'b0)
         begin
             {data[qsd1], data[qsd0]} <= {data[qsd0], rxbit};
             {data[qse1], data[qse0]} <= {data[qse0], txbit};

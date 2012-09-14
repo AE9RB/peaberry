@@ -18,7 +18,7 @@
 
 // Setings bits
 #define IQ_GEN_DIV    0x01
-#define IQ_GEN_TX     0x02
+#define IQ_GEN_TX     0x10
 
 void `$INSTANCE_NAME`_Start(void) {
     uint8 i;
