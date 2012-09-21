@@ -19,11 +19,19 @@ uint8 TX_Request = 0;
 // Check and lock this in the main loop before using I2C
 uint8 Locked_I2C = 0;
 
+
+void startSOF() {
+    uint8 upChan, downChan;
+    upChan = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+    downChan = pdn_DMA_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+    SyncSOF_Start(upChan, downChan);
+}
+
 void main()
 {
     CyGlobalIntEnable;
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    SyncSOF_Start();
+    startSOF();
     while(!USBFS_GetConfiguration());
     USBAudio_Start();
     Settings_Start();
@@ -39,12 +47,10 @@ void main()
         if (USBFS_VBusPresent()) {
             if(!USBFS_initVar) {
                 USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-                SyncSOF_Start();
                 USBAudio_Start();
             }
         } else {
             if(USBFS_initVar) {
-                SyncSOF_Stop();
                 USBFS_Stop();
             }
         }

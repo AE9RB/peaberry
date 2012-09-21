@@ -27,24 +27,10 @@
 // For the unused speaker or transmit USB data.
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
-int8 nd(use, dma) {
-    int8 i1, i2;
-    use *= DMA_USB_RATIO;
-    i1 = use - dma;
-    if (dma < use) dma += DMA_AUDIO_BUFS;
-    else use += DMA_AUDIO_BUFS;
-    i2 = use - dma;
-    if (abs(i1) < abs(i2)) return i1;
-    return i2;
-}
 
-// Using only four USB buffers with fine tuning of the SOF sync,
-// we can eliminate all overruns and underruns.
-void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
-    static uint8 hold_timer=0;
-    static uint8* hold_on;
+// TODO deprecated
+void USBAudio_SyncBufs(uint8 dma, uint8* use) {
     uint8 dma_adjusted, buf;
-    int8 delta_distance, new_distance;
     
     buf = dma / DMA_USB_RATIO;
     if (dma & (DMA_USB_RATIO-1)) {
@@ -57,7 +43,6 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
         // underrun
         *use += USB_AUDIO_BUFS / 2;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        *distance = nd(*use, dma);
         return;
     }
     if (++*use == USB_AUDIO_BUFS) *use = 0;
@@ -65,29 +50,8 @@ void USBAudio_SyncBufs(uint8 dma, uint8* use, int8* distance) {
         // overrun
         *use += USB_AUDIO_BUFS / 2;
         if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        *distance = nd(*use, dma);
         return;
     }
-    // fine tune sof timer based on buffer slip
-    new_distance = nd(*use, dma);
-    if (!hold_timer || hold_on == use) {
-        hold_timer = 10; // must be greater than number of interfaces
-        if (hold_on != use) {
-            // changing to a new master
-            hold_on = use;
-        } else {
-            delta_distance = *distance - new_distance;
-            if (!delta_distance) return;
-            if (delta_distance > 0) {
-                SyncSOF_Slower();
-            } else {
-                SyncSOF_Faster();
-            }
-        }
-    } else {
-        if (hold_timer) hold_timer--;
-    }
-    *distance = new_distance;
 }
 
 extern uint8 USBFS_currentVolume[];

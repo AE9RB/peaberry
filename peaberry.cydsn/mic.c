@@ -74,13 +74,12 @@ void Mic_Start(void)
 
 uint8* Mic_Buf(uint8* reset) {
     static uint8 use = 0;
-    static int8 distance = 0;
     uint8 dma;
     dma = Mic_DMA_Buf;
     if (*reset) {
         use = dma/DMA_USB_RATIO;
         *reset = 0;
     }
-    USBAudio_SyncBufs(dma, &use, &distance);
+    USBAudio_SyncBufs(dma, &use);
     return Mic_Buff[use];
 }

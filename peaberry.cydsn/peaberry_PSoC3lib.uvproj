@@ -764,16 +764,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>TxI2S_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>TxI2S_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>TxI2S_Swap_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
@@ -804,16 +794,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>pup_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>pdn_DMA_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
@@ -832,46 +812,6 @@
               <FileName>pup_DMA_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_isr.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter_PM.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
             </File>
             <File>
               <FileName>Mic_Buff_dma.c</FileName>
@@ -947,6 +887,16 @@
               <FileName>IQGen_api.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1714,16 +1664,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>TxI2S_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>TxI2S_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>TxI2S_Swap_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
@@ -1754,16 +1694,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>pup_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>pdn_DMA_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
@@ -1782,46 +1712,6 @@
               <FileName>pup_DMA_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_isr.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_Counter_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_Counter_PM.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.c</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM.h</FilePath>
-            </File>
-            <File>
-              <FileName>SyncSOF_PWM_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SyncSOF_PWM_PM.c</FilePath>
             </File>
             <File>
               <FileName>Mic_Buff_dma.c</FileName>
@@ -1897,6 +1787,16 @@
               <FileName>IQGen_api.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>SyncSOF_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.h</FilePath>
             </File>
           </Files>
         </Group>
