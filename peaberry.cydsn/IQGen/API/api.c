@@ -17,8 +17,8 @@
 #include "`$INSTANCE_NAME`_api.h"
 
 // Setings bits
-#define IQ_GEN_DIV    0x01
-#define IQ_GEN_TX     0x10
+#define IQ_GEN_TX     0x01
+#define IQ_GEN_DIV    0x02
 
 void `$INSTANCE_NAME`_Start(void) {
     uint8 i;

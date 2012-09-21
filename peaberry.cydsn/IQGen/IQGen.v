@@ -53,21 +53,21 @@ module IQGen (
     );
 
     reg [3:0] data;
-    localparam qsd1 = 2;
-    localparam qsd0 = 1;
-    localparam qse1 = 0;
-    localparam qse0 = 3;
+    localparam qsd1 = 3;
+    localparam qsd0 = 2;
+    localparam qse1 = 1;
+    localparam qse0 = 0;
     assign qsd = {data[qsd1], data[qsd0]};
     assign qse = {data[qse1], data[qse0]};
     
-    wire dividelower = settings[0];
+    assign tx = settings[0];
+    wire dividelower = settings[1];
     wire rxbit = dividelower ? count[4] : count[1];
-    assign tx = settings[4];
     wire txbit = tx ? rxbit : 1'b0;
 
     always @(posedge counter_clock)
     begin
-        if (!dividelower || count[2:0]==3'b0)
+        if (count[2:0]==3'b0 || !dividelower )
         begin
             {data[qsd1], data[qsd0]} <= {data[qsd0], rxbit};
             {data[qse1], data[qse0]} <= {data[qse0], txbit};
