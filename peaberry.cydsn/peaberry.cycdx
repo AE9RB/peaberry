@@ -26,7 +26,7 @@
   <block name="Clock_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="RX_STATUS_REG" address="0x6463" bitWidth="8" desc="">
+    <register name="RX_STATUS_REG" address="0x6460" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="EMPTY" value="0" desc="" />
@@ -41,7 +41,7 @@
         <value name="OVERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="TX_STATUS_REG" address="0x6467" bitWidth="8" desc="">
+    <register name="TX_STATUS_REG" address="0x6464" bitWidth="8" desc="">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" />
       <field name="F1" from="2" to="2" access="R" resetVal="" desc="FIFO 1 state">
         <value name="FULL" value="0" desc="" />
@@ -56,7 +56,7 @@
         <value name="UNDERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x6473" bitWidth="8" desc="">
+    <register name="CONTROL_REG" address="0x6474" bitWidth="8" desc="">
       <field name="ENBL" from="2" to="2" access="RW" resetVal="" desc="Starts the generation of the WS and SCK outputs">
         <value name="ENABLED" value="1" desc="" />
         <value name="DISABLED" value="0" desc="" />
@@ -1003,9 +1003,9 @@
   <block name="SPKR_L" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QSD" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Status" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <register name="Status_STATUS_REG" address="0x6567" bitWidth="8" desc="" />
-    <register name="Status_MASK_REG" address="0x6587" bitWidth="8" desc="" />
-    <register name="Status_STATUS_AUX_CTL_REG" address="0x6597" bitWidth="8" desc="">
+    <register name="Status_STATUS_REG" address="0x6467" bitWidth="8" desc="" />
+    <register name="Status_MASK_REG" address="0x6487" bitWidth="8" desc="" />
+    <register name="Status_STATUS_AUX_CTL_REG" address="0x6497" bitWidth="8" desc="">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />

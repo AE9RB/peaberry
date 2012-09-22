@@ -34,9 +34,10 @@ module SyncSOF (
     // of buffer 0 obtained from the DMA communicating with the DelSigs.
 
     reg [1:0] quadrant;
-    reg softriggered;
     reg sodtriggered;
     reg reloadtriggered;
+    reg sof_sync;
+    reg sof_prev;
     reg gofaster;
     reg goslower;
 
@@ -107,7 +108,7 @@ module SyncSOF (
         /* output       */ .tc(delaytc1)
     );
     wire [6:0] delaycount2;
-    cy_psoc3_count7 #(.cy_period(7'b1000111))
+    cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter1 (
         /* input        */ .clock(delaytc1),
         /* input        */ .reset(sod),
@@ -146,8 +147,6 @@ module SyncSOF (
         else quadrant <= quadrant + 1;
     end
     
-    reg sof_sync;
-    reg sof_prev;
     always @(posedge sof or posedge sodtriggered)
     begin
         if (sodtriggered) buffer <= 0;
@@ -159,53 +158,49 @@ module SyncSOF (
         end
     end
     
-    always @(posedge clock)
+    always @(posedge clock or posedge sod)
     begin
-    
-        case (cs_addr[2:1])
-            2'b01:
-            begin
-                gofaster <= 0;
-                if (pwmpos < PWM_MAX - PWM_MIN) pwmpos <= pwmpos + 1;
-            end
-            2'b10:
-            begin
-                goslower <= 0;
-                if (pwmpos > 0) pwmpos <= pwmpos - 1;
-            end
-            default:
-            begin
-                gofaster <= 0;
-                goslower <= 0;
-            end
-        endcase
-
-        if (sof_sync != sof_prev)
-        begin
-            sof_prev <= sof_sync;
-            softriggered <= 1;
-            if (quadrant[1])
-            begin
-                if (pwmpos > 0) goslower <= 1;
-            end
-            else
-            begin
-                if (pwmpos < PWM_MAX - PWM_MIN) gofaster <= 1;
-            end
-        end
+        if (sod) sodtriggered <= 1;
         else
         begin
-            softriggered <= 0;
-        end
-        
-        if (sod && !sodtriggered) sodtriggered <= 1;
-        if (delaytc2 && sodtriggered)
-        begin
-            sodtriggered <= 0;
-            reloadtriggered <= 1;
-        end
-        else reloadtriggered <= 0;
+            if (delaytc2 && sodtriggered)
+            begin
+                sodtriggered <= 0;
+                reloadtriggered <= 1;
+            end
+            else reloadtriggered <= 0;
 
+            case (cs_addr[2:1])
+                2'b01:
+                begin
+                    gofaster <= 0;
+                    if (pwmpos < PWM_MAX - PWM_MIN) pwmpos <= pwmpos + 1;
+                end
+                2'b10:
+                begin
+                    goslower <= 0;
+                    if (pwmpos > 0) pwmpos <= pwmpos - 1;
+                end
+                default:
+                begin
+                    gofaster <= 0;
+                    goslower <= 0;
+                end
+            endcase
+
+            if (sof_sync != sof_prev)
+            begin
+                sof_prev <= sof_sync;
+                if (quadrant[1])
+                begin
+                    if (pwmpos > 0) goslower <= 1;
+                end
+                else
+                begin
+                    if (pwmpos < PWM_MAX - PWM_MIN) gofaster <= 1;
+                end
+            end
+        end
     end
     
     
