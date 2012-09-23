@@ -89,7 +89,7 @@ void DmaRxConfiguration(void)
     for (i=0; i < 2; i++) RxI2S_Buff_TD[i] = CyDmaTdAllocate();
     CyDmaTdSetConfiguration(RxI2S_Buff_TD[0], I2S_BUF_SIZE, RxI2S_Buff_TD[1], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN );    
     CyDmaTdSetAddress(RxI2S_Buff_TD[0], LO16(&RxI2S_Move), LO16(RxI2S_Buff[0]));
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD[1], I2S_BUF_SIZE, RxI2S_Buff_TD[0], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN );    
+    CyDmaTdSetConfiguration(RxI2S_Buff_TD[1], I2S_BUF_SIZE, RxI2S_Buff_TD[0], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
     CyDmaTdSetAddress(RxI2S_Buff_TD[1], LO16(&RxI2S_Move), LO16(RxI2S_Buff[1]));
     CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[1]);
     
@@ -102,7 +102,7 @@ void DmaRxConfiguration(void)
 }
 
 
-uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD[2], TxZero = 0;
+uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD, TxZero = 0;
 volatile uint8 TxI2S_Buff[2][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
 
 
@@ -132,12 +132,10 @@ void DmaTxConfiguration(void) {
     CyDmaChSetInitialTd(TxI2S_Stage_Chan, TxI2S_Stage_TD[8]);
 
     TxI2S_Buff_Chan = TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0; i < 2; i++) TxI2S_Buff_TD[i] = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(TxI2S_Buff_TD[0], I2S_BUF_SIZE, TxI2S_Buff_TD[1], TD_INC_SRC_ADR );    
-    CyDmaTdSetAddress(TxI2S_Buff_TD[0], LO16(TxI2S_Buff[0]), LO16(&TxI2S_Stage));
-    CyDmaTdSetConfiguration(TxI2S_Buff_TD[1], I2S_BUF_SIZE, TxI2S_Buff_TD[0], (TD_INC_SRC_ADR | TxI2S_Buff__TD_TERMOUT_EN) );    
-    CyDmaTdSetAddress(TxI2S_Buff_TD[1], LO16(TxI2S_Buff[1]), LO16(&TxI2S_Stage));
-    CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD[0]);
+    TxI2S_Buff_TD = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * 2, TxI2S_Buff_TD, TD_INC_SRC_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
+    CyDmaTdSetAddress(TxI2S_Buff_TD, LO16(TxI2S_Buff[0]), LO16(&TxI2S_Stage));
+    CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD);
 
     TxI2S_Zero_Chan = TxI2S_Zero_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     TxI2S_Zero_TD = CyDmaTdAllocate();
@@ -169,9 +167,9 @@ void PCM3060_Start(void) {
     DmaTxConfiguration();
     DmaRxConfiguration();
     
-    I2S_Start();
     I2S_EnableTx();
     I2S_EnableRx();
+    I2S_Start();
     
     
     while (state < 2) {

@@ -43,7 +43,7 @@ module SyncSOF (
 
     // Since I found no reasonable visibility into the PWM setting, we
     // track it with PLDs to avoid needing CPU interaction.
-    reg [4:0] pwmpos;
+    reg [3:0] pwmpos;
     
     // Datapath wiring
     wire [1:0] pwm; // pwm output on pwm[1]
@@ -66,8 +66,8 @@ module SyncSOF (
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
     // Ensure the range doesn't exceed the pwmpos counter.
-    localparam PWM_MIN = 970;
-    localparam PWM_MAX = 1001;
+    localparam PWM_MIN = 984;
+    localparam PWM_MAX = 999;
     localparam PWM_PERIOD = 1024;
     
 
