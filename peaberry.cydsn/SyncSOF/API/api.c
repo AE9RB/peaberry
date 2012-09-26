@@ -17,10 +17,9 @@
 #include "`$INSTANCE_NAME`_api.h"
 #include <device.h>
 
-// Apologies for this crap interface. C51 doesn't work well with function pointers
-// and Cypress doesn't make it practical to embed DMA into components.
-// You must first initialize both DMAs with exatly the following parameters:
-// chan = DMA_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
+
+// Use the enable macro instead of this start function:
+// SyncSOF_Enable(up_DMA, down_DMA);
 void `$INSTANCE_NAME`_Start(uint8 dmaUpChan, uint8 dmaDownChan) {
     uint8 td;
 

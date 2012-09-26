@@ -20,18 +20,11 @@ uint8 TX_Request = 0;
 uint8 Locked_I2C = 0;
 
 
-void startSOF() {
-    uint8 upChan, downChan;
-    upChan = pup_DMA_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
-    downChan = pdn_DMA_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE));
-    SyncSOF_Start(upChan, downChan);
-}
-
 void main()
 {
     CyGlobalIntEnable;
+    SyncSOF_Enable(pup_DMA, pdn_DMA);
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    startSOF();
     while(!USBFS_GetConfiguration());
     USBAudio_Start();
     Settings_Start();
