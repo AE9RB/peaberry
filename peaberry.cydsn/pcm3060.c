@@ -45,7 +45,7 @@ void LoadSwapOrderRev(uint8* a) {
 }
 
 
-#define RX_OFFSET (48 * I2S_FRAME_SIZE)
+#define RX_OFFSET (44 * I2S_FRAME_SIZE)
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[2];
 volatile uint8 RxI2S_Buff[2][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
 
@@ -189,7 +189,7 @@ void PCM3060_Start(void) {
 
 void PCM3060_Main(void) {
     // 0-54 volume is mute, 53 = state mute, 54 = user mute
-    static uint8 state = 0, volume = 0xFF, pcm3060_cmd[3];
+    static uint8 state = 0, volume = 0, filter = 0, pcm3060_cmd[3];
     uint8 i;
     
     // Watch for TX/RX switching and ask the PCM3060 to mute
@@ -202,22 +202,26 @@ void PCM3060_Main(void) {
                 if (!TX_Request) {
                     state = 10;
                     volume = 53;
+                    filter = 0x30;
                     Locked_I2C = 1;
                 } else if (volume == 53) {
                     state = 30;
                     volume = 0xFF;
+                    filter = 0;
                     Locked_I2C = 1;
                 }
             } else { // not transmitting
                 if (TX_Request) {
                     state = 20;
                     volume = 53;
+                    filter = 0;
                     Locked_I2C = 1;
                 } else {
                     i = USBAudio_Volume();
                     if (volume != i) {
                         state = 30;
                         volume = i;
+                        filter = 0x30;
                         Locked_I2C = 1;
                     }
                 }
@@ -243,7 +247,6 @@ void PCM3060_Main(void) {
             // Volume only moves 0.5dB every 8 samples
             // 34buf = 100dB / 0.5dB * 8samples / 48samples/ms
             SyncSOF_SetCountdown(34);
-            Locked_I2C = 0;
             state++;
         }
         break;    
@@ -254,14 +257,33 @@ void PCM3060_Main(void) {
         if (!SyncSOF_GetCountdown()) state++;
         break;
     case 13:
+    case 23:
+    case 33:
+        pcm3060_cmd[0] = 0x45;
+        pcm3060_cmd[1] = filter;
+        I2C_MasterWriteBuf(PCM3060_ADDR, pcm3060_cmd, 2, I2C_MODE_COMPLETE_XFER);
+        state++;
+        break;
+    case 14:
+    case 24:
+    case 34:
+        i = I2C_MasterStatus();
+        if (i & I2C_MSTAT_ERR_XFER) {
+            state--;
+        } else if (i & I2C_MSTAT_WR_CMPLT) {
+            Locked_I2C = 0;
+            state++;
+        }
+        break;    
+    case 15:
         IQGen_SetTransmit(0);
         state = 0;
         break;
-    case 23:
+    case 25:
         IQGen_SetTransmit(1);
         state = 0;
         break;
-    case 33:
+    case 35:
         state = 0;
         break;
     }

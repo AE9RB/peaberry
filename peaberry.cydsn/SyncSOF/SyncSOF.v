@@ -99,7 +99,7 @@ module SyncSOF (
         /* output       */ .tc(delaytc1)
     );
     wire [6:0] delaycount2;
-    cy_psoc3_count7 #(.cy_period(7'b1111111))
+    cy_psoc3_count7 #(.cy_period(7'b1011111))
     Counter1 (
         /* input        */ .clock(delaytc1),
         /* input        */ .reset(sod),
