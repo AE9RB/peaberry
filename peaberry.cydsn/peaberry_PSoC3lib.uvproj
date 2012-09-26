@@ -709,16 +709,6 @@
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
             <File>
-              <FileName>RxI2S_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>RxI2S_Buff_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.c</FilePath>
@@ -824,16 +814,6 @@
               <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Mic_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>RX_REV.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
@@ -897,6 +877,16 @@
               <FileName>SyncSOF_api.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1609,16 +1599,6 @@
               <FilePath>.\Generated_Source\PSoC3\I2C_PM.c</FilePath>
             </File>
             <File>
-              <FileName>RxI2S_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>RxI2S_Buff_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.c</FilePath>
@@ -1724,16 +1704,6 @@
               <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Mic_done_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_done_isr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
-            </File>
-            <File>
               <FileName>RX_REV.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
@@ -1797,6 +1767,16 @@
               <FileName>SyncSOF_api.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mic_done_isr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
             </File>
           </Files>
         </Group>

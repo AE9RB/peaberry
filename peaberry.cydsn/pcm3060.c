@@ -45,12 +45,9 @@ void LoadSwapOrderRev(uint8* a) {
 }
 
 
-uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[2], TxBufCountdown = 0;
+#define RX_OFFSET (48 * I2S_FRAME_SIZE)
+uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[2];
 volatile uint8 RxI2S_Buff[2][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
-
-CY_ISR(RxI2S_DMA_done) {
-    if (TxBufCountdown) TxBufCountdown--;
-}
 
 void DmaRxConfiguration(void)
 {
@@ -87,15 +84,12 @@ void DmaRxConfiguration(void)
 
     RxI2S_Buff_Chan = RxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     for (i=0; i < 2; i++) RxI2S_Buff_TD[i] = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD[0], I2S_BUF_SIZE, RxI2S_Buff_TD[1], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN );    
+    CyDmaTdSetConfiguration(RxI2S_Buff_TD[0], RX_OFFSET, RxI2S_Buff_TD[1], TD_INC_DST_ADR );    
     CyDmaTdSetAddress(RxI2S_Buff_TD[0], LO16(&RxI2S_Move), LO16(RxI2S_Buff[0]));
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD[1], I2S_BUF_SIZE, RxI2S_Buff_TD[0], TD_INC_DST_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
-    CyDmaTdSetAddress(RxI2S_Buff_TD[1], LO16(&RxI2S_Move), LO16(RxI2S_Buff[1]));
+    CyDmaTdSetConfiguration(RxI2S_Buff_TD[1], I2S_BUF_SIZE * 2 - RX_OFFSET, RxI2S_Buff_TD[0], TD_INC_DST_ADR);    
+    CyDmaTdSetAddress(RxI2S_Buff_TD[1], LO16(&RxI2S_Move), LO16(RxI2S_Buff[0] + RX_OFFSET));
     CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[1]);
     
-    RxI2S_done_isr_Start();
-    RxI2S_done_isr_SetVector(RxI2S_DMA_done);
-
     CyDmaChEnable(RxI2S_Buff_Chan, 1u);
     CyDmaChEnable(RxI2S_Stage_Chan, 1u);
     CyDmaChEnable(RxI2S_Swap_Chan, 1u);
@@ -233,7 +227,6 @@ void PCM3060_Main(void) {
     case 10:
     case 20:
     case 30:
-    case 40:
         pcm3060_cmd[0] = 0x41;
         pcm3060_cmd[1] = volume;
         pcm3060_cmd[2] = volume;
@@ -243,14 +236,13 @@ void PCM3060_Main(void) {
     case 11:
     case 21:
     case 31:
-    case 41:
         i = I2C_MasterStatus();
         if (i & I2C_MSTAT_ERR_XFER) {
             state--;
         } else if (i & I2C_MSTAT_WR_CMPLT) {
             // Volume only moves 0.5dB every 8 samples
-            // 67buf = 100dB / 0.5dB * 8samples / 24samples/buf
-            TxBufCountdown = 67;
+            // 34buf = 100dB / 0.5dB * 8samples / 48samples/ms
+            SyncSOF_SetCountdown(34);
             Locked_I2C = 0;
             state++;
         }
@@ -258,9 +250,8 @@ void PCM3060_Main(void) {
     case 12:
     case 22:
     case 32:
-    case 42:
         // wait on PCM3060 to process full volume change
-        if (!TxBufCountdown) state++;
+        if (!SyncSOF_GetCountdown()) state++;
         break;
     case 13:
         IQGen_SetTransmit(0);

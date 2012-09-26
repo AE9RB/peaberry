@@ -22,8 +22,10 @@
 #define KEY_1  0x02
 #define RX_REV 0x04
 
+// 2 X 24-bit bytes in an I2S sample
+#define I2S_FRAME_SIZE (3 * 2)
 // 48 24-bit stereo samples every 1 ms
-#define I2S_BUF_SIZE (48u * 3 * 2)
+#define I2S_BUF_SIZE (48u * I2S_FRAME_SIZE)
 // 48 12-bit mono samples every 1 ms
 #define MIC_BUF_SIZE (48u * 2)
 // Four buffers is the minimum required to sync USB Audio.

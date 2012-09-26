@@ -19,6 +19,8 @@
 
 void `$INSTANCE_NAME`_Start(uint8, uint8);
 uint8 `$INSTANCE_NAME`_USB_Buffer(void);
+void `$INSTANCE_NAME`_SetCountdown(uint8);
+uint8 `$INSTANCE_NAME`_GetCountdown(void);
 
 #define `$INSTANCE_NAME`_Enable(dmaUp, dmaDown) {`$INSTANCE_NAME`_Start( \
     dmaUp##_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE)), \

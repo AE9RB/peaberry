@@ -30,9 +30,9 @@ void main()
     Settings_Start();
     I2C_Start();
     Si570_Start();
+    IQGen_Start();
     Mic_Start();
     PCM3060_Start();
-    IQGen_Start();
     
     for(;;) {
 	

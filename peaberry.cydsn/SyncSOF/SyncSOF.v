@@ -48,8 +48,8 @@ module SyncSOF (
     // Which buffer to use for USB DMA.
     reg buffer;
     cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
-    STATUS ( 
-        /* input [07:00] */ .status(buffer),
+    Buffer ( 
+        /* input [07:00] */ .status({7'b0, buffer}),
         /* input         */ .reset(),
         /* input         */ .clock(clock)
     );
@@ -58,7 +58,7 @@ module SyncSOF (
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
     localparam PWM_MIN = 491;
-    localparam PWM_MAX = 502;
+    localparam PWM_MAX = 503;
     
 
     // The PLL is set higher than the target of 36.864.
@@ -147,21 +147,17 @@ module SyncSOF (
         if (sodtriggered) buffer <= 0;
         else
         begin
-            sof_sync = ~sof_sync;
-            buffer <= buffer + 1;
+            sof_sync <= ~sof_sync;
+            buffer <= ~buffer;
         end
     end
-    
-    always @(negedge clock)
-    begin
-        pwm <= pwmcounter < pwmstate;
-    end
-    
+        
     always @(posedge clock or posedge sod)
     begin
         if (sod) sodtriggered <= 1;
         else
         begin
+            pwm <= pwmcounter < pwmstate;
             pwmcounter <= pwmcounter + 1;
             if (sof_sync != sof_prev)
             begin
@@ -186,7 +182,95 @@ module SyncSOF (
     end
 
 
+    wire delaycountdownclock;
+    wire delaycountdownzero;
+    cy_psoc3_udb_clock_enable_v1_0 #(.sync_mode(`TRUE)) 
+    ClockSyncBypass
+    (
+        /* input  */    .clock_in(buffer),
+        /* input  */    .enable(1'b1),
+        /* output */    .clock_out(delaycountdownclock)
+    ); 
+
+    cy_psoc3_dp8 #(.cy_dpconfig_a(
+    {
+        `CS_ALU_OP__DEC, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC__ALU, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM0: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM1: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM2: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM3: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM4: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM5: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM6: */
+        `CS_ALU_OP_PASS, `CS_SRCA_A0, `CS_SRCB_D0,
+        `CS_SHFT_OP_PASS, `CS_A0_SRC_NONE, `CS_A1_SRC_NONE,
+        `CS_FEEDBACK_DSBL, `CS_CI_SEL_CFGA, `CS_SI_SEL_CFGA,
+        `CS_CMP_SEL_CFGA, /*CFGRAM7: */
+        8'hFF, 8'h00,  /*CFG9: */
+        8'hFF, 8'hFF,  /*CFG11-10: */
+        `SC_CMPB_A1_D1, `SC_CMPA_A1_D1, `SC_CI_B_ARITH,
+        `SC_CI_A_ARITH, `SC_C1_MASK_DSBL, `SC_C0_MASK_DSBL,
+        `SC_A_MASK_DSBL, `SC_DEF_SI_0, `SC_SI_B_DEFSI,
+        `SC_SI_A_DEFSI, /*CFG13-12: */
+        `SC_A0_SRC_ACC, `SC_SHIFT_SL, 1'h0,
+        1'h0, `SC_FIFO1_BUS, `SC_FIFO0_BUS,
+        `SC_MSB_DSBL, `SC_MSB_BIT0, `SC_MSB_NOCHN,
+        `SC_FB_NOCHN, `SC_CMP1_NOCHN,
+        `SC_CMP0_NOCHN, /*CFG15-14: */
+        10'h00, `SC_FIFO_CLK__DP,`SC_FIFO_CAP_AX,
+        `SC_FIFO_LEVEL,`SC_FIFO__SYNC,`SC_EXTCRC_DSBL,
+        `SC_WRK16CAT_DSBL /*CFG17-16: */
+    }
+    )) DelayCountdown(
+            /*  input                   */  .reset(1'b0),
+            /*  input                   */  .clk(delaycountdownclock),
+            /*  input   [02:00]         */  .cs_addr({2'b0, delaycountdownzero}),
+            /*  input                   */  .route_si(1'b0),
+            /*  input                   */  .route_ci(1'b0),
+            /*  input                   */  .f0_load(1'b0),
+            /*  input                   */  .f1_load(1'b0),
+            /*  input                   */  .d0_load(1'b0),
+            /*  input                   */  .d1_load(1'b0),
+            /*  output                  */  .ce0(),
+            /*  output                  */  .cl0(),
+            /*  output                  */  .z0(delaycountdownzero),
+            /*  output                  */  .ff0(),
+            /*  output                  */  .ce1(),
+            /*  output                  */  .cl1(),
+            /*  output                  */  .z1(),
+            /*  output                  */  .ff1(),
+            /*  output                  */  .ov_msb(),
+            /*  output                  */  .co_msb(),
+            /*  output                  */  .cmsb(),
+            /*  output                  */  .so(),
+            /*  output                  */  .f0_bus_stat(),
+            /*  output                  */  .f0_blk_stat(),
+            /*  output                  */  .f1_bus_stat(),
+            /*  output                  */  .f1_blk_stat()
+    );
+
 //`#end` -- edit above this line, do not edit this line
 endmodule
 //`#start footer` -- edit after this line, do not edit this line
 //`#end` -- edit above this line, do not edit this line
+

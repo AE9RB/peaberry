@@ -1,8 +1,10 @@
 .DS_Store
 *.cywrk.*
 *.cyprj.*
+*.cycdx
 *.cyfit
 *.rpt
+*_timing.html
 peaberry.cydsn/codegentemp
 peaberry.cydsn/DP8051
 peaberry.cydsn/Generated_Source

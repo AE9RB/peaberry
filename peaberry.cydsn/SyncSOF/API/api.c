@@ -44,5 +44,16 @@ void `$INSTANCE_NAME`_Start(uint8 dmaUpChan, uint8 dmaDownChan) {
 
 // Returns the buffer number 0-1 which is to be used for USB DMA
 uint8 `$INSTANCE_NAME`_USB_Buffer(void) {
-    return CY_GET_REG8(`$INSTANCE_NAME`_STATUS__STATUS_REG);
+    return CY_GET_REG8(`$INSTANCE_NAME`_Buffer__STATUS_REG);
+}
+
+// SOF(millisecond) countdown timer for use with 
+// PCM3060 volume changes during tx/rx switching
+void `$INSTANCE_NAME`_SetCountdown(uint8 ms) {
+    CY_SET_REG8(`$INSTANCE_NAME`_DelayCountdown_u0__A0_REG, ms);
+}
+
+// Returns current countdown value, stops at 0
+uint8 `$INSTANCE_NAME`_GetCountdown(void) {
+    return CY_GET_REG8(`$INSTANCE_NAME`_DelayCountdown_u0__A0_REG);
 }
