@@ -38,11 +38,11 @@ module SyncSOF (
     reg reloadtriggered;
     reg sof_sync;
     reg sof_prev;
-    reg [4:0] pwmstate;
-    reg [9:0] pwmcounter;
+    reg [2:0] pwmstate;
+    reg [8:0] pwmcounter;
     reg pwm;
-    reg [2:0] pwmup;
-    reg [2:0] pwmdown;
+    reg [1:0] pwmup;
+    reg [1:0] pwmdown;
     
     assign faster = pwm;
     assign slower = ~pwm;
@@ -60,9 +60,10 @@ module SyncSOF (
     
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
-    localparam PWM_MIN = 980;
-    localparam PWM_MAX = 1005;
-    localparam PWM_HOLD = 6;
+    localparam PWM_MIN = 479;
+    localparam PWM_MAX = 486;
+    localparam PWM_PERIOD = 499;
+    localparam PWM_HOLD = 3;
     
 
     // The PLL is set higher than the target of 36.864.
@@ -162,7 +163,8 @@ module SyncSOF (
         else
         begin
             pwm <= pwmcounter < pwmstate + PWM_MIN;
-            pwmcounter <= pwmcounter + 1;
+            if (!pwmcounter) pwmcounter <= PWM_PERIOD;
+            else pwmcounter <= pwmcounter - 1;
             if (sof_sync != sof_prev)
             begin
                 sof_prev <= sof_sync;

@@ -15,6 +15,8 @@
 #include <peaberry.h>
 
 #define PCM3060_ADDR 0x46
+// Filter 0x30 enables pre-emphasis
+#define PCM3060_SPKR_FILTER 0x00
 
 // Delay a whole sample to swap endians on 24-bit words using DMA.
 void LoadSwapOrderNorm(uint8* a) {
@@ -45,7 +47,7 @@ void LoadSwapOrderRev(uint8* a) {
 }
 
 
-#define RX_OFFSET (44 * I2S_FRAME_SIZE)
+#define RX_OFFSET (30 * I2S_FRAME_SIZE)
 uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[2];
 volatile uint8 RxI2S_Buff[2][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
 
@@ -202,7 +204,7 @@ void PCM3060_Main(void) {
                 if (!TX_Request) {
                     state = 10;
                     volume = 53;
-                    filter = 0x30;
+                    filter = PCM3060_SPKR_FILTER;
                     Locked_I2C = 1;
                 } else if (volume == 53) {
                     state = 30;
@@ -221,7 +223,7 @@ void PCM3060_Main(void) {
                     if (volume != i) {
                         state = 30;
                         volume = i;
-                        filter = 0x30;
+                        filter = PCM3060_SPKR_FILTER;
                         Locked_I2C = 1;
                     }
                 }
