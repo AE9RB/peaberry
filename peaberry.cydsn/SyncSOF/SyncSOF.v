@@ -38,9 +38,12 @@ module SyncSOF (
     reg reloadtriggered;
     reg sof_sync;
     reg sof_prev;
-    reg [8:0] pwmstate;
-    reg [8:0] pwmcounter;
+    reg [4:0] pwmstate;
+    reg [9:0] pwmcounter;
     reg pwm;
+    reg [2:0] pwmup;
+    reg [2:0] pwmdown;
+    
     assign faster = pwm;
     assign slower = ~pwm;
 
@@ -57,8 +60,9 @@ module SyncSOF (
     
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
-    localparam PWM_MIN = 491;
-    localparam PWM_MAX = 503;
+    localparam PWM_MIN = 980;
+    localparam PWM_MAX = 1005;
+    localparam PWM_HOLD = 6;
     
 
     // The PLL is set higher than the target of 36.864.
@@ -99,7 +103,7 @@ module SyncSOF (
         /* output       */ .tc(delaytc1)
     );
     wire [6:0] delaycount2;
-    cy_psoc3_count7 #(.cy_period(7'b1011111))
+    cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter1 (
         /* input        */ .clock(delaytc1),
         /* input        */ .reset(sod),
@@ -151,25 +155,36 @@ module SyncSOF (
             buffer <= ~buffer;
         end
     end
-        
+    
     always @(posedge clock or posedge sod)
     begin
         if (sod) sodtriggered <= 1;
         else
         begin
-            pwm <= pwmcounter < pwmstate;
+            pwm <= pwmcounter < pwmstate + PWM_MIN;
             pwmcounter <= pwmcounter + 1;
             if (sof_sync != sof_prev)
             begin
                 sof_prev <= sof_sync;
                 if (quadrant[1])
                 begin
-                    if (pwmstate > PWM_MIN) pwmstate <= pwmstate - 1;
-                    else pwmstate <= PWM_MIN; // initialize
+                    if (!pwmdown)
+                    begin
+                        if (pwmstate > 0) pwmstate <= pwmstate - 1;
+                        if (!pwmup) pwmdown <= PWM_HOLD;
+                    end
+                    else pwmdown <= pwmdown - 1;
+                    pwmup <= pwmup/2;
                 end
                 else
                 begin
-                    if (pwmstate < PWM_MAX) pwmstate <= pwmstate + 1;
+                    if (!pwmup) 
+                    begin
+                        if (pwmstate < PWM_MAX - PWM_MIN) pwmstate <= pwmstate + 1;
+                        if (!pwmdown) pwmup <= PWM_HOLD;
+                    end
+                    else pwmup <= pwmup - 1;
+                    pwmdown <= pwmdown/2;
                 end
             end
             if (delaytc2 && sodtriggered)
