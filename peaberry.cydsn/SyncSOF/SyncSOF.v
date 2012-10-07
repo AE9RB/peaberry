@@ -49,10 +49,10 @@ module SyncSOF (
 
     
     // Which buffer to use for USB DMA.
-    reg buffer;
+    reg [1:0] buffer;
     cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
     Buffer ( 
-        /* input [07:00] */ .status({7'b0, buffer}),
+        /* input [07:00] */ .status({6'b0, buffer}),
         /* input         */ .reset(),
         /* input         */ .clock(clock)
     );
@@ -92,7 +92,7 @@ module SyncSOF (
     );
 
     
-    // A delay on the sod is added to avoid collisions due to jitter.
+    // A 1/32 frame delay on the sod is added to avoid collisions due to jitter.
     wire [6:0] delaycount1;
     cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter0 (
@@ -104,7 +104,7 @@ module SyncSOF (
         /* output       */ .tc(delaytc1)
     );
     wire [6:0] delaycount2;
-    cy_psoc3_count7 #(.cy_period(7'b1111111))
+    cy_psoc3_count7 #(.cy_period(7'b0001000))
     Counter1 (
         /* input        */ .clock(delaytc1),
         /* input        */ .reset(sod),
@@ -149,11 +149,12 @@ module SyncSOF (
     
     always @(posedge sof or posedge sodtriggered)
     begin
-        if (sodtriggered) buffer <= 0;
+        if (sodtriggered) buffer <= 1;
         else
         begin
             sof_sync <= ~sof_sync;
-            buffer <= ~buffer;
+            if (buffer == 2) buffer <= 0;
+            else buffer <= buffer + 1;
         end
     end
     

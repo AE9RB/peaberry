@@ -47,21 +47,20 @@ void LoadSwapOrderRev(uint8* a) {
 }
 
 
-#define RX_OFFSET (30 * I2S_FRAME_SIZE)
-uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD[2];
-volatile uint8 RxI2S_Buff[2][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
+volatile uint8 RxI2S_Buff[3][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
 
 void DmaRxConfiguration(void)
 {
     uint8 RxI2S_Swap_Chan, RxI2S_Stage_Chan, RxI2S_Stage_TD[12], RxI2S_Swap_TD[12];
+    uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD;
     uint8 i, n, swapsize, order[12];
 
     if (Status_Read() & RX_REV) {
-        LoadSwapOrderRev(order);
-        swapsize = 12;
-    } else {
         LoadSwapOrderNorm(order);
         swapsize = 9;
+    } else {
+        LoadSwapOrderRev(order);
+        swapsize = 12;
     }
 
     RxI2S_Stage_Chan = RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
@@ -85,12 +84,10 @@ void DmaRxConfiguration(void)
     CyDmaChSetInitialTd(RxI2S_Swap_Chan, RxI2S_Swap_TD[0]);
 
     RxI2S_Buff_Chan = RxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0; i < 2; i++) RxI2S_Buff_TD[i] = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD[0], RX_OFFSET, RxI2S_Buff_TD[1], TD_INC_DST_ADR );    
-    CyDmaTdSetAddress(RxI2S_Buff_TD[0], LO16(&RxI2S_Move), LO16(RxI2S_Buff[0]));
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD[1], I2S_BUF_SIZE * 2 - RX_OFFSET, RxI2S_Buff_TD[0], TD_INC_DST_ADR);    
-    CyDmaTdSetAddress(RxI2S_Buff_TD[1], LO16(&RxI2S_Move), LO16(RxI2S_Buff[0] + RX_OFFSET));
-    CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD[1]);
+    RxI2S_Buff_TD = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(RxI2S_Buff_TD, I2S_BUF_SIZE * 3, RxI2S_Buff_TD, TD_INC_DST_ADR);    
+    CyDmaTdSetAddress(RxI2S_Buff_TD, LO16(&RxI2S_Move), LO16(RxI2S_Buff[0]));
+    CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD);
     
     CyDmaChEnable(RxI2S_Buff_Chan, 1u);
     CyDmaChEnable(RxI2S_Stage_Chan, 1u);
@@ -98,12 +95,12 @@ void DmaRxConfiguration(void)
 }
 
 
-uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD, TxZero = 0;
-volatile uint8 TxI2S_Buff[2][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
-
+uint8 TxZero = 0;
+volatile uint8 TxI2S_Buff[3][I2S_BUF_SIZE], TxI2S_Swap[9], TxI2S_Stage;
 
 void DmaTxConfiguration(void) {
     uint8 TxI2S_Swap_Chan, TxI2S_Swap_TD[9], TxI2S_Stage_Chan, TxI2S_Stage_TD[9];
+    uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD;
     uint8 i, n, order[9], TxI2S_Zero_Chan, TxI2S_Zero_TD;
     LoadSwapOrderNorm(order);
     
@@ -129,13 +126,13 @@ void DmaTxConfiguration(void) {
 
     TxI2S_Buff_Chan = TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     TxI2S_Buff_TD = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * 2, TxI2S_Buff_TD, TD_INC_SRC_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
+    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * 3, TxI2S_Buff_TD, TD_INC_SRC_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
     CyDmaTdSetAddress(TxI2S_Buff_TD, LO16(TxI2S_Buff[0]), LO16(&TxI2S_Stage));
     CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD);
 
     TxI2S_Zero_Chan = TxI2S_Zero_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     TxI2S_Zero_TD = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(TxI2S_Zero_TD, I2S_BUF_SIZE * 2, TxI2S_Zero_TD, TD_INC_DST_ADR );    
+    CyDmaTdSetConfiguration(TxI2S_Zero_TD, I2S_BUF_SIZE * 3, TxI2S_Zero_TD, TD_INC_DST_ADR );    
     CyDmaTdSetAddress(TxI2S_Zero_TD, LO16(&TxZero), LO16(TxI2S_Buff[0]));
     CyDmaChSetInitialTd(TxI2S_Zero_Chan, TxI2S_Zero_TD);
 

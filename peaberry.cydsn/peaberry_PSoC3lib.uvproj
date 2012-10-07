@@ -888,6 +888,16 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
             </File>
+            <File>
+              <FileName>I2C_SLAVE.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_SLAVE.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_MASTER.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_MASTER.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1777,6 +1787,16 @@
               <FileName>Mic_done_isr.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_done_isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_SLAVE.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_SLAVE.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_MASTER.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_MASTER.c</FilePath>
             </File>
           </Files>
         </Group>
