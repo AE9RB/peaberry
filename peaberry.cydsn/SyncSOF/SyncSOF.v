@@ -170,16 +170,6 @@ module SyncSOF (
                 sof_prev <= sof_sync;
                 if (quadrant[1])
                 begin
-                    if (!pwmdown)
-                    begin
-                        if (pwmstate > 0) pwmstate <= pwmstate - 1;
-                        if (!pwmup) pwmdown <= PWM_HOLD;
-                    end
-                    else pwmdown <= pwmdown - 1;
-                    pwmup <= pwmup/2;
-                end
-                else
-                begin
                     if (!pwmup) 
                     begin
                         if (pwmstate < PWM_MAX - PWM_MIN) pwmstate <= pwmstate + 1;
@@ -187,6 +177,16 @@ module SyncSOF (
                     end
                     else pwmup <= pwmup - 1;
                     pwmdown <= pwmdown/2;
+                end
+                else
+                begin
+                    if (!pwmdown)
+                    begin
+                        if (pwmstate > 0) pwmstate <= pwmstate - 1;
+                        if (!pwmup) pwmdown <= PWM_HOLD;
+                    end
+                    else pwmdown <= pwmdown - 1;
+                    pwmup <= pwmup/2;
                 end
             end
             if (delaytc2 && sodtriggered)

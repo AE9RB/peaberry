@@ -126,7 +126,7 @@ void DmaTxConfiguration(void) {
 
     TxI2S_Buff_Chan = TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     TxI2S_Buff_TD = CyDmaTdAllocate();
-    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, TxI2S_Buff_TD, TD_INC_SRC_ADR | RxI2S_Buff__TD_TERMOUT_EN);    
+    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, TxI2S_Buff_TD, TD_INC_SRC_ADR | TxI2S_Buff__TD_TERMOUT_EN);    
     CyDmaTdSetAddress(TxI2S_Buff_TD, LO16(TxI2S_Buff[0]), LO16(&TxI2S_Stage));
     CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD);
 
