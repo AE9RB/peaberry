@@ -56,12 +56,14 @@ void Si570_Main(void);
 void Si570_Fake_Reset(void);
 
 // pcm3060.c
+void PCM3060_Init(void);
 void PCM3060_Start(void);
 void PCM3060_Main(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
 
 // mic.c
+void Mic_Init(void);
 void Mic_Start(void);
 uint8* Mic_Buf(void);
 

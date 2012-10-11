@@ -31,6 +31,8 @@ void main()
     I2C_Start();
     Si570_Start();
     IQGen_Start();
+    Mic_Init();
+    PCM3060_Init();
     Mic_Start();
     PCM3060_Start();
     

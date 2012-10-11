@@ -16,8 +16,11 @@
 
 uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE];
 
-void Mic_Start(void)
-{
+void Mic_Start(void) {
+    Microphone_StartConvert();
+}
+
+void Mic_Init(void){
     uint8 Mic_Buff_Chan, Mic_Buff_TD;
     uint8 Mic_Conv_Chan, Mic_Conv_TD;
 
@@ -35,9 +38,8 @@ void Mic_Start(void)
 
     CyDmaChEnable(Mic_Buff_Chan, 1u);
     CyDmaChEnable(Mic_Conv_Chan, 1u);
-    
+
     Microphone_Start();
-    Microphone_StartConvert();
 }
 
 

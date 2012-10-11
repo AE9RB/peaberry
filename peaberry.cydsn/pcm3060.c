@@ -151,8 +151,11 @@ uint8* PCM3060_RxBuf(void) {
     return RxI2S_Buff[SyncSOF_USB_Buffer()];
 }
 
-
 void PCM3060_Start(void) {
+    I2S_Start();
+}
+
+void PCM3060_Init(void) {
     uint8 pcm3060_cmd[2], i, state = 0;
 
     DmaTxConfiguration();
@@ -160,8 +163,6 @@ void PCM3060_Start(void) {
     
     I2S_EnableTx();
     I2S_EnableRx();
-    I2S_Start();
-    
     
     while (state < 2) {
         switch (state) {
