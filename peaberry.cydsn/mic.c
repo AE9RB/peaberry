@@ -14,72 +14,33 @@
 
 #include <peaberry.h>
 
-uint8 Mic_Buff_Chan, Mic_Buff_TD[DMA_AUDIO_BUFS];
-volatile uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE], Mic_DMA_Buf;
-
-CY_ISR(Mic_DMA_done) {
-    uint8 td, bufnum, i;
-    uint16 b, *buf;
-    
-    buf = (uint16*)Mic_Buff[Mic_DMA_Buf/DMA_USB_RATIO];
-    buf += MIC_BUF_SIZE / (DMA_USB_RATIO*2) * (Mic_DMA_Buf & (DMA_USB_RATIO-1));
-    for (i = MIC_BUF_SIZE / (DMA_USB_RATIO*2); i; ) {
-        b = buf[--i];
-        // DelSig will overflow (see datasheet)
-        if (b & 0xF000) b = 2047;
-        // changed to signed
-        else b -= 2048;
-        // rotate into USB bit order
-        buf[i] = (b << 12) | (b >> 4);
-    }
-
-    td = DMAC_CH[Mic_Buff_Chan].basic_status[1] & 0x7Fu;
-    bufnum = Mic_DMA_Buf + 1;
-    if (bufnum >= DMA_AUDIO_BUFS) bufnum = 0;
-    if (td != Mic_Buff_TD[bufnum]) {
-        // resync, should only happen when debugging
-        for (bufnum = 0; bufnum < DMA_AUDIO_BUFS; bufnum++) {
-            if (td == Mic_Buff_TD[bufnum]) break;
-        }
-    }
-    Mic_DMA_Buf = bufnum;
-}
+uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE];
 
 void Mic_Start(void)
 {
-    uint8 i, j, n;
+    uint8 Mic_Buff_Chan, Mic_Buff_TD;
+    uint8 Mic_Conv_Chan, Mic_Conv_TD;
 
     Mic_Buff_Chan = Mic_Buff_DmaInitialize(2, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
-    for (i=0; i < DMA_AUDIO_BUFS; i++) Mic_Buff_TD[i] = CyDmaTdAllocate();
-    for (i=0; i < DMA_AUDIO_BUFS; ) {
-        for (j=0; j < DMA_USB_RATIO; j++) {
-             n = i + 1;
-            if (n >= DMA_AUDIO_BUFS) n=0;
-            CyDmaTdSetConfiguration(Mic_Buff_TD[i], MIC_BUF_SIZE/DMA_USB_RATIO, Mic_Buff_TD[n], TD_SWAP_EN | TD_INC_DST_ADR | Mic_Buff__TD_TERMOUT_EN );    
-            CyDmaTdSetAddress(Mic_Buff_TD[i], LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic_Buff[i/DMA_USB_RATIO] + MIC_BUF_SIZE/DMA_USB_RATIO * j));
-            i++;
-        }
-    }
-    CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD[0]);
+    Mic_Buff_TD = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(Mic_Buff_TD, MIC_BUF_SIZE * USB_AUDIO_BUFS, Mic_Buff_TD, TD_INC_DST_ADR );    
+    CyDmaTdSetAddress(Mic_Buff_TD, LO16(Mic1216_Conv_u0__16BIT_F1_REG), LO16(Mic_Buff[0]));
+    CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD);
     
-    Mic_DMA_Buf = 0;
-    Mic_done_isr_Start();
-    Mic_done_isr_SetVector(Mic_DMA_done);
+    Mic_Conv_Chan = Mic_Conv_DmaInitialize(2, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_PERIPH_BASE));
+    Mic_Conv_TD = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(Mic_Conv_TD, 2, Mic_Conv_TD, Mic_Conv__TD_TERMOUT_EN );    
+    CyDmaTdSetAddress(Mic_Conv_TD, LO16(&Microphone_DEC_SAMP_PTR), LO16(Mic1216_Conv_u0__16BIT_F0_REG));
+    CyDmaChSetInitialTd(Mic_Conv_Chan, Mic_Conv_TD);
 
     CyDmaChEnable(Mic_Buff_Chan, 1u);
+    CyDmaChEnable(Mic_Conv_Chan, 1u);
     
     Microphone_Start();
     Microphone_StartConvert();
 }
 
-uint8* Mic_Buf(uint8* reset) {
-    static uint8 use = 0;
-    uint8 dma;
-    dma = Mic_DMA_Buf;
-    if (*reset) {
-        use = dma/DMA_USB_RATIO;
-        *reset = 0;
-    }
-    USBAudio_SyncBufs(dma, &use);
-    return Mic_Buff[use];
+
+uint8* Mic_Buf(void) {
+    return Mic_Buff[SyncSOF_USB_Buffer()];
 }

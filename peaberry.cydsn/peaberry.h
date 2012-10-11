@@ -22,17 +22,13 @@
 #define KEY_1  0x02
 #define RX_REV 0x04
 
+#define USB_AUDIO_BUFS 3
 // 2 X 24-bit bytes in an I2S sample
 #define I2S_FRAME_SIZE (3 * 2)
 // 48 24-bit stereo samples every 1 ms
 #define I2S_BUF_SIZE (48u * I2S_FRAME_SIZE)
 // 48 12-bit mono samples every 1 ms
 #define MIC_BUF_SIZE (48u * 2)
-// Four buffers is the minimum required to sync USB Audio.
-#define USB_AUDIO_BUFS 4
-// The USB buffers are sub-addressable by the DMA
-#define DMA_USB_RATIO 4
-#define DMA_AUDIO_BUFS (USB_AUDIO_BUFS * DMA_USB_RATIO)
 
 // Visibility into USBFS
 extern uint8 USBFS_initVar;
@@ -62,12 +58,12 @@ void Si570_Fake_Reset(void);
 // pcm3060.c
 void PCM3060_Start(void);
 void PCM3060_Main(void);
-uint8* PCM3060_TxBuf(uint8*);
-uint8* PCM3060_RxBuf(uint8*);
+uint8* PCM3060_TxBuf(void);
+uint8* PCM3060_RxBuf(void);
 
 // mic.c
 void Mic_Start(void);
-uint8* Mic_Buf(uint8*);
+uint8* Mic_Buf(void);
 
 // settings.c
 void Settings_Start(void);

@@ -21,15 +21,11 @@
 #define IQ_GEN_DIV    0x02
 
 void `$INSTANCE_NAME`_Start(void) {
-    uint8 i;
-    i = CY_GET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG);
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, i | 0x20);
+    CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, 0x20);
 }
 
 void `$INSTANCE_NAME`_Stop(void) {
-    uint8 i;
-    i = CY_GET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG);
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, i & ~0x20);
+    CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, 0);
 }
 
 void `$INSTANCE_NAME`_SetTransmit(uint8 tx) {
@@ -46,10 +42,10 @@ uint8 `$INSTANCE_NAME`_GetTransmit(void) {
     return CY_GET_REG8(`$INSTANCE_NAME`_Settings__CONTROL_REG) & IQ_GEN_TX;
 }
 
-void `$INSTANCE_NAME`_SetDivider(uint8 tx) {
+void `$INSTANCE_NAME`_SetDivider(uint8 div) {
     uint8 i;
     i = CY_GET_REG8(`$INSTANCE_NAME`_Settings__CONTROL_REG);
-    if (tx) {
+    if (div) {
         CY_SET_REG8(`$INSTANCE_NAME`_Settings__CONTROL_REG, i | IQ_GEN_DIV );
     } else {
         CY_SET_REG8(`$INSTANCE_NAME`_Settings__CONTROL_REG, i & ~IQ_GEN_DIV );

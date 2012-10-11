@@ -28,32 +28,6 @@
 volatile uint8 Void_Buff[I2S_BUF_SIZE];
 
 
-// TODO deprecated
-void USBAudio_SyncBufs(uint8 dma, uint8* use) {
-    uint8 dma_adjusted, buf;
-    
-    buf = dma / DMA_USB_RATIO;
-    if (dma & (DMA_USB_RATIO-1)) {
-        dma_adjusted = buf + 1;
-    } else {
-        dma_adjusted = buf;
-    }
-    if (dma_adjusted >= USB_AUDIO_BUFS) dma_adjusted -= USB_AUDIO_BUFS;
-    if (buf == *use || dma_adjusted == *use) {
-        // underrun
-        *use += USB_AUDIO_BUFS / 2;
-        if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        return;
-    }
-    if (++*use == USB_AUDIO_BUFS) *use = 0;
-    if (*use == buf) {
-        // overrun
-        *use += USB_AUDIO_BUFS / 2;
-        if (*use >= USB_AUDIO_BUFS) *use -= USB_AUDIO_BUFS;
-        return;
-    }
-}
-
 extern uint8 USBFS_currentVolume[];
 extern uint8 USBFS_minimumVolume[];
 extern uint8 USBFS_maximumVolume[];
@@ -83,8 +57,7 @@ uint8 USBAudio_Volume(void) {
     return volume;
 }
 
-uint8 TX_Enabled, SPKR_Enabled, RX_Enabled, MIC_Enabled;
-uint8 tx_reset, rx_reset, mic_reset;
+uint8 TX_Enabled, SPKR_Enabled;
 
 void USBAudio_Start(void) {
     // -39.5dB to 0.0dB volume range
@@ -96,14 +69,10 @@ void USBAudio_Start(void) {
     USBFS_currentVolume[1] = 0;
     USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
     USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
-    tx_reset = rx_reset = mic_reset = 1;
-    TX_Enabled = SPKR_Enabled = RX_Enabled = MIC_Enabled = 0;
+    TX_Enabled = SPKR_Enabled = 0;
 }
 
 void USBAudio_Main(void) {
-    uint8 outbound;
-    
-    outbound = TX_Enabled || SPKR_Enabled;
     
     if (USBFS_GetInterfaceSetting(TX_INTERFACE) == 1) {
         if (!TX_Enabled) {
@@ -128,40 +97,16 @@ void USBAudio_Main(void) {
         }
     }
     
-    if (!outbound && (TX_Enabled || SPKR_Enabled)) tx_reset = 1;
-
     if(USBFS_IsConfigurationChanged()) {
         USBFS_EnableOutEP(TX_ENDPOINT);
         USBFS_EnableOutEP(SPKR_ENDPOINT);
-    }
-
-    if (USBFS_GetInterfaceSetting(MIC_INTERFACE) == 1) {
-        if (!MIC_Enabled) {
-            MIC_Enabled = 1;
-            mic_reset = 1;
-        }
-    } else {
-        if (MIC_Enabled) {
-            MIC_Enabled = 0;
-        }
-    }
-
-    if (USBFS_GetInterfaceSetting(RX_INTERFACE) == 1) {
-        if (!RX_Enabled) {
-            RX_Enabled = 1;
-            rx_reset = 1;
-        }
-    } else {
-        if (RX_Enabled) {
-            RX_Enabled = 0;
-        }
     }
 
     
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
         if (IQGen_GetTransmit()) {
-            USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(&tx_reset), I2S_BUF_SIZE);
+            USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
             USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
@@ -175,18 +120,18 @@ void USBAudio_Main(void) {
             USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         } else {
-            USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_TxBuf(&tx_reset), I2S_BUF_SIZE);
+            USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         }
     }
 
 	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(&rx_reset), I2S_BUF_SIZE);
+		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
 		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
 	}
 
 	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-	    USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(&mic_reset), MIC_BUF_SIZE);
+	    USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
 	    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
 	}
 

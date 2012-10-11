@@ -54,7 +54,7 @@ module SyncSOF (
     Buffer ( 
         /* input [07:00] */ .status({6'b0, buffer}),
         /* input         */ .reset(),
-        /* input         */ .clock(clock)
+        /* input         */ .clock()
     );
     
     
@@ -92,7 +92,7 @@ module SyncSOF (
     );
 
     
-    // A 1/32 frame delay on the sod is added to avoid collisions due to jitter.
+    // A 1/64 frame delay is added to the sod.
     wire [6:0] delaycount1;
     cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter0 (
@@ -117,8 +117,7 @@ module SyncSOF (
 
     // We want exactly exactly 36864 cycles per 1ms USB frame.
     // Count to 9216 and increment the quadrant each time.
-    // This makes efficient use of the 7-bit counters and gives us
-    // us the knowledge of which half of the buffer we're at.
+    // This makes efficient use of the 7-bit counters.
     wire [6:0] clockcount1;
     cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter2 (
@@ -147,9 +146,9 @@ module SyncSOF (
         else quadrant <= quadrant + 1;
     end
     
-    always @(posedge sof or posedge sodtriggered)
+    always @(posedge sof or posedge sod)
     begin
-        if (sodtriggered) buffer <= 1;
+        if (sod) buffer <= 1;
         else
         begin
             sof_sync <= ~sof_sync;
