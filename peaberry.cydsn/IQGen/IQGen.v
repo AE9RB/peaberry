@@ -52,11 +52,11 @@ module IQGen (
         /* output       */ .tc()
     );
 
-    reg qsd0, qsd1, qsd2, qse0, qse1;
-    assign qsd = {qsd1, qsd2};
+    reg qsd0, qsd1, qse0, qse1;
+    assign qsd = {qsd1, qsd0};
     assign qse = {qse1, qse0};
-    assign tx = settings[0];
-    wire dividelower = settings[1];
+    assign tx = settings[3];
+    wire dividelower = settings[2];
     wire rxbit = dividelower ? count[4] : count[1];
     wire txbit = tx ? rxbit : 1'b0;
 
@@ -64,7 +64,7 @@ module IQGen (
     begin
         if (count[2:0]==3'b0 || !dividelower )
         begin
-            {qsd2, qsd1, qsd0} <= {qsd1, qsd0, rxbit};
+            {qsd1, qsd0} <= {qsd0, rxbit};
             {qse1, qse0} <= {qse0, txbit};
         end
     end
