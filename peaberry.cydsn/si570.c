@@ -24,6 +24,7 @@
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
 volatile uint32 Si570_Xtal, Si570_LO = STARTUP_LO;
+uint32 Current_Si570_Xtal;
 // [0-1] for commands, [2-8] retain registers
 uint8 Si570_Buf[8];
 // A copy of the factory registers used for cfgsr calibration.
@@ -84,6 +85,7 @@ void Si570_Start(void) {
     }
     for (i = 0; i < 6; i++) Si570_Factory[i] = Si570_Buf[i+2];
     Si570_OLD[0]=0;
+    Current_Si570_Xtal = Si570_Xtal;
 }
 
 // This method of setting frequency is strongly discouraged.
@@ -125,10 +127,11 @@ void Si570_Main(void) {
     switch (state) {
     case 0: // idle
         if (Si570_OLD[0]) Si570_LO = FreqFromOLD();
-        if (Current_LO != Si570_LO && !Locked_I2C) {
+        if ((Current_Si570_Xtal != Si570_Xtal || Current_LO != Si570_LO) && !Locked_I2C) {
             i = CyEnterCriticalSection();
             fout = (float)swap32(Si570_LO) / 0x200000;
             Current_LO = Si570_LO;
+            Current_Si570_Xtal = Si570_Xtal;
             CyExitCriticalSection(i);
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
