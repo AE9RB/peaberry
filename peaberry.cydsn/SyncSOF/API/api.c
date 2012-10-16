@@ -23,7 +23,6 @@
 void `$INSTANCE_NAME`_Start(uint8 dmaUpChan, uint8 dmaDownChan) {
     uint8 td;
 
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter3__CONTROL_AUX_CTL_REG, 0x20);
     CY_SET_REG8(`$INSTANCE_NAME`_Counter2__CONTROL_AUX_CTL_REG, 0x20);
     CY_SET_REG8(`$INSTANCE_NAME`_Counter1__CONTROL_AUX_CTL_REG, 0x20);
     CY_SET_REG8(`$INSTANCE_NAME`_Counter0__CONTROL_AUX_CTL_REG, 0x20);

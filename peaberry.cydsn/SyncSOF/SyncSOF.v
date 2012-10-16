@@ -33,16 +33,12 @@ module SyncSOF (
     // the 1kHz from USB sof (start-of-frame). Counting begins at the start
     // of buffer 0 obtained from the DMA communicating with the DelSigs.
 
-    reg [1:0] quadrant;
-    reg sodtriggered;
-    reg reloadtriggered;
     reg sof_sync;
     reg sof_prev;
-    reg [2:0] pwmstate;
-    reg [8:0] pwmcounter;
+    reg [6:0] chunk_prev;
+    reg [4:0] pwmstate;
+    reg [10:0] pwmcounter;
     reg pwm;
-    reg [1:0] pwmup;
-    reg [1:0] pwmdown;
     
     assign faster = pwm;
     assign slower = ~pwm;
@@ -60,11 +56,10 @@ module SyncSOF (
     
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
-    localparam PWM_MIN = 479;
-    localparam PWM_MAX = 486;
+    localparam PWM_MIN = 1916;
+    localparam PWM_MAX = 1942;
     localparam PWM_PERIOD = 499;
-    localparam PWM_HOLD = 3;
-    
+
 
     // The PLL is set higher than the target of 36.864.
     // 36.932 is the closest match.  We will use DMA to
@@ -92,59 +87,38 @@ module SyncSOF (
     );
 
     
-    // A 1/64 frame delay is added to the sod.
-    wire [6:0] delaycount1;
-    cy_psoc3_count7 #(.cy_period(7'b1111111))
+    // We want exactly exactly 36864 cycles per 1ms USB frame.
+    wire [6:0] clockcount1;
+    cy_psoc3_count7 #(.cy_period(7'b0011111))
     Counter0 (
         /* input        */ .clock(clock),
         /* input        */ .reset(sod),
-        /* input        */ .load(1'b0),
-        /* input        */ .enable(1'b1),
-        /* output [6:0] */ .count(delaycount1),
-        /* output       */ .tc(delaytc1)
-    );
-    wire [6:0] delaycount2;
-    cy_psoc3_count7 #(.cy_period(7'b0001000))
-    Counter1 (
-        /* input        */ .clock(delaytc1),
-        /* input        */ .reset(sod),
-        /* input        */ .load(1'b0),
-        /* input        */ .enable(1'b1),
-        /* output [6:0] */ .count(delaycount2),
-        /* output       */ .tc(delaytc2)
-    );
-
-
-    // We want exactly exactly 36864 cycles per 1ms USB frame.
-    // Count to 9216 and increment the quadrant each time.
-    // This makes efficient use of the 7-bit counters.
-    wire [6:0] clockcount1;
-    cy_psoc3_count7 #(.cy_period(7'b1111111))
-    Counter2 (
-        /* input        */ .clock(clock),
-        /* input        */ .reset(reloadtriggered),
         /* input        */ .load(1'b0),
         /* input        */ .enable(1'b1),
         /* output [6:0] */ .count(clockcount1),
         /* output       */ .tc(clocktc1)
     );
     wire [6:0] clockcount2;
-    cy_psoc3_count7 #(.cy_period(7'b1000111))
-    Counter3 (
+    cy_psoc3_count7 #(.cy_period(7'b0001000))
+    Counter1 (
         /* input        */ .clock(clocktc1),
-        /* input        */ .reset(reloadtriggered),
+        /* input        */ .reset(sod),
         /* input        */ .load(1'b0),
         /* input        */ .enable(1'b1),
         /* output [6:0] */ .count(clockcount2),
         /* output       */ .tc(clocktc2)
     );
+    wire [6:0] chunk;
+    cy_psoc3_count7 #(.cy_period(7'b1111111))
+    Counter2 (
+        /* input        */ .clock(clocktc2),
+        /* input        */ .reset(sod),
+        /* input        */ .load(1'b0),
+        /* input        */ .enable(1'b1),
+        /* output [6:0] */ .count(chunk),
+        /* output       */ .tc()
+    );
     
-    
-    always @(posedge clocktc2 or posedge reloadtriggered)
-    begin
-        if (reloadtriggered) quadrant <= 0;
-        else quadrant <= quadrant + 1;
-    end
     
     always @(posedge sof or posedge sod)
     begin
@@ -157,44 +131,33 @@ module SyncSOF (
         end
     end
     
-    always @(posedge clock or posedge sod)
+    wire outofbounds = (chunk[5] != chunk[4] || chunk[4] != chunk[3] || chunk[3] != chunk[2]);
+
+    always @(posedge pwm)
     begin
-        if (sod) sodtriggered <= 1;
-        else
+        pwmcounter[1:0] <= pwmcounter[1:0] - 1;
+    end
+    
+    always @(posedge clock)
+    begin
+        pwm <= pwmcounter < pwmstate + PWM_MIN;
+        if (!pwmcounter[10:2]) pwmcounter[10:2] <= PWM_PERIOD;
+        else pwmcounter[10:2] <= pwmcounter[10:2] - 1;
+
+        if (sof_sync != sof_prev)
         begin
-            pwm <= pwmcounter < pwmstate + PWM_MIN;
-            if (!pwmcounter) pwmcounter <= PWM_PERIOD;
-            else pwmcounter <= pwmcounter - 1;
-            if (sof_sync != sof_prev)
+            sof_prev <= sof_sync;
+            chunk_prev <= chunk;
+            if (chunk_prev < chunk)
             begin
-                sof_prev <= sof_sync;
-                if (quadrant[1])
-                begin
-                    if (!pwmup) 
-                    begin
-                        if (pwmstate < PWM_MAX - PWM_MIN) pwmstate <= pwmstate + 1;
-                        if (!pwmdown) pwmup <= PWM_HOLD;
-                    end
-                    else pwmup <= pwmup - 1;
-                    pwmdown <= pwmdown/2;
-                end
-                else
-                begin
-                    if (!pwmdown)
-                    begin
-                        if (pwmstate > 0) pwmstate <= pwmstate - 1;
-                        if (!pwmup) pwmdown <= PWM_HOLD;
-                    end
-                    else pwmdown <= pwmdown - 1;
-                    pwmup <= pwmup/2;
-                end
+                if (chunk[6] && outofbounds && pwmstate < PWM_MAX - PWM_MIN - 1) pwmstate <= pwmstate + 2;
+                else if (pwmstate < PWM_MAX - PWM_MIN) pwmstate <= pwmstate + 1;
             end
-            if (delaytc2 && sodtriggered)
+            else if (chunk_prev != chunk)
             begin
-                sodtriggered <= 0;
-                reloadtriggered <= 1;
+                if(!chunk[6] && outofbounds && pwmstate > 1) pwmstate <= pwmstate - 2;
+                else if(pwmstate > 0) pwmstate <= pwmstate - 1;
             end
-            else reloadtriggered <= 0;
         end
     end
 
