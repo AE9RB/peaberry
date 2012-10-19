@@ -33,13 +33,12 @@ module SyncSOF (
     // the 1kHz from USB sof (start-of-frame). Counting begins at the start
     // of buffer 0 obtained from the DMA communicating with the DelSigs.
 
+    reg up, dn;
     reg sof_sync;
     reg sof_prev;
-    reg [6:0] chunk_prev;
-    reg [4:0] pwmstate;
-    reg [10:0] pwmcounter;
+    reg [6:0] pwmstate;
+    reg [12:0] pwmcounter;
     reg pwm;
-    
     assign faster = pwm;
     assign slower = ~pwm;
 
@@ -56,9 +55,9 @@ module SyncSOF (
     
     // These values have to be found by experimentation.
     // They will vary by slightly if the debugger is plugged in.
-    localparam PWM_MIN = 1916;
-    localparam PWM_MAX = 1942;
-    localparam PWM_PERIOD = 499;
+    localparam PWM_MIN = 7664;
+    localparam PWM_MAX = 7768;
+    localparam PWM_PERIOD = 999;
 
 
     // The PLL is set higher than the target of 36.864.
@@ -109,6 +108,8 @@ module SyncSOF (
         /* output       */ .tc(clocktc2)
     );
     wire [6:0] chunk;
+    wire [7:0] chunk_offset = {chunk, clockcount2[3]} - 48;
+    reg [7:0] chunk_prev;
     cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter2 (
         /* input        */ .clock(clocktc2),
@@ -118,7 +119,6 @@ module SyncSOF (
         /* output [6:0] */ .count(chunk),
         /* output       */ .tc()
     );
-    
     
     always @(posedge sof or posedge sod)
     begin
@@ -130,33 +130,51 @@ module SyncSOF (
             else buffer <= buffer + 1;
         end
     end
-    
-    wire outofbounds = (chunk[5] != chunk[4] || chunk[4] != chunk[3] || chunk[3] != chunk[2]);
+
 
     always @(posedge pwm)
     begin
-        pwmcounter[1:0] <= pwmcounter[1:0] - 1;
+        pwmcounter[2:0] <= pwmcounter[2:0] - 5;
     end
     
+
     always @(posedge clock)
     begin
-        pwm <= pwmcounter < pwmstate + PWM_MIN;
-        if (!pwmcounter[10:2]) pwmcounter[10:2] <= PWM_PERIOD;
-        else pwmcounter[10:2] <= pwmcounter[10:2] - 1;
+        pwm = pwmcounter < pwmstate + PWM_MIN;
+        if (!pwmcounter[12:3]) pwmcounter[12:3] <= PWM_PERIOD;
+        else pwmcounter[12:3] <= pwmcounter[12:3] - 1;
 
         if (sof_sync != sof_prev)
         begin
             sof_prev <= sof_sync;
-            chunk_prev <= chunk;
-            if (chunk_prev < chunk)
+            chunk_prev <= chunk_offset;
+            if (chunk_prev < chunk_offset)
             begin
-                if (chunk[6] && outofbounds && pwmstate < PWM_MAX - PWM_MIN - 1) pwmstate <= pwmstate + 2;
-                else if (pwmstate < PWM_MAX - PWM_MIN) pwmstate <= pwmstate + 1;
+                up <= 1;
+                dn <= 0;
+                if (pwmstate <= PWM_MAX - PWM_MIN - 4) pwmstate <= pwmstate + 1;
             end
-            else if (chunk_prev != chunk)
+            else if (chunk_prev != chunk_offset )
             begin
-                if(!chunk[6] && outofbounds && pwmstate > 1) pwmstate <= pwmstate - 2;
-                else if(pwmstate > 0) pwmstate <= pwmstate - 1;
+                dn <= 1;
+                up <= 0;
+                if (pwmstate >= 4) pwmstate <= pwmstate - 1;
+            end
+            else
+            begin
+                if (chunk_offset[6] != chunk_offset[5] || chunk_offset[6] == chunk_offset[7])
+                begin
+                    if (up && chunk_offset[7] && pwmstate <= PWM_MAX - PWM_MIN - 4)
+                    begin
+                        up <= 0;
+                        pwmstate <= pwmstate + 4;
+                    end
+                    if (dn && !chunk_offset[7] && pwmstate >= 4)
+                    begin
+                        dn <= 0;
+                        pwmstate <= pwmstate - 4;
+                    end
+                end
             end
         end
     end
