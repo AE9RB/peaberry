@@ -56,9 +56,10 @@ module IQGen (
     assign qsd = {qsd1, qsd0};
     assign qse = {qse1, qse0};
     assign tx = settings[3];
-    wire dividelower = settings[5];
+    wire dividelower = settings[6];
     wire rxbit = dividelower ? count[4] : count[1];
     wire txbit = tx ? rxbit : 1'b0;
+    
     
     always @(posedge counter_clock)
     begin

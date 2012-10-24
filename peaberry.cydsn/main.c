@@ -19,9 +19,14 @@ uint8 TX_Request = 0;
 // Check and lock this in the main loop before using I2C
 uint8 Locked_I2C = 0;
 
+// Charge pump current in uA. Valid range [1 - 7]. Default 2.
+#define PLL_CP_CURRENT 2
 
 void main()
 {
+    CY_CLK_PLL_CFG1_REG = (CY_CLK_PLL_CFG1_REG & CY_CLK_PLL_CURRENT_MASK) |
+        ((PLL_CP_CURRENT - 1) << CY_CLK_PLL_CURRENT_POSITION);
+
     CyGlobalIntEnable;
     SyncSOF_Enable(pup_DMA, pdn_DMA);
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
@@ -54,6 +59,7 @@ void main()
         USBAudio_Main();
         PCM3060_Main();
         Si570_Main();
+        SyncSOF_Main();
             
     }
 }

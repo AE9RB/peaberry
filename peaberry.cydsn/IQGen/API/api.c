@@ -18,7 +18,7 @@
 
 // Setings bits
 #define IQ_GEN_TX     0x08
-#define IQ_GEN_DIV    0x20
+#define IQ_GEN_DIV    0x40
 
 void `$INSTANCE_NAME`_Start(void) {
     CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, 0x20);

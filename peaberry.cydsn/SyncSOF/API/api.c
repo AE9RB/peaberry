@@ -43,7 +43,7 @@ void `$INSTANCE_NAME`_Start(uint8 dmaUpChan, uint8 dmaDownChan) {
 
 // Returns the buffer number 0-1 which is to be used for USB DMA
 uint8 `$INSTANCE_NAME`_USB_Buffer(void) {
-    return CY_GET_REG8(`$INSTANCE_NAME`_Buffer__STATUS_REG);
+    return CY_GET_REG8(`$INSTANCE_NAME`_BUFFER__STATUS_REG);
 }
 
 // SOF(millisecond) countdown timer for use with 

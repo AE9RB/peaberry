@@ -71,5 +71,8 @@ uint8* Mic_Buf(void);
 void Settings_Start(void);
 void Settings_Main(void);
 
+// syncsof.c
+void SyncSOF_Main(void);
+
 
 #endif //PEABERRY_H

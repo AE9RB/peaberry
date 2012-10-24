@@ -17,7 +17,7 @@
 // ========================================
 `include "cypress.v"
 //`#end` -- edit above this line, do not edit this line
-// Generated on 09/20/2012 at 19:55
+// Generated on 10/21/2012 at 15:53
 // Component: SyncSOF
 module SyncSOF (
 	output  faster,
@@ -33,59 +33,6 @@ module SyncSOF (
     // the 1kHz from USB sof (start-of-frame). Counting begins at the start
     // of buffer 0 obtained from the DMA communicating with the DelSigs.
 
-    reg up, dn;
-    reg sof_sync;
-    reg sof_prev;
-    reg [6:0] pwmstate;
-    reg [12:0] pwmcounter;
-    reg pwm;
-    assign faster = pwm;
-    assign slower = ~pwm;
-
-    
-    // Which buffer to use for USB DMA.
-    reg [1:0] buffer;
-    cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
-    Buffer ( 
-        /* input [07:00] */ .status({6'b0, buffer}),
-        /* input         */ .reset(),
-        /* input         */ .clock()
-    );
-    
-    
-    // These values have to be found by experimentation.
-    // They will vary by slightly if the debugger is plugged in.
-    localparam PWM_MIN = 7664;
-    localparam PWM_MAX = 7768;
-    localparam PWM_PERIOD = 999;
-
-
-    // The PLL is set higher than the target of 36.864.
-    // 36.932 is the closest match.  We will use DMA to
-    // nudge this lower by adjusting FASTCLK_PLL_P.
-    // This value is obtained from cyfitter_cfg.c...
-    // CY_SET_XTND_REG16((void CYFAR *)(CYREG_FASTCLK_PLL_P), 0x0C14);
-    localparam FASTCLK_PLL_P_LSB = 8'h14;
-    
-    
-    // The PLL_P values are stored in status registers to keep
-    // DMA from using SRAM.  Small but easy boost to CPU speed.
-    wire [7:0] pll_hi = FASTCLK_PLL_P_LSB;
-    cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
-    PLL_HI ( 
-        /* input [07:00] */ .status(pll_hi),
-        /* input         */ .reset(),
-        /* input         */ .clock()
-    );
-    wire [7:0] pll_lo = FASTCLK_PLL_P_LSB-1;
-    cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
-    PLL_LO ( 
-        /* input [07:00] */ .status(pll_lo),
-        /* input         */ .reset(),
-        /* input         */ .clock()
-    );
-
-    
     // We want exactly exactly 36864 cycles per 1ms USB frame.
     wire [6:0] clockcount1;
     cy_psoc3_count7 #(.cy_period(7'b0011111))
@@ -107,89 +54,101 @@ module SyncSOF (
         /* output [6:0] */ .count(clockcount2),
         /* output       */ .tc(clocktc2)
     );
-    wire [6:0] chunk;
-    wire [7:0] chunk_offset = {chunk, clockcount2[3]} - 48;
-    reg [7:0] chunk_prev;
+    wire [6:0] clockcount3;
     cy_psoc3_count7 #(.cy_period(7'b1111111))
     Counter2 (
         /* input        */ .clock(clocktc2),
         /* input        */ .reset(sod),
         /* input        */ .load(1'b0),
         /* input        */ .enable(1'b1),
-        /* output [6:0] */ .count(chunk),
+        /* output [6:0] */ .count(clockcount3),
         /* output       */ .tc()
     );
+
+    // Report to the CPU where we are in the frame
+    reg [7:0] frame_pos;
+	cy_psoc3_status #(.cy_md_select(8'h00), .cy_force_order(`TRUE))
+	FRAME_POS ( .status( frame_pos ));
+
+    reg frame_pos_ready;
+	cy_psoc3_status #(.cy_md_select(8'h01), .cy_force_order(`TRUE))
+	FRAME_POS_READY ( 
+        .status( {7'b0, frame_pos_ready} ),
+        .clock(clock)
+    );
+
+    // The PLL is set higher than the target of 36.864.
+    // 36.932 is the closest match.  We will use DMA to
+    // nudge this lower by adjusting FASTCLK_PLL_P.
+    // This value is obtained from cyfitter_cfg.c...
+    // CY_SET_XTND_REG16((void CYFAR *)(CYREG_FASTCLK_PLL_P), 0x0C14);
+    localparam FASTCLK_PLL_P_LSB = 8'h14;
     
+    // The PLL_P values are stored in status registers to keep
+    // DMA from using SRAM.  Small but easy boost to CPU speed.
+    wire [7:0] pll_hi = FASTCLK_PLL_P_LSB;
+    cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
+    PLL_HI ( 
+        /* input [07:00] */ .status(pll_hi),
+        /* input         */ .reset(),
+        /* input         */ .clock()
+    );
+    wire [7:0] pll_lo = FASTCLK_PLL_P_LSB-1;
+    cy_psoc3_status #(.cy_force_order(`TRUE), .cy_md_select(8'b00000000)) 
+    PLL_LO ( 
+        /* input [07:00] */ .status(pll_lo),
+        /* input         */ .reset(),
+        /* input         */ .clock()
+    );
+
+    // Which buffer to use for USB DMA.
+    reg [1:0] buffer;
+    cy_psoc3_status #(.cy_md_select(8'h00), .cy_force_order(`TRUE)) 
+    BUFFER ( .status({6'b0, buffer}) );
+
+    
+    wire [7:0] fHigh;
+    cy_psoc3_control #(.cy_init_value (8'hFF), .cy_force_order(`TRUE))
+    FRAC_HI ( .control(fHigh));
+
+    wire [7:0] fLow;
+    cy_psoc3_control #(.cy_init_value (8'hFF), .cy_force_order(`TRUE))
+    FRAC_LO ( .control(fLow));
+
+
+    reg sof_sync;
     always @(posedge sof or posedge sod)
     begin
         if (sod) buffer <= 1;
         else
         begin
             sof_sync <= ~sof_sync;
-            if (buffer == 2) buffer <= 0;
+            if (buffer == 2 ) buffer <= 0;
             else buffer <= buffer + 1;
         end
     end
-
-
-    always @(posedge pwm)
-    begin
-        pwmcounter[2:0] <= pwmcounter[2:0] - 5;
-    end
     
+    reg [9:0] pwmcounter;
+    wire [9:0] frac = {fHigh,fLow};
+    wire pwm = pwmcounter < frac;
+    assign faster = pwm;
+    assign slower = ~pwm;
 
+    reg sof_prev;
     always @(posedge clock)
     begin
-        pwm = pwmcounter < pwmstate + PWM_MIN;
-        if (!pwmcounter[12:3]) pwmcounter[12:3] <= PWM_PERIOD;
-        else pwmcounter[12:3] <= pwmcounter[12:3] - 1;
-
+        pwmcounter <= pwmcounter - 1;
+        
         if (sof_sync != sof_prev)
         begin
             sof_prev <= sof_sync;
-            chunk_prev <= chunk_offset;
-            if (chunk_prev < chunk_offset)
-            begin
-                up <= 1;
-                dn <= 0;
-                if (pwmstate <= PWM_MAX - PWM_MIN - 4) pwmstate <= pwmstate + 1;
-            end
-            else if (chunk_prev != chunk_offset )
-            begin
-                dn <= 1;
-                up <= 0;
-                if (pwmstate >= 4) pwmstate <= pwmstate - 1;
-            end
-            else
-            begin
-                if (chunk_offset[6] != chunk_offset[5] || chunk_offset[6] == chunk_offset[7])
-                begin
-                    if (up && chunk_offset[7] && pwmstate <= PWM_MAX - PWM_MIN - 4)
-                    begin
-                        up <= 0;
-                        pwmstate <= pwmstate + 4;
-                    end
-                    if (dn && !chunk_offset[7] && pwmstate >= 4)
-                    begin
-                        dn <= 0;
-                        pwmstate <= pwmstate - 4;
-                    end
-                end
-            end
+            frame_pos = {clockcount3, clockcount2[3]};
+            frame_pos_ready = 1;
         end
+        else frame_pos_ready = 0;
     end
-
-
-    wire delaycountdownclock;
+    
     wire delaycountdownzero;
-    cy_psoc3_udb_clock_enable_v1_0 #(.sync_mode(`TRUE)) 
-    ClockSyncBypass
-    (
-        /* input  */    .clock_in(buffer),
-        /* input  */    .enable(1'b1),
-        /* output */    .clock_out(delaycountdownclock)
-    ); 
-
     cy_psoc3_dp8 #(.cy_dpconfig_a(
     {
         `CS_ALU_OP__DEC, `CS_SRCA_A0, `CS_SRCB_D0,
@@ -241,7 +200,7 @@ module SyncSOF (
     }
     )) DelayCountdown(
             /*  input                   */  .reset(1'b0),
-            /*  input                   */  .clk(delaycountdownclock),
+            /*  input                   */  .clk(frame_pos_ready),
             /*  input   [02:00]         */  .cs_addr({2'b0, delaycountdownzero}),
             /*  input                   */  .route_si(1'b0),
             /*  input                   */  .route_ci(1'b0),
@@ -271,4 +230,3 @@ module SyncSOF (
 endmodule
 //`#start footer` -- edit after this line, do not edit this line
 //`#end` -- edit above this line, do not edit this line
-

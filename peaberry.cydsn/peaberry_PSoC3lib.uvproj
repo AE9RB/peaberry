@@ -784,26 +784,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>pdn_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>Mic_Buff_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
@@ -897,6 +877,26 @@
               <FileName>Mic_Conv_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1684,26 +1684,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>pdn_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>Mic_Buff_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
@@ -1797,6 +1777,26 @@
               <FileName>Mic_Conv_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdn_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>pup_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
             </File>
           </Files>
         </Group>
