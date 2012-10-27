@@ -35,7 +35,7 @@ module SyncSOF (
 
     // We want exactly exactly 36864 cycles per 1ms USB frame.
     wire [6:0] clockcount1;
-    cy_psoc3_count7 #(.cy_period(7'b0011111))
+    cy_psoc3_count7 #(.cy_period(7'b0111111))
     Counter0 (
         /* input        */ .clock(clock),
         /* input        */ .reset(sod),
@@ -45,7 +45,7 @@ module SyncSOF (
         /* output       */ .tc(clocktc1)
     );
     wire [6:0] clockcount2;
-    cy_psoc3_count7 #(.cy_period(7'b0001000))
+    cy_psoc3_count7 #(.cy_period(7'b0111111))
     Counter1 (
         /* input        */ .clock(clocktc1),
         /* input        */ .reset(sod),
@@ -55,7 +55,7 @@ module SyncSOF (
         /* output       */ .tc(clocktc2)
     );
     wire [6:0] clockcount3;
-    cy_psoc3_count7 #(.cy_period(7'b1111111))
+    cy_psoc3_count7 #(.cy_period(7'b0001000))
     Counter2 (
         /* input        */ .clock(clocktc2),
         /* input        */ .reset(sod),
@@ -66,14 +66,15 @@ module SyncSOF (
     );
 
     // Report to the CPU where we are in the frame
-    reg [7:0] frame_pos;
+    reg [7:0] frame_pos_hi;
 	cy_psoc3_status #(.cy_md_select(8'h00), .cy_force_order(`TRUE))
-	FRAME_POS ( .status( frame_pos ));
+	FRAME_POS_HI ( .status( frame_pos_hi ));
 
     reg frame_pos_ready;
+    reg [6:0] frame_pos_lo;
 	cy_psoc3_status #(.cy_md_select(8'h01), .cy_force_order(`TRUE))
-	FRAME_POS_READY ( 
-        .status( {7'b0, frame_pos_ready} ),
+	FRAME_POS_LO ( 
+        .status( {frame_pos_lo, frame_pos_ready} ),
         .clock(clock)
     );
 
@@ -142,7 +143,8 @@ module SyncSOF (
         if (sof_sync != sof_prev)
         begin
             sof_prev <= sof_sync;
-            frame_pos = {clockcount3, clockcount2[3]};
+            frame_pos_hi = {clockcount3[3:0], clockcount2[5:2]};
+            frame_pos_lo = {clockcount2[1:0], clockcount1[5:1]};
             frame_pos_ready = 1;
         end
         else frame_pos_ready = 0;
