@@ -17,8 +17,8 @@
 #include "`$INSTANCE_NAME`_api.h"
 
 // Setings bits
-#define IQ_GEN_TX     0x02
-#define IQ_GEN_DIV    0x40
+#define IQ_GEN_TX     0x40
+#define IQ_GEN_DIV    0x10
 
 void `$INSTANCE_NAME`_Start(void) {
     CY_SET_REG8(`$INSTANCE_NAME`_Counter__CONTROL_AUX_CTL_REG, 0x20);

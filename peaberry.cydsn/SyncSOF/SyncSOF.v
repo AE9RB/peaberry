@@ -129,8 +129,8 @@ module SyncSOF (
         end
     end
     
-    reg [9:0] pwmcounter;
-    wire [9:0] frac = {fHigh,fLow};
+    reg [15:0] pwmcounter;
+    wire [15:0] frac = {fHigh,fLow};
     wire pwm = pwmcounter < frac;
     assign faster = pwm;
     assign slower = ~pwm;
@@ -138,7 +138,7 @@ module SyncSOF (
     reg sof_prev;
     always @(posedge clock)
     begin
-        pwmcounter <= pwmcounter - 1;
+        pwmcounter[15:7] <= pwmcounter[15:7] - 1;
         
         if (sof_sync != sof_prev)
         begin
@@ -149,7 +149,12 @@ module SyncSOF (
         end
         else frame_pos_ready = 0;
     end
-    
+
+    always @(posedge pwm)
+    begin
+        pwmcounter[6:0] <= pwmcounter[6:0] - 65;
+    end
+
     wire delaycountdownzero;
     cy_psoc3_dp8 #(.cy_dpconfig_a(
     {

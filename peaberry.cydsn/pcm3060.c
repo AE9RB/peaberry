@@ -56,11 +56,11 @@ void DmaRxConfiguration(void)
     uint8 i, n, swapsize, order[12];
 
     if (Status_Read() & RX_REV) {
-        LoadSwapOrderNorm(order);
-        swapsize = 9;
-    } else {
         LoadSwapOrderRev(order);
         swapsize = 12;
+    } else {
+        LoadSwapOrderNorm(order);
+        swapsize = 9;
     }
 
     RxI2S_Stage_Chan = RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));

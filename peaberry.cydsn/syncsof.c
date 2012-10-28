@@ -14,28 +14,35 @@
 
 #include <peaberry.h>
 
-#define FRAC_MIN (970 * 1)
-#define FRAC_MAX (1015 * 1)
+#define FRAC_MIN (970 * 64)
+#define FRAC_MAX (1015 * 64)
 uint16 frac = FRAC_MIN + (FRAC_MAX - FRAC_MAX) / 2;
 
 void SyncSOF_Main(void) {
-    static uint8 nsh, up, dn, x;
     static uint16 prev_pos;
     uint16 pos;
-    static int8 dir;
+    uint16 x;
 
     pos = CY_GET_REG8(SyncSOF_FRAME_POS_LO__STATUS_REG);
     if (pos & 0x01) {
         pos += (uint16)CY_GET_REG8(SyncSOF_FRAME_POS_HI__STATUS_REG) << 8;
 
-        if (nsh) nsh--;
-        
-        if (!nsh && pos > 30000 && frac < FRAC_MAX) {frac += 2; nsh = 5;}
-        else if (!nsh && pos < 15000 && frac > FRAC_MIN) {frac -= 2; nsh = 5;}
-        else if (prev_pos < pos) {
-            if (frac < FRAC_MAX) frac += 1;
+        if (prev_pos < pos) {
+            x = pos - prev_pos;
+            x *= 12;
+            if (x > 200) x = 200;
+            if (frac < FRAC_MAX) {
+                if (pos > 32000) frac += 32;
+                frac += x;
+            }
         } else if (prev_pos > pos) {
-            if (frac > FRAC_MIN) frac -= 1;
+            x = prev_pos - pos;
+            x *= 12;
+            if (x > 200) x = 200;
+            if (frac > FRAC_MIN) {
+                if (pos < 12000) frac -= 32;
+                frac -= x;
+            }
         }
         
         CY_SET_REG8(SyncSOF_FRAC_HI__CONTROL_REG, frac >> 8);
