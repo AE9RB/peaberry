@@ -85,7 +85,6 @@ void Si570_Start(void) {
     }
     for (i = 0; i < 6; i++) Si570_Factory[i] = Si570_Buf[i+2];
     Si570_OLD[0]=0;
-    Current_Si570_Xtal = Si570_Xtal;
 }
 
 // This method of setting frequency is strongly discouraged.
