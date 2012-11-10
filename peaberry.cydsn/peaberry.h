@@ -41,6 +41,12 @@ extern uint8 TX_Request, Locked_I2C;
 #define LOCKI2C_PCM3060  2
 uint32 swap32(uint32) CYREENTRANT;
 
+// audio.c
+extern uint8 Audio_IQ_Channels;
+void Audio_Start(void);
+void Audio_Main(void);
+void Audio_Set_Speaker(void);
+
 // usbaudio.c
 void USBAudio_SyncBufs(uint8 dma, uint8* use);
 void USBAudio_Main(void);
@@ -56,6 +62,7 @@ void Si570_Main(void);
 void Si570_Fake_Reset(void);
 
 // pcm3060.c
+void PCM3060_Setup(void);
 void PCM3060_Init(void);
 void PCM3060_Start(void);
 void PCM3060_Main(void);
@@ -63,6 +70,7 @@ uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
 
 // mic.c
+void Mic_Setup(void);
 void Mic_Init(void);
 void Mic_Start(void);
 uint8* Mic_Buf(void);

@@ -22,18 +22,20 @@ uint8 Locked_I2C = 0;
 void main()
 {
     CyGlobalIntEnable;
+
     SyncSOF_Enable(pup_DMA, pdn_DMA);
+
     USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     while(!USBFS_GetConfiguration());
     USBAudio_Start();
+
     Settings_Start();
+    
     I2C_Start();
     Si570_Start();
     IQGen_Start();
-    Mic_Init();
-    PCM3060_Init();
-    Mic_Start();
-    PCM3060_Start();
+    
+    Audio_Start();
     
     for(;;) {
 	
@@ -50,8 +52,7 @@ void main()
         }
         
         Settings_Main();
-        USBAudio_Main();
-        PCM3060_Main();
+        Audio_Main();
         Si570_Main();
         SyncSOF_Main();
             

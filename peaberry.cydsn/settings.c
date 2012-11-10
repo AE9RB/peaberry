@@ -19,6 +19,9 @@
 
 uint8 buffer[CYDEV_EEPROM_ROW_SIZE];
 
+#define XTAL_DATA(mem) (*(reg32*)(mem+0))
+#define REVERSE_DATA(mem) (*(reg8*)(mem+4))
+
 void Settings_Start(void) {
     float crystal_freq;
     EEPROM_Start();
@@ -30,7 +33,7 @@ void Settings_Start(void) {
         // and it will immediately be stored in eeprom.
         Si570_Xtal = 0;
     } else {
-        Si570_Xtal = *(reg32*)CYDEV_EE_BASE;
+        Si570_Xtal = XTAL_DATA(CYDEV_EE_BASE);
     }
     
 }
@@ -38,10 +41,10 @@ void Settings_Start(void) {
 void Settings_Main(void) {
     uint8 i;
     
-    if (*(reg32*)CYDEV_EE_BASE != Si570_Xtal) {
+    if (XTAL_DATA(CYDEV_EE_BASE) != Si570_Xtal) {
         if (EEPROM_QueryWrite() != CYRET_STARTED) {
             for (i=4; i < CYDEV_EEPROM_ROW_SIZE; i++) buffer[i] = 0;
-            *(uint32*)&buffer = Si570_Xtal;
+            XTAL_DATA(buffer) = Si570_Xtal;
             CySetTemp();
             EEPROM_StartWrite(buffer, 0);
         }

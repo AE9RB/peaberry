@@ -30,7 +30,7 @@ void SyncSOF_Main(void) {
         if (prev_pos < pos) {
             x = pos - prev_pos;
             x *= 12;
-            if (x > 200) x = 200;
+            if (x > 128) x = 128;
             if (frac < FRAC_MAX) {
                 if (pos > 32000) frac += 128;
                 frac += x;
@@ -38,7 +38,7 @@ void SyncSOF_Main(void) {
         } else if (prev_pos > pos) {
             x = prev_pos - pos;
             x *= 12;
-            if (x > 200) x = 200;
+            if (x > 128) x = 128;
             if (frac > FRAC_MIN) {
                 if (pos < 12000) frac -= 128;
                 frac -= x;

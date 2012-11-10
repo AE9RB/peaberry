@@ -898,6 +898,16 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
             </File>
+            <File>
+              <FileName>SPKR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SPKR.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPKR.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SPKR.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1797,6 +1807,16 @@
               <FileName>pup_DMA_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>SPKR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SPKR.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPKR.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\SPKR.h</FilePath>
             </File>
           </Files>
         </Group>
