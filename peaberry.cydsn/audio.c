@@ -19,7 +19,7 @@
 // 1: RX=rev TX=norm
 // 2: RX=norm TX=rev
 // 3: RX=rev TX=rev
-uint8 Audio_IQ_Channels = 0;
+uint8 Audio_IQ_Channels;
 
 // Use to detect change
 uint8 Prev_IQ_Channels = 255;

@@ -28,12 +28,17 @@ void Settings_Start(void) {
     
     crystal_freq = ((float)swap32(*(reg32*)CYDEV_EE_BASE) / 0x01000000);
     
-    if (crystal_freq < XTAL_MIN || crystal_freq > XTAL_MAX ) {
+    if (
+        crystal_freq < XTAL_MIN || crystal_freq > XTAL_MAX ||
+        REVERSE_DATA(CYDEV_EE_BASE) > 3
+    ) {
         // New radio! Si570_Start() will compute xtal
         // and it will immediately be stored in eeprom.
         Si570_Xtal = 0;
+        Audio_IQ_Channels = 0;
     } else {
         Si570_Xtal = XTAL_DATA(CYDEV_EE_BASE);
+        Audio_IQ_Channels = REVERSE_DATA(CYDEV_EE_BASE);
     }
     
 }
@@ -41,10 +46,14 @@ void Settings_Start(void) {
 void Settings_Main(void) {
     uint8 i;
     
-    if (XTAL_DATA(CYDEV_EE_BASE) != Si570_Xtal) {
+    if (
+        XTAL_DATA(CYDEV_EE_BASE) != Si570_Xtal ||
+        REVERSE_DATA(CYDEV_EE_BASE) != Audio_IQ_Channels
+    ) {
         if (EEPROM_QueryWrite() != CYRET_STARTED) {
             for (i=4; i < CYDEV_EEPROM_ROW_SIZE; i++) buffer[i] = 0;
             XTAL_DATA(buffer) = Si570_Xtal;
+            REVERSE_DATA(buffer) = Audio_IQ_Channels;
             CySetTemp();
             EEPROM_StartWrite(buffer, 0);
         }
