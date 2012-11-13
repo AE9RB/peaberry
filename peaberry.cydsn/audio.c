@@ -15,17 +15,57 @@
 #include <peaberry.h>
 
 // IQ Reveral option
-// 0,1: RX=jumper TX=norm  000 001
-// 2,3: RX=jumper TX=rev   010 011
-// 4: RX=norm TX=norm      100
-// 5: RX=rev TX=norm       101
-// 6: RX=norm TX=rev       110
-// 7: RX=rev TX=rev        111
+// 0: RX=norm TX=norm
+// 1: RX=rev TX=norm
+// 2: RX=norm TX=rev
+// 3: RX=rev TX=rev
 uint8 Audio_IQ_Channels = 0;
 
 // Use to detect change
 uint8 Prev_IQ_Channels = 255;
 
+
+#define SOF_CENTER 22000
+#define FRAC_MIN (970 * 64)
+#define FRAC_MAX (1015 * 64)
+uint16 frac = FRAC_MIN + (FRAC_MAX - FRAC_MAX) / 2;
+
+void Audio_Buffer_Sync(void) {
+    static uint16 prev_pos;
+    uint16 pos;
+    uint16 x;
+    static uint8 mult;
+
+    pos = CY_GET_REG8(SyncSOF_FRAME_POS_LO__STATUS_REG);
+    if (pos & 0x01) {
+        pos += (uint16)CY_GET_REG8(SyncSOF_FRAME_POS_HI__STATUS_REG) << 8;
+        
+        if (pos > SOF_CENTER) {
+            if (frac < FRAC_MAX) frac += (pos - SOF_CENTER) / 256;
+        } else {
+            if (frac > FRAC_MIN) frac -= (SOF_CENTER - pos) / 256;
+        }
+        
+        if (mult >= 11) mult = 9;
+        else mult++;
+
+        if (prev_pos < pos) {
+            x = (pos - prev_pos) * mult;
+            if (x > 256) x = 256;
+            if (frac < FRAC_MAX) frac += x;
+        } else {
+            x = (prev_pos - pos) * mult;
+            if (x > 256) x = 256;
+            if (frac > FRAC_MIN) frac -= x;
+        }
+        prev_pos = pos;
+        
+        CY_SET_REG8(SyncSOF_FRAC_HI__CONTROL_REG, frac >> 8);
+        CY_SET_REG8(SyncSOF_FRAC_LO__CONTROL_REG, frac & 0xFF);
+        
+    }
+
+}
 
 void Audio_Reset(void) {
     Mic_Init();
@@ -45,15 +85,17 @@ void Audio_Set_Speaker(void) {
     if (TX_Request) {
         SPKR_DisconnectAll();
     } else if (Audio_IQ_Channels &0x02) {
-        SPKR_Select(1);
-    } else {
         SPKR_Select(0);
+    } else {
+        SPKR_Select(1);
     }
 }
+
 
 void Audio_Main(void) {
     USBAudio_Main();
     PCM3060_Main();
+    Audio_Buffer_Sync();
     
     switch (Si570_LO) {
         case 0xA8AAAA10: Audio_IQ_Channels = 0; break; // 33.333333 MHz

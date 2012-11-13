@@ -33,11 +33,14 @@ void Mic_Init(void){
     Microphone_StopConvert();
     
     for (i=0; i<2; i++) {    
-        CyDmaChEnable(Mic_Buff_Chan, 1u);
-        CyDmaChEnable(Mic_Conv_Chan, 1u);
         CyDmaChSetRequest(Mic_Buff_Chan, CPU_TERM_CHAIN);
         CyDmaChSetRequest(Mic_Conv_Chan, CPU_TERM_CHAIN);
+        CyDmaChEnable(Mic_Buff_Chan, 1u);
+        CyDmaChEnable(Mic_Conv_Chan, 1u);
     }
+    
+    CyDmaChDisable(Mic_Buff_Chan);
+    CyDmaChDisable(Mic_Conv_Chan);
 
     CyDmaTdSetConfiguration(Mic_Buff_TD, MIC_BUF_SIZE * USB_AUDIO_BUFS, Mic_Buff_TD, TD_INC_DST_ADR );    
     CyDmaTdSetAddress(Mic_Buff_TD, LO16(Mic1216_Conv_u0__16BIT_F1_REG), LO16(Mic_Buff[0]));

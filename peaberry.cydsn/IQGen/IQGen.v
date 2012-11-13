@@ -55,8 +55,8 @@ module IQGen (
     reg qsd0, qsd1, qse0, qse1;
     assign qsd = {qsd1, qsd0};
     assign qse = {qse1, qse0};
-    assign tx = settings[5];
-    wire dividelower = settings[0];
+    assign tx = settings[2];
+    wire dividelower = settings[5];
     wire rxbit = dividelower ? count[4] : count[1];
     wire txbit = tx ? rxbit : 1'b0;
     

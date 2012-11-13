@@ -54,7 +54,6 @@ void main()
         Settings_Main();
         Audio_Main();
         Si570_Main();
-        SyncSOF_Main();
             
     }
 }
