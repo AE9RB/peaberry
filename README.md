@@ -29,7 +29,8 @@ http://www.cypress.com/
 
 It is normal to get errors about missing files until you have built
 the project for the first time.  This is because the generated files
-have been excluded from the git repository.
+have been excluded from the git repository. The Debug target will not build,
+only the Release target will fit on the chip.
 
 ## Schematic
 
