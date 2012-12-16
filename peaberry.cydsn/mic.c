@@ -14,7 +14,6 @@
 
 #include <peaberry.h>
 
-uint8 Mic_Buff[USB_AUDIO_BUFS][MIC_BUF_SIZE];
 uint8 Mic_Buff_Chan, Mic_Buff_TD;
 uint8 Mic_Conv_Chan, Mic_Conv_TD;
 
@@ -43,7 +42,7 @@ void Mic_Init(void){
     CyDmaChDisable(Mic_Conv_Chan);
 
     CyDmaTdSetConfiguration(Mic_Buff_TD, MIC_BUF_SIZE * USB_AUDIO_BUFS, Mic_Buff_TD, TD_INC_DST_ADR );    
-    CyDmaTdSetAddress(Mic_Buff_TD, LO16(Mic1216_Conv_u0__16BIT_F1_REG), LO16(Mic_Buff[0]));
+    CyDmaTdSetAddress(Mic_Buff_TD, LO16(Mic1216_Conv_u0__16BIT_F1_REG), LO16(Buf.B48.Mic[0]));
     CyDmaChSetInitialTd(Mic_Buff_Chan, Mic_Buff_TD);
     
     CyDmaTdSetConfiguration(Mic_Conv_TD, 2, Mic_Conv_TD, Mic_Conv__TD_TERMOUT_EN );    
@@ -60,5 +59,5 @@ void Mic_Start(void) {
 
 
 uint8* Mic_Buf(void) {
-    return Mic_Buff[SyncSOF_USB_Buffer()];
+    return Buf.B48.Mic[SyncSOF_USB_Buffer()];
 }

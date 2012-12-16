@@ -22,13 +22,28 @@
 #define KEY_1  0x02
 #define RX_REV 0x04
 
-#define USB_AUDIO_BUFS 3
-// 2 X 24-bit bytes in an I2S sample
-#define I2S_FRAME_SIZE (3 * 2)
 // 48 24-bit stereo samples every 1 ms
-#define I2S_BUF_SIZE (48u * I2S_FRAME_SIZE)
+#define I2S_B48_SIZE (48u * 3 * 2)
+#define I2S_B96_SIZE (96u * 3 * 2)
 // 48 12-bit mono samples every 1 ms
 #define MIC_BUF_SIZE (48u * 2)
+// buffer storage
+#define USB_AUDIO_BUFS 3
+union buf
+{
+    struct
+    {
+        uint8 RxI2S[USB_AUDIO_BUFS][I2S_B48_SIZE];
+        uint8 TxI2S[USB_AUDIO_BUFS][I2S_B48_SIZE];
+        uint8 Void[I2S_B48_SIZE];
+        uint8 Mic[USB_AUDIO_BUFS][MIC_BUF_SIZE];
+    } B48;
+    struct
+    {  
+        uint8 RxI2S[USB_AUDIO_BUFS][I2S_B96_SIZE];
+        uint8 TxI2S[USB_AUDIO_BUFS][I2S_B96_SIZE];
+    } B96;
+};
 
 // Visibility into USBFS
 extern uint8 USBFS_initVar;
@@ -36,6 +51,8 @@ extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
 
 // main.c
 extern uint8 TX_Request, Locked_I2C;
+extern uint16 I2S_Buf_Size;
+extern union buf Buf;
 #define LOCKI2C_UNLOCKED 0
 #define LOCKI2C_SI570    1
 #define LOCKI2C_PCM3060  2

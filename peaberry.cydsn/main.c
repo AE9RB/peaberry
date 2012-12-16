@@ -19,6 +19,9 @@ uint8 TX_Request = 0;
 // Check and lock this in the main loop before using I2C
 uint8 Locked_I2C = 0;
 
+uint16 I2S_Buf_Size = I2S_B48_SIZE;
+union buf Buf;
+
 void main()
 {
     CyGlobalIntEnable;

@@ -18,19 +18,17 @@
 // Filter 0x30 enables pre-emphasis
 #define PCM3060_SPKR_FILTER 0x00
 
-static uint8 SwapOrderA[] = {5,4,3,8,7,6,2,1,0};
-static uint8 SwapOrderB[] = {11,10,9,8,7,6,5,4,3,2,1,0};
+const uint8 code SwapOrderA[] = {5,4,3,8,7,6,2,1,0};
+const uint8 code SwapOrderB[] = {11,10,9,8,7,6,5,4,3,2,1,0};
 
-volatile uint8 RxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Swap[12], RxI2S_Move;
-uint8 RxI2S_Swap_Chan, RxI2S_Swap_TD[12];
-uint8 RxI2S_Stage_Chan, RxI2S_Stage_TD[12];
-uint8 RxI2S_Buff_Chan, RxI2S_Buff_TD;
+volatile uint8 RxI2S_Swap[12], RxI2S_Move;
+uint8 RxI2S_Swap_TD[12], RxI2S_Stage_TD[12], RxI2S_Buff_TD;
 
 void DmaRxSetup() {
     uint8 i;
-    RxI2S_Stage_Chan = RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
-    RxI2S_Swap_Chan = RxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    RxI2S_Buff_Chan = RxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    RxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_SRAM_BASE));
+    RxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    RxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     for (i=0; i < 12; i++) RxI2S_Stage_TD[i]=CyDmaTdAllocate();
     for (i=0; i < 12; i++) RxI2S_Swap_TD[i]=CyDmaTdAllocate();
     RxI2S_Buff_TD = CyDmaTdAllocate();
@@ -40,17 +38,17 @@ void DmaRxInit(uint8 reverse) {
     uint8 i, n, swapsize, *order;
 
     for (i=0; i<2; i++) {    
-        CyDmaChSetRequest(RxI2S_Stage_Chan, CPU_TERM_CHAIN);
-        CyDmaChSetRequest(RxI2S_Swap_Chan, CPU_TERM_CHAIN);
-        CyDmaChSetRequest(RxI2S_Buff_Chan, CPU_TERM_CHAIN);
-        CyDmaChEnable(RxI2S_Stage_Chan, 1u);
-        CyDmaChEnable(RxI2S_Swap_Chan, 1u);
-        CyDmaChEnable(RxI2S_Buff_Chan, 1u);
+        CyDmaChSetRequest(RxI2S_Stage_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChSetRequest(RxI2S_Swap_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChSetRequest(RxI2S_Buff_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChEnable(RxI2S_Stage_DmaHandle, 1u);
+        CyDmaChEnable(RxI2S_Swap_DmaHandle, 1u);
+        CyDmaChEnable(RxI2S_Buff_DmaHandle, 1u);
     }
 
-    CyDmaChDisable(RxI2S_Stage_Chan);
-    CyDmaChDisable(RxI2S_Swap_Chan);
-    CyDmaChDisable(RxI2S_Buff_Chan);
+    CyDmaChDisable(RxI2S_Stage_DmaHandle);
+    CyDmaChDisable(RxI2S_Swap_DmaHandle);
+    CyDmaChDisable(RxI2S_Buff_DmaHandle);
 
     if (reverse) {
         order = SwapOrderA;
@@ -66,7 +64,7 @@ void DmaRxInit(uint8 reverse) {
         CyDmaTdSetConfiguration(RxI2S_Stage_TD[i], 1, RxI2S_Stage_TD[n], RxI2S_Stage__TD_TERMOUT_EN );
         CyDmaTdSetAddress(RxI2S_Stage_TD[i], LO16(I2S_RX_FIFO_0_PTR), LO16(&RxI2S_Swap[i]));
     }
-    CyDmaChSetInitialTd(RxI2S_Stage_Chan, RxI2S_Stage_TD[0]);
+    CyDmaChSetInitialTd(RxI2S_Stage_DmaHandle, RxI2S_Stage_TD[0]);
 
     for (i=0; i < swapsize; i++) {
         n = i + 1;
@@ -74,31 +72,28 @@ void DmaRxInit(uint8 reverse) {
         CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], RxI2S_Swap__TD_TERMOUT_EN);
         CyDmaTdSetAddress(RxI2S_Swap_TD[i], LO16(&RxI2S_Swap[order[i]]), LO16(&RxI2S_Move));
     }
-    CyDmaChSetInitialTd(RxI2S_Swap_Chan, RxI2S_Swap_TD[0]);
+    CyDmaChSetInitialTd(RxI2S_Swap_DmaHandle, RxI2S_Swap_TD[0]);
 
-    CyDmaTdSetConfiguration(RxI2S_Buff_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, RxI2S_Buff_TD, TD_INC_DST_ADR);    
-    CyDmaTdSetAddress(RxI2S_Buff_TD, LO16(&RxI2S_Move), LO16(RxI2S_Buff[0]));
-    CyDmaChSetInitialTd(RxI2S_Buff_Chan, RxI2S_Buff_TD);
+    CyDmaTdSetConfiguration(RxI2S_Buff_TD, I2S_Buf_Size * USB_AUDIO_BUFS, RxI2S_Buff_TD, TD_INC_DST_ADR);    
+    CyDmaTdSetAddress(RxI2S_Buff_TD, LO16(&RxI2S_Move), LO16(Buf.B48.RxI2S[0]));
+    CyDmaChSetInitialTd(RxI2S_Buff_DmaHandle, RxI2S_Buff_TD);
 
-    CyDmaChEnable(RxI2S_Buff_Chan, 1u);
-    CyDmaChEnable(RxI2S_Swap_Chan, 1u);
-    CyDmaChEnable(RxI2S_Stage_Chan, 1u);
+    CyDmaChEnable(RxI2S_Buff_DmaHandle, 1u);
+    CyDmaChEnable(RxI2S_Swap_DmaHandle, 1u);
+    CyDmaChEnable(RxI2S_Stage_DmaHandle, 1u);
 }
 
 
 uint8 TxZero = 0;
-volatile uint8 TxI2S_Buff[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Swap[12], TxI2S_Stage;
-uint8 TxI2S_Swap_Chan, TxI2S_Swap_TD[12];
-uint8 TxI2S_Stage_Chan, TxI2S_Stage_TD[12];
-uint8 TxI2S_Buff_Chan, TxI2S_Buff_TD;
-uint8 TxI2S_Zero_Chan, TxI2S_Zero_TD;
+volatile uint8 TxI2S_Swap[12], TxI2S_Stage;
+uint8 TxI2S_Swap_TD[12], TxI2S_Stage_TD[12], TxI2S_Buff_TD, TxI2S_Zero_TD;
 
 void DmaTxSetup() {
     uint8 i;
-    TxI2S_Swap_Chan = TxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_PERIPH_BASE));
-    TxI2S_Buff_Chan = TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    TxI2S_Stage_Chan = TxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
-    TxI2S_Zero_Chan = TxI2S_Zero_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    TxI2S_Swap_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_PERIPH_BASE));
+    TxI2S_Buff_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    TxI2S_Stage_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
+    TxI2S_Zero_DmaInitialize(1, 1, HI16(CYDEV_SRAM_BASE), HI16(CYDEV_SRAM_BASE));
     for (i=0; i < 12; i++) TxI2S_Swap_TD[i]=CyDmaTdAllocate();
     for (i=0; i < 12; i++) TxI2S_Stage_TD[i]=CyDmaTdAllocate();
     TxI2S_Buff_TD = CyDmaTdAllocate();
@@ -109,20 +104,20 @@ void DmaTxInit(uint8 reverse) {
     uint8 i, n, swapsize, start, *order;
 
     for (i=0; i<2; i++) {    
-        CyDmaChSetRequest(TxI2S_Swap_Chan, CPU_TERM_CHAIN);
-        CyDmaChSetRequest(TxI2S_Stage_Chan, CPU_TERM_CHAIN);
-        CyDmaChSetRequest(TxI2S_Buff_Chan, CPU_TERM_CHAIN);
-        CyDmaChSetRequest(TxI2S_Zero_Chan, CPU_TERM_CHAIN);
-        CyDmaChEnable(TxI2S_Swap_Chan, 1u);
-        CyDmaChEnable(TxI2S_Stage_Chan, 1u);
-        CyDmaChEnable(TxI2S_Buff_Chan, 1u);
-        CyDmaChEnable(TxI2S_Zero_Chan, 1u);
+        CyDmaChSetRequest(TxI2S_Swap_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChSetRequest(TxI2S_Stage_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChSetRequest(TxI2S_Buff_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChSetRequest(TxI2S_Zero_DmaHandle, CPU_TERM_CHAIN);
+        CyDmaChEnable(TxI2S_Swap_DmaHandle, 1u);
+        CyDmaChEnable(TxI2S_Stage_DmaHandle, 1u);
+        CyDmaChEnable(TxI2S_Buff_DmaHandle, 1u);
+        CyDmaChEnable(TxI2S_Zero_DmaHandle, 1u);
     }
     
-    CyDmaChDisable(TxI2S_Swap_Chan);
-    CyDmaChDisable(TxI2S_Stage_Chan);
-    CyDmaChDisable(TxI2S_Buff_Chan);
-    CyDmaChDisable(TxI2S_Zero_Chan);
+    CyDmaChDisable(TxI2S_Swap_DmaHandle);
+    CyDmaChDisable(TxI2S_Stage_DmaHandle);
+    CyDmaChDisable(TxI2S_Buff_DmaHandle);
+    CyDmaChDisable(TxI2S_Zero_DmaHandle);
 
     if (reverse) {
         order = SwapOrderA;
@@ -140,7 +135,7 @@ void DmaTxInit(uint8 reverse) {
         CyDmaTdSetConfiguration(TxI2S_Swap_TD[i], 1, TxI2S_Swap_TD[n], TxI2S_Swap__TD_TERMOUT_EN);
         CyDmaTdSetAddress(TxI2S_Swap_TD[i], LO16(&TxI2S_Swap[order[i]]), LO16(I2S_TX_FIFO_0_PTR));
     }
-    CyDmaChSetInitialTd(TxI2S_Swap_Chan, TxI2S_Swap_TD[start]);
+    CyDmaChSetInitialTd(TxI2S_Swap_DmaHandle, TxI2S_Swap_TD[start]);
 
     for (i=0; i < swapsize; i++) {
         n = i + 1;
@@ -148,32 +143,31 @@ void DmaTxInit(uint8 reverse) {
         CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], TxI2S_Stage__TD_TERMOUT_EN);
         CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxI2S_Stage), LO16(&TxI2S_Swap[i]));
     }
-    CyDmaChSetInitialTd(TxI2S_Stage_Chan, TxI2S_Stage_TD[swapsize-1]);
+    CyDmaChSetInitialTd(TxI2S_Stage_DmaHandle, TxI2S_Stage_TD[swapsize-1]);
 
-    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, TxI2S_Buff_TD, TD_INC_SRC_ADR | TxI2S_Buff__TD_TERMOUT_EN);    
-    CyDmaTdSetAddress(TxI2S_Buff_TD, LO16(TxI2S_Buff[0]), LO16(&TxI2S_Stage));
-    CyDmaChSetInitialTd(TxI2S_Buff_Chan, TxI2S_Buff_TD);
+    CyDmaTdSetConfiguration(TxI2S_Buff_TD, I2S_Buf_Size * USB_AUDIO_BUFS, TxI2S_Buff_TD, TD_INC_SRC_ADR | TxI2S_Buff__TD_TERMOUT_EN);    
+    CyDmaTdSetAddress(TxI2S_Buff_TD, LO16(Buf.B48.TxI2S[0]), LO16(&TxI2S_Stage));
+    CyDmaChSetInitialTd(TxI2S_Buff_DmaHandle, TxI2S_Buff_TD);
 
-    CyDmaTdSetConfiguration(TxI2S_Zero_TD, I2S_BUF_SIZE * USB_AUDIO_BUFS, TxI2S_Zero_TD, TD_INC_DST_ADR );    
-    CyDmaTdSetAddress(TxI2S_Zero_TD, LO16(&TxZero), LO16(TxI2S_Buff[0]));
-    CyDmaChSetInitialTd(TxI2S_Zero_Chan, TxI2S_Zero_TD);
+    CyDmaTdSetConfiguration(TxI2S_Zero_TD, I2S_Buf_Size * USB_AUDIO_BUFS, TxI2S_Zero_TD, TD_INC_DST_ADR );    
+    CyDmaTdSetAddress(TxI2S_Zero_TD, LO16(&TxZero), LO16(Buf.B48.TxI2S[0]));
+    CyDmaChSetInitialTd(TxI2S_Zero_DmaHandle, TxI2S_Zero_TD);
 
-    CyDmaChEnable(TxI2S_Buff_Chan, 1u);
-    CyDmaChSetRequest(TxI2S_Stage_Chan, CPU_REQ);
-    CyDmaChEnable(TxI2S_Stage_Chan, 1u);
-    CyDmaChSetRequest(TxI2S_Swap_Chan, CPU_REQ);
-    CyDmaChEnable(TxI2S_Swap_Chan, 1u);
-    CyDmaChEnable(TxI2S_Zero_Chan, 1u);
-
+    CyDmaChEnable(TxI2S_Buff_DmaHandle, 1u);
+    CyDmaChSetRequest(TxI2S_Stage_DmaHandle, CPU_REQ);
+    CyDmaChEnable(TxI2S_Stage_DmaHandle, 1u);
+    CyDmaChSetRequest(TxI2S_Swap_DmaHandle, CPU_REQ);
+    CyDmaChEnable(TxI2S_Swap_DmaHandle, 1u);
+    CyDmaChEnable(TxI2S_Zero_DmaHandle, 1u);
 }
 
 
 uint8* PCM3060_TxBuf(void) {
-    return TxI2S_Buff[SyncSOF_USB_Buffer()];
+    return Buf.B48.TxI2S[SyncSOF_USB_Buffer()];
 }
 
 uint8* PCM3060_RxBuf(void) {
-    return RxI2S_Buff[SyncSOF_USB_Buffer()];
+    return Buf.B48.RxI2S[SyncSOF_USB_Buffer()];
 }
 
 void PCM3060_Setup(void) {
@@ -321,4 +315,3 @@ void PCM3060_Main(void) {
         break;
     }
 }
-

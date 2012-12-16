@@ -24,10 +24,6 @@
 #define SPKR_INTERFACE           6
 #define SPKR_ENDPOINT            5
 
-// For the unused speaker or transmit USB data.
-volatile uint8 Void_Buff[I2S_BUF_SIZE];
-
-
 extern uint8 USBFS_currentVolume[];
 extern uint8 USBFS_minimumVolume[];
 extern uint8 USBFS_maximumVolume[];
@@ -67,8 +63,8 @@ void USBAudio_Start(void) {
     USBFS_maximumVolume[1] = 0;
     USBFS_currentVolume[0] = 0;
     USBFS_currentVolume[1] = 0;
-    USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
-    USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+    USBFS_ReadOutEP(TX_ENDPOINT, Buf.B48.Void, I2S_Buf_Size);
+    USBFS_ReadOutEP(SPKR_ENDPOINT, Buf.B48.Void, I2S_Buf_Size);
     TX_Enabled = SPKR_Enabled = 0;
 }
 
@@ -106,10 +102,10 @@ void USBAudio_Main(void) {
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
         if (IQGen_GetTransmit()) {
-            USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
+            USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_Buf_Size);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
-            USBFS_ReadOutEP(TX_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_ReadOutEP(TX_ENDPOINT, Buf.B48.Void, I2S_Buf_Size);
             USBFS_EnableOutEP(TX_ENDPOINT);
         }
     }
@@ -117,17 +113,17 @@ void USBAudio_Main(void) {
     if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
     {
         if (IQGen_GetTransmit()) {
-            USBFS_ReadOutEP(SPKR_ENDPOINT, Void_Buff, I2S_BUF_SIZE);
+            USBFS_ReadOutEP(SPKR_ENDPOINT, Buf.B48.Void, I2S_Buf_Size);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         } else {
-            USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
+            USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_TxBuf(), I2S_Buf_Size);
             USBFS_EnableOutEP(SPKR_ENDPOINT);
         }
     }
 
 	if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
-		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_BUF_SIZE);
+		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_Buf_Size);
+		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_Buf_Size);
 	}
 
 	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
