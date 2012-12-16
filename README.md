@@ -20,7 +20,7 @@ The audio interfaces use standard OS drivers. The control interface
 requires a driver on Windows. The PE0FKO libusb drivers work but require
 a small change to the inf file.  (&MI_00 added to DeviceID)
 
-https://github.com/downloads/ham21/peaberry/Windows-USB-Driver-1.2.5.0.zip
+https://github.com/downloads/AE9RB/peaberry/Windows-USB-Driver-1.2.5.0.zip
 
 ## Firmware
 
@@ -29,8 +29,9 @@ http://www.cypress.com/
 
 It is normal to get errors about missing files until you have built
 the project for the first time.  This is because the generated files
-have been excluded from the git repository.
+have been excluded from the git repository. The Debug target will not build,
+only the Release target will fit on the chip.
 
 ## Schematic
 
-https://github.com/downloads/ham21/peaberry/Schematic.pdf
+https://github.com/downloads/AE9RB/peaberry/Schematic.pdf
