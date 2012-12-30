@@ -14,15 +14,7 @@ Kits available from http://AE9RB.com/
  * DG8SAQ/PE0FKO compatible control interface.
  * Open Source firmware.  Apache 2.0 license.
 
-## Windows Driver
-
-The audio interfaces use standard OS drivers. The control interface
-requires a driver on Windows. The PE0FKO libusb drivers work but require
-a small change to the inf file.  (&MI_00 added to DeviceID)
-
-https://github.com/downloads/AE9RB/peaberry/Windows-USB-Driver-1.2.5.0.zip
-
-## Firmware
+## Building Firmware
 
 The project was built with PSoC Creator 2.1:
 http://www.cypress.com/
@@ -32,6 +24,6 @@ the project for the first time.  This is because the generated files
 have been excluded from the git repository. The Debug target will not build,
 only the Release target will fit on the chip.
 
-## Schematic
+## Schematic and Windows Driver
 
-https://github.com/downloads/AE9RB/peaberry/Schematic.pdf
+http://ae9rb.com/forum/viewtopic.php?f=2&t=38
