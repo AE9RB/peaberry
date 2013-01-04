@@ -21,6 +21,9 @@
 // 3: RX=rev TX=rev
 uint8 Audio_IQ_Channels;
 
+// Dump for unused SPKR/TX data
+uint8 Void[I2S_B48_SIZE];
+
 // Use to detect change
 uint8 Prev_IQ_Channels = 255;
 
@@ -82,10 +85,6 @@ void Audio_Start(void) {
 
 // Connects audio output to SPKR as needed
 void Audio_Set_Speaker(void) {
-    
-    //SPKR_Select(0); //DEBUG TEST
-    //return; //DEBUG TEST
-
     if (TX_Request || B96_Enabled) {
         SPKR_DisconnectAll();
     } else if (Audio_IQ_Channels &0x02) {
@@ -131,8 +130,8 @@ void Audio_USB_Start(void) {
     USBFS_currentVolume[1] = 0;
     TX_Enabled = SPKR_Enabled = 0;
     // Start endpoints with bogus destination
-    USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_VoidBuf(), 0);
-    if (!B96_Enabled) USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_VoidBuf(), 0);
+    USBFS_ReadOutEP(TX_ENDPOINT, Void, 0);
+    if (!B96_Enabled) USBFS_ReadOutEP(SPKR_ENDPOINT, Void, 0);
 }
 
 void Audio_Detect_Change() {
@@ -191,7 +190,7 @@ void Audio_Main(void) {
             USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_Buf_Size);
             USBFS_EnableOutEP(TX_ENDPOINT);
         } else {
-            USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_VoidBuf(), I2S_Buf_Size);
+            USBFS_ReadOutEP(TX_ENDPOINT, Void, I2S_Buf_Size);
             USBFS_EnableOutEP(TX_ENDPOINT);
         }
     }
@@ -210,7 +209,7 @@ void Audio_Main(void) {
         if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
         {
             if (IQGen_GetTransmit()) {
-                USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_VoidBuf(), I2S_Buf_Size);
+                USBFS_ReadOutEP(SPKR_ENDPOINT, Void, I2S_Buf_Size);
                 USBFS_EnableOutEP(SPKR_ENDPOINT);
             } else {
                 USBFS_ReadOutEP(SPKR_ENDPOINT, PCM3060_TxBuf(), I2S_Buf_Size);

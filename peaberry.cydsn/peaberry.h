@@ -81,7 +81,6 @@ void PCM3060_Start(void);
 void PCM3060_Main(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
-uint8* PCM3060_VoidBuf(void);
 
 // mic.c
 void Mic_Setup(void);

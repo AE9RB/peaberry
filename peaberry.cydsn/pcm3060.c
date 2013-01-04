@@ -20,7 +20,6 @@
 
 uint8 RxI2S[USB_AUDIO_BUFS][I2S_B96_SIZE];
 uint8 TxI2S[USB_AUDIO_BUFS][I2S_B96_SIZE];
-uint8 Void[I2S_B48_SIZE];
 
 const uint8 code SwapOrderA[] = {5,4,3,8,7,6,2,1,0};
 const uint8 code SwapOrderB[] = {11,10,9,8,7,6,5,4,3,2,1,0};
@@ -73,7 +72,11 @@ void DmaRxInit(uint8 reverse) {
     for (i=0; i < swapsize; i++) {
         n = i + 1;
         if (n >= swapsize) n=0;
-        CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], RxI2S_Swap__TD_TERMOUT_EN);
+        if (B96_Enabled && i%3 == 0) {
+            CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], 0);
+        } else {
+            CyDmaTdSetConfiguration(RxI2S_Swap_TD[i], 1, RxI2S_Swap_TD[n], RxI2S_Swap__TD_TERMOUT_EN);
+        }
         CyDmaTdSetAddress(RxI2S_Swap_TD[i], LO16(&RxI2S_Swap[order[i]]), LO16(&RxI2S_Move));
     }
     CyDmaChSetInitialTd(RxI2S_Swap_DmaHandle, RxI2S_Swap_TD[0]);
@@ -142,18 +145,19 @@ void DmaTxInit(uint8 reverse) {
         if (n >= swapsize) n=0;
         CyDmaTdSetConfiguration(TxI2S_Swap_TD[i], 1, TxI2S_Swap_TD[n], TxI2S_Swap__TD_TERMOUT_EN);
         CyDmaTdSetAddress(TxI2S_Swap_TD[i], LO16(&TxI2S_Swap[order[i]]), LO16(I2S_TX_FIFO_0_PTR));
-        if (B96_Enabled && ((i%3)==0)) {
+        switch (B96_Enabled ? i%3 : 1) {
+        case 0:
             CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], TxI2S_Stage__TD_TERMOUT_EN);
             CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxZero), LO16(&TxI2S_Swap[i]));
-        } else if (B96_Enabled && ((i%3)==1)) {
+            break;
+        default: // B48 and B96(1)
             CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], TxI2S_Stage__TD_TERMOUT_EN);
             CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxI2S_Stage), LO16(&TxI2S_Swap[i]));
-        } else if (B96_Enabled && ((i%3)==2)) {
+            break;
+        case 2:
             CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], 0);
             CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxI2S_Stage), LO16(&TxI2S_Swap[i]));
-        } else {
-            CyDmaTdSetConfiguration(TxI2S_Stage_TD[i], 1, TxI2S_Stage_TD[n], TxI2S_Stage__TD_TERMOUT_EN);
-            CyDmaTdSetAddress(TxI2S_Stage_TD[i], LO16(&TxI2S_Stage), LO16(&TxI2S_Swap[i]));
+            break;
         }
     }
     CyDmaChSetInitialTd(TxI2S_Swap_DmaHandle, TxI2S_Swap_TD[start]);
@@ -189,10 +193,6 @@ uint8* PCM3060_TxBuf(void) {
 
 uint8* PCM3060_RxBuf(void) {
     return RxI2S[SyncSOF_USB_Buffer()];
-}
-
-uint8* PCM3060_VoidBuf(void) {
-    return Void;
 }
 
 void PCM3060_Setup(void) {
