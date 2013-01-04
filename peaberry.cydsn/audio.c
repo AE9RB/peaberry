@@ -70,15 +70,15 @@ void Audio_Buffer_Sync(void) {
 }
 
 void Audio_Reset(void) {
-    Mic_Init();
+    if (!B96_Enabled) Mic_Init();
     PCM3060_Init();
-    Mic_Start();
+    if (!B96_Enabled) Mic_Start();
     PCM3060_Start();
     Audio_Set_Speaker();
 }
 
 void Audio_Start(void) {
-    Mic_Setup();
+    if (!B96_Enabled) Mic_Setup();
     PCM3060_Setup();
     Audio_Reset();
 }
@@ -200,12 +200,12 @@ void Audio_Main(void) {
 		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_Buf_Size);
 	}
 
-	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-	    USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
-	    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
-	}
-
     if (!B96_Enabled) {
+    	if (USBFS_GetEPState(MIC_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
+    	    USBFS_LoadInEP(MIC_ENDPOINT, Mic_Buf(), MIC_BUF_SIZE);
+    	    USBFS_LoadInEP(MIC_ENDPOINT, 0, MIC_BUF_SIZE);
+    	}
+
         if (USBFS_GetEPState(SPKR_ENDPOINT) == USBFS_OUT_BUFFER_FULL)
         {
             if (IQGen_GetTransmit()) {
