@@ -14,10 +14,6 @@
 
 #include <peaberry.h>
 
-uint8 USBFS_InitControlRead(void);
-uint8 USBFS_InitControlWrite(void);
-extern volatile T_USBFS_TD USBFS_currentTD;
-
 uint32 result;
 
 // Maps PSoC registers into one that looks like the AVR

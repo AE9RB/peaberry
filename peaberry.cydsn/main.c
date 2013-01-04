@@ -19,18 +19,23 @@ uint8 TX_Request = 0;
 // Check and lock this in the main loop before using I2C
 uint8 Locked_I2C = 0;
 
-uint16 I2S_Buf_Size = I2S_B48_SIZE;
-union buf Buf;
+uint8 B96_Enabled;
+uint16 I2S_Buf_Size;
 
 void main()
 {
+    B96_Enabled = !(Status_Read() & B96_EN);
+    if (B96_Enabled) {
+        I2S_Buf_Size = I2S_B96_SIZE;
+        I2S_Clock_SetDivider(2);
+    } else {
+        I2S_Buf_Size = I2S_B48_SIZE;
+        I2S_Clock_SetDivider(5);
+    }
+    
     CyGlobalIntEnable;
 
     SyncSOF_Enable(pup_DMA, pdn_DMA);
-
-    USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    while(!USBFS_GetConfiguration());
-    USBAudio_Start();
 
     Settings_Start();
     
@@ -39,14 +44,19 @@ void main()
     IQGen_Start();
     
     Audio_Start();
+
+    USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
+    while(!USBFS_GetConfiguration());
+    Audio_USB_Start();
     
+
     for(;;) {
 	
         // monitor VBUS to comply with USB spec
         if (USBFS_VBusPresent()) {
             if(!USBFS_initVar) {
-                USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-                USBAudio_Start();
+                USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
+                Audio_USB_Start();
             }
         } else {
             if(USBFS_initVar) {
@@ -56,6 +66,7 @@ void main()
         
         Settings_Main();
         Audio_Main();
+        PCM3060_Main();
         Si570_Main();
             
     }
