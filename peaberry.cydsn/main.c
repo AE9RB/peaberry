@@ -36,19 +36,18 @@ void main()
     CyGlobalIntEnable;
 
     SyncSOF_Enable(pup_DMA, pdn_DMA);
+    IQGen_Start();
+    
+    USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
+    while(!USBFS_GetConfiguration());
+    Audio_USB_Start();
 
     Settings_Start();
     
     I2C_Start();
     Si570_Start();
-    IQGen_Start();
     
     Audio_Start();
-
-    USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
-    while(!USBFS_GetConfiguration());
-    Audio_USB_Start();
-    
 
     for(;;) {
 	
