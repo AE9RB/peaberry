@@ -282,7 +282,7 @@ void PCM3060_Main(void) {
     case 20:
     case 30:
         pcm3060_cmd[0] = 0x41;
-        pcm3060_cmd[1] = volume;
+        pcm3060_cmd[1] = volume - 1;
         pcm3060_cmd[2] = volume;
         I2C_MasterWriteBuf(PCM3060_ADDR, pcm3060_cmd, 3, I2C_MODE_COMPLETE_XFER);
         state++;
