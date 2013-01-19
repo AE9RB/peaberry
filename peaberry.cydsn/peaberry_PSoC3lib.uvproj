@@ -918,6 +918,21 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2S_Clock.h</FilePath>
             </File>
+            <File>
+              <FileName>I2C_PVT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_PVT.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_Dm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_Dm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1837,6 +1852,21 @@
               <FileName>I2S_Clock.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2S_Clock.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_PVT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\I2C_PVT.h</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_Dm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.c</FilePath>
+            </File>
+            <File>
+              <FileName>USBFS_Dm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.h</FilePath>
             </File>
           </Files>
         </Group>
