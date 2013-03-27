@@ -1,4 +1,4 @@
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,15 +18,24 @@
 #include <device.h>
 
 // Status register bits
-#define KEY_0  0x01
-#define KEY_1  0x02
-#define B96_EN 0x04
+#define STATUS_KEY_0  0x01
+#define STATUS_KEY_1  0x02
+#define STATUS_BOOT   0x04
+#define STATUS_ATU_0  0x08
+
+// Control register bits
+#define CONTROL_TX       0x01
+#define CONTROL_XK       0x02
+#define CONTROL_ATU_0    0x04
+#define CONTROL_ATU_0_OE 0x08
+#define CONTROL_ATU_1    0x10
+#define CONTROL_GPIO_0   0x20
+#define CONTROL_GPIO_1   0x40
+#define CONTROL_GPIO_2   0x80
 
 // 48 24-bit stereo samples every 1 ms
 #define I2S_B48_SIZE (48u * 3 * 2)
 #define I2S_B96_SIZE (96u * 2 * 2)
-// 48 12-bit mono samples every 1 ms
-#define MIC_BUF_SIZE (48u * 2)
 // buffer storage
 #define USB_AUDIO_BUFS 3
 
@@ -35,10 +44,6 @@
 #define RX_INTERFACE             2
 #define TX_ENDPOINT              3
 #define TX_INTERFACE             3
-#define MIC_ENDPOINT             4
-#define MIC_INTERFACE            5
-#define SPKR_ENDPOINT            5
-#define SPKR_INTERFACE           6
 
 // Unvisible stuff from Cypress that they expect us to use and don't export
 uint8 USBFS_InitControlRead(void);
@@ -53,18 +58,15 @@ extern uint8 USBFS_maximumVolume[];
 extern uint8 USBFS_currentMute;
 
 // main.c
-extern uint8 TX_Request, Locked_I2C;
-extern uint16 I2S_Buf_Size;
 uint32 swap32(uint32) CYREENTRANT;
+extern uint16 I2S_Buf_Size;
 extern uint8 B96_Enabled;
 
 // audio.c
 extern uint8 Audio_IQ_Channels;
 void Audio_Start(void);
 void Audio_Main(void);
-void Audio_Set_Speaker(void);
 void Audio_USB_Start(void);
-uint8 Audio_Volume(void);
 
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
@@ -78,15 +80,8 @@ void Si570_Fake_Reset(void);
 void PCM3060_Setup(void);
 void PCM3060_Init(void);
 void PCM3060_Start(void);
-void PCM3060_Main(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
-
-// mic.c
-void Mic_Setup(void);
-void Mic_Init(void);
-void Mic_Start(void);
-uint8* Mic_Buf(void);
 
 // settings.c
 void Settings_Start(void);

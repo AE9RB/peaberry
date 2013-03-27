@@ -1,4 +1,4 @@
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ uint32 result;
 // Maps PSoC registers into one that looks like the AVR
 uint8 emulated_register(void) {
     uint8 reg = 0, key;
-    if (TX_Request) reg |= 0x10;
+    if (Control_Read() & CONTROL_TX) reg |= 0x10;
     key = Status_Read();
-    if (key & KEY_0) reg |= 0x20;
-    if (key & KEY_1) reg |= 0x02;
+    if (key & STATUS_KEY_0) reg |= 0x20;
+    if (key & STATUS_KEY_1) reg |= 0x02;
     return reg;
 }
 
@@ -74,7 +74,10 @@ uint8 USBFS_HandleVendorRqst(void)
                 requestHandled  = USBFS_InitControlRead();
                 break;
             case 0x50: // CMD_SET_USRP1
-                TX_Request = (CY_GET_REG8(USBFS_wValueLo) & 0x01);
+                if (CY_GET_REG8(USBFS_wValueLo) & 0x01)
+                    Control_Write(Control_Read() | CONTROL_TX);
+                else
+                    Control_Write(Control_Read() & ~CONTROL_TX);
                 //nobreak, returns key value
             case 0x51: // CMD_GET_CW_KEY
                 *(uint8*)&result = emulated_register();

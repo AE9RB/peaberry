@@ -1,4 +1,4 @@
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

@@ -8,9 +8,9 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3245PVA-150</Device>
+          <Device>CY8C3246PVI-147</Device>
           <Vendor>Cypress</Vendor>
-          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
+          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0xFFFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>C:\Program Files\Cypress\PSoC Creator\2.0\PSoC Creator\export\ide\uVision\4.x\driver\cymp3_c51.dll</FlashDriverDll>
@@ -235,7 +235,7 @@
               <Ocr1>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x1000</Size>
+                <Size>0x2000</Size>
               </Ocr1>
               <Ocr2>
                 <Type>0</Type>
@@ -250,7 +250,7 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x8000</Size>
+                <Size>0x10000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -604,46 +604,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>Microphone.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone.h</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_PM.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_INT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_INT.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_Ext_CP_Clk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_Ext_CP_Clk.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_Ext_CP_Clk.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_Ext_CP_Clk.h</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_AMux.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_AMux.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep4_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
@@ -784,31 +744,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Mic_Buff_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Buff_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV.h</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>EEPROM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\EEPROM.c</FilePath>
@@ -839,16 +774,6 @@
               <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
             </File>
             <File>
-              <FileName>IQGen_api.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\IQGen_api.c</FilePath>
-            </File>
-            <File>
-              <FileName>IQGen_api.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
-            </File>
-            <File>
               <FileName>SyncSOF_api.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.c</FilePath>
@@ -867,46 +792,6 @@
               <FileName>I2C_MASTER.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2C_MASTER.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Conv_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Conv_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR.c</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR.h</FilePath>
             </File>
             <File>
               <FileName>I2S_Clock.c</FileName>
@@ -933,6 +818,136 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.h</FilePath>
             </File>
+            <File>
+              <FileName>BOOT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT.c</FilePath>
+            </File>
+            <File>
+              <FileName>BOOT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT.h</FilePath>
+            </File>
+            <File>
+              <FileName>BOOT_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0.c</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracCLK.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracCLK.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracCLK.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracCLK.h</FilePath>
+            </File>
+            <File>
+              <FileName>P_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>P_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -943,9 +958,9 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>CY8C3245PVA-150</Device>
+          <Device>CY8C3246PVI-147</Device>
           <Vendor>Cypress</Vendor>
-          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0x7FFF) CLOCK(50000000) MODDP2"</Cpu>
+          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0xFFFF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>C:\Program Files\Cypress\PSoC Creator\2.0\PSoC Creator\export\ide\uVision\4.x\driver\cymp3_c51.dll</FlashDriverDll>
@@ -1170,7 +1185,7 @@
               <Ocr1>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x1000</Size>
+                <Size>0x2000</Size>
               </Ocr1>
               <Ocr2>
                 <Type>0</Type>
@@ -1185,7 +1200,7 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x8000</Size>
+                <Size>0x10000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -1539,46 +1554,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>Microphone.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone.h</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_PM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_PM.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_INT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_INT.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_Ext_CP_Clk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_Ext_CP_Clk.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_Ext_CP_Clk.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_Ext_CP_Clk.h</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_AMux.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.c</FilePath>
-            </File>
-            <File>
-              <FileName>Microphone_AMux.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Microphone_AMux.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep4_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
@@ -1719,31 +1694,6 @@
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Stage_dma.h</FilePath>
             </File>
             <File>
-              <FileName>Mic_Buff_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Buff_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Buff_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV.c</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV.h</FilePath>
-            </File>
-            <File>
-              <FileName>RX_REV_aliases.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RX_REV_aliases.h</FilePath>
-            </File>
-            <File>
               <FileName>EEPROM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\EEPROM.c</FilePath>
@@ -1774,16 +1724,6 @@
               <FilePath>.\Generated_Source\PSoC3\Status.h</FilePath>
             </File>
             <File>
-              <FileName>IQGen_api.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\IQGen_api.c</FilePath>
-            </File>
-            <File>
-              <FileName>IQGen_api.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\IQGen_api.h</FilePath>
-            </File>
-            <File>
               <FileName>SyncSOF_api.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\SyncSOF_api.c</FilePath>
@@ -1802,46 +1742,6 @@
               <FileName>I2C_MASTER.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\I2C_MASTER.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Conv_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mic_Conv_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\Mic_Conv_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pdn_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pdn_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>pup_DMA_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\pup_DMA_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR.c</FilePath>
-            </File>
-            <File>
-              <FileName>SPKR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\SPKR.h</FilePath>
             </File>
             <File>
               <FileName>I2S_Clock.c</FileName>
@@ -1867,6 +1767,136 @@
               <FileName>USBFS_Dm.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dm.h</FilePath>
+            </File>
+            <File>
+              <FileName>BOOT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT.c</FilePath>
+            </File>
+            <File>
+              <FileName>BOOT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT.h</FilePath>
+            </File>
+            <File>
+              <FileName>BOOT_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\BOOT_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Control.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0.c</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_0_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_0_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATU_1_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\ATU_1_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_0_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_0_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_1_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_1_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_2_aliases.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\GPIO_2_aliases.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>FracN_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracN_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracCLK.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracCLK.c</FilePath>
+            </File>
+            <File>
+              <FileName>FracCLK.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\FracCLK.h</FilePath>
+            </File>
+            <File>
+              <FileName>P_DMA_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>P_DMA_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.h</FilePath>
             </File>
           </Files>
         </Group>

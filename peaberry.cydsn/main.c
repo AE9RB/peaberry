@@ -1,4 +1,4 @@
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
 
 #include <peaberry.h>
 
-// RX/TX switching must be synchronized with PCM3060
-uint8 TX_Request = 0;
-// Check and lock this in the main loop before using I2C
-uint8 Locked_I2C = 0;
-
 uint8 B96_Enabled;
 uint16 I2S_Buf_Size;
 
 void main()
 {
-    B96_Enabled = !(Status_Read() & B96_EN);
+    //TODO B96 is from old hardware
+    B96_Enabled = 0;
     if (B96_Enabled) {
         I2S_Buf_Size = I2S_B96_SIZE;
         I2S_Clock_SetDivider(2);
@@ -35,8 +31,8 @@ void main()
     
     CyGlobalIntEnable;
 
-    SyncSOF_Enable(pup_DMA, pdn_DMA);
-    IQGen_Start();
+    SyncSOF_Start();
+    FracN_Enable(P_DMA);
     
     USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
     while(!USBFS_GetConfiguration());
@@ -65,7 +61,6 @@ void main()
         
         Settings_Main();
         Audio_Main();
-        PCM3060_Main();
         Si570_Main();
             
     }

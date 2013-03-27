@@ -1,5 +1,5 @@
 // ========================================
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,22 @@
 // limitations under the License.
 // ========================================
 
-#include "cytypes.h"
-#include "cyfitter.h"
+#include "`$INSTANCE_NAME`_api.h"
+#include <device.h>
 
-void `$INSTANCE_NAME`_Start(void);
-void `$INSTANCE_NAME`_Stop(void);
-void `$INSTANCE_NAME`_SetTransmit(uint8);
-uint8 `$INSTANCE_NAME`_GetTransmit();
-void `$INSTANCE_NAME`_SetDivider(uint8);
-uint8 `$INSTANCE_NAME`_GetDivider();
+void `$INSTANCE_NAME`_Start(uint8 dma) {
+    uint8 td;
+    
+    `$INSTANCE_NAME`_Set(`$INSTANCE_NAME`_DEFAULT);
+
+    td = CyDmaTdAllocate();
+    CyDmaTdSetConfiguration(td, 1, td, 0);
+    CyDmaTdSetAddress(td, LO16(`$INSTANCE_NAME`_PLL_P__STATUS_REG), LO16(&FASTCLK_PLL_P));
+    CyDmaChSetInitialTd(dma, td);
+    CyDmaChEnable(dma, 1);
+}
+
+void `$INSTANCE_NAME`_Set(uint16 frac) {
+    CY_SET_REG8(`$INSTANCE_NAME`_FRAC_HI__CONTROL_REG, frac >> 8);
+    CY_SET_REG8(`$INSTANCE_NAME`_FRAC_LO__CONTROL_REG, frac & 0xFF);
+}

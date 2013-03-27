@@ -14,17 +14,15 @@
 // limitations under the License.
 // ========================================
 
-#include "`$INSTANCE_NAME`_api.h"
-#include <device.h>
+#include "cytypes.h"
+#include "cyfitter.h"
 
+// 15860 is the computed value for 36.864 MHz
+#define `$INSTANCE_NAME`_DEFAULT 15860
 
-void `$INSTANCE_NAME`_Start(void) {
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter2__CONTROL_AUX_CTL_REG, 0x20);
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter1__CONTROL_AUX_CTL_REG, 0x20);
-    CY_SET_REG8(`$INSTANCE_NAME`_Counter0__CONTROL_AUX_CTL_REG, 0x20);
-}
+#define `$INSTANCE_NAME`_Enable(dmaP) {`$INSTANCE_NAME`_Start( \
+    dmaP##_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE)) \
+);}
 
-// Returns the buffer number 0-1 which is to be used for USB DMA
-uint8 `$INSTANCE_NAME`_USB_Buffer(void) {
-    return CY_GET_REG8(`$INSTANCE_NAME`_BUFFER__STATUS_REG);
-}
+void `$INSTANCE_NAME`_Start(uint8);
+void `$INSTANCE_NAME`_Set(uint16);

@@ -1,4 +1,4 @@
-// Copyright 2012 David Turnbull AE9RB
+// Copyright 2013 David Turnbull AE9RB
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
-#define MIN_LO 0.480 
-#define DIV_LO 4.0 // Engage extra dividers below this.
+#define MIN_LO 4.0 
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
@@ -117,7 +116,6 @@ void Si570_Main(void) {
     static uint8 n1, hsdiv, state = 0;
     static float fout, dco;
     static uint32 Current_LO = STARTUP_LO;
-    static uint8 Divide_Lower = 0;
     uint8 i;
     uint16 rfreqint;
     uint32 rfreqfrac;
@@ -126,7 +124,7 @@ void Si570_Main(void) {
     switch (state) {
     case 0: // idle
         if (Si570_OLD[0]) Si570_LO = FreqFromOLD();
-        if ((Current_Si570_Xtal != Si570_Xtal || Current_LO != Si570_LO) && !Locked_I2C) {
+        if ((Current_Si570_Xtal != Si570_Xtal || Current_LO != Si570_LO)) {
             i = CyEnterCriticalSection();
             fout = (float)swap32(Si570_LO) / 0x200000;
             Current_LO = Si570_LO;
@@ -134,9 +132,6 @@ void Si570_Main(void) {
             CyExitCriticalSection(i);
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
-            Divide_Lower = (fout < DIV_LO);
-            if (Divide_Lower) fout *= 8;
-            Locked_I2C = 1;
             dco = SI570_DCO_MAX;
             state = 4;
         }
@@ -172,7 +167,6 @@ void Si570_Main(void) {
         Si570_Buf[0] = 135;
         Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
-        IQGen_SetDivider(Divide_Lower);
         state++;
         break;
     case 13: // waiting on I2C
@@ -186,7 +180,6 @@ void Si570_Main(void) {
         }
         break;
     case 18: // all done
-        Locked_I2C = 0;
         state = 0;
         break;
     case 8:  // invalid for HS_DIV
