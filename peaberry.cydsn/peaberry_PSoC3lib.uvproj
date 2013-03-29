@@ -604,26 +604,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_ep4_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep4_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep5_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep5_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep2_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.c</FilePath>
@@ -677,16 +657,6 @@
               <FileName>RxI2S_Buff_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_Swap_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_Swap_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.h</FilePath>
             </File>
             <File>
               <FileName>RxI2S_Stage_dma.c</FileName>
@@ -1554,26 +1524,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_Dp_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>USBFS_ep4_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep4_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep4_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep5_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>USBFS_ep5_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\USBFS_ep5_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>USBFS_ep2_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_ep2_dma.c</FilePath>
@@ -1627,16 +1577,6 @@
               <FileName>RxI2S_Buff_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\RxI2S_Buff_dma.h</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_Swap_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>RxI2S_Swap_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\RxI2S_Swap_dma.h</FilePath>
             </File>
             <File>
               <FileName>RxI2S_Stage_dma.c</FileName>

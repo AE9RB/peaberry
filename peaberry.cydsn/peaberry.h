@@ -33,10 +33,9 @@
 #define CONTROL_GPIO_1   0x40
 #define CONTROL_GPIO_2   0x80
 
-// 48 24-bit stereo samples every 1 ms
-#define I2S_B48_SIZE (48u * 3 * 2)
-#define I2S_B96_SIZE (96u * 2 * 2)
-// buffer storage
+// Max buffer size for 1ms
+#define I2S_BUF_SIZE (96u * 2 * 2)
+// Buffer quantity
 #define USB_AUDIO_BUFS 3
 
 // Constants from our USBFS enumeration
@@ -48,19 +47,14 @@
 // Unvisible stuff from Cypress that they expect us to use and don't export
 uint8 USBFS_InitControlRead(void);
 uint8 USBFS_InitControlWrite(void);
-extern volatile uint8 USBFS_currentSampleFrequency[USBFS_MAX_EP][USBFS_SAMPLE_FREQ_LEN];
 extern volatile T_USBFS_TD USBFS_currentTD;
+extern volatile T_USBFS_EP_CTL_BLOCK USBFS_EP[];
 extern uint8 USBFS_initVar;
 extern uint8 USBFS_DmaTd[USBFS_MAX_EP];
-extern uint8 USBFS_currentVolume[];
-extern uint8 USBFS_minimumVolume[];
-extern uint8 USBFS_maximumVolume[];
-extern uint8 USBFS_currentMute;
+extern uint8 USBFS_DmaChan[USBFS_MAX_EP];
 
 // main.c
 uint32 swap32(uint32) CYREENTRANT;
-extern uint16 I2S_Buf_Size;
-extern uint8 B96_Enabled;
 
 // audio.c
 extern uint8 Audio_IQ_Channels;

@@ -14,27 +14,14 @@
 
 #include <peaberry.h>
 
-uint8 B96_Enabled;
-uint16 I2S_Buf_Size;
-
 void main()
 {
-    //TODO B96 is from old hardware
-    B96_Enabled = 0;
-    if (B96_Enabled) {
-        I2S_Buf_Size = I2S_B96_SIZE;
-        I2S_Clock_SetDivider(2);
-    } else {
-        I2S_Buf_Size = I2S_B48_SIZE;
-        I2S_Clock_SetDivider(5);
-    }
-    
     CyGlobalIntEnable;
 
     SyncSOF_Start();
     FracN_Enable(P_DMA);
     
-    USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
+    USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
     while(!USBFS_GetConfiguration());
     Audio_USB_Start();
 
@@ -50,7 +37,7 @@ void main()
         // monitor VBUS to comply with USB spec
         if (USBFS_VBusPresent()) {
             if(!USBFS_initVar) {
-                USBFS_Start(B96_Enabled, USBFS_DWR_VDDD_OPERATION);
+                USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
                 Audio_USB_Start();
             }
         } else {

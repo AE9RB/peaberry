@@ -21,13 +21,12 @@
 // 3: RX=rev TX=rev
 uint8 Audio_IQ_Channels;
 
-// Use to detect change
-uint8 Prev_IQ_Channels = 255;
-
 #define SOF_CENTER 22000
 #define FRAC_MIN (FracN_DEFAULT-75)
 #define FRAC_MAX (FracN_DEFAULT+75)
 
+// This is a simplified PID control. It works quite well. The full
+// PID algorithm will be implemented some day for fun and learning.
 void Audio_Buffer_Sync(void) {
     static uint16 frac = FracN_DEFAULT;
     static uint16 prev_pos;
@@ -57,20 +56,17 @@ void Audio_Buffer_Sync(void) {
 
 }
 
-void Audio_Reset(void) {
+void Audio_Start(void) {
+    PCM3060_Setup();
     PCM3060_Init();
     PCM3060_Start();
 }
 
-void Audio_Start(void) {
-    PCM3060_Setup();
-    Audio_Reset();
-}
-
-uint8 TX_Enabled, SPKR_Enabled;
+uint8 TX_Enabled;
 
 void Audio_USB_Start(void) {
-    TX_Enabled = SPKR_Enabled = 0;
+    TX_Enabled = 0;
+    USBFS_InitEP_DMA(RX_ENDPOINT, PCM3060_RxBuf());
     USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), 0);
 }
 
@@ -81,11 +77,33 @@ void Audio_Detect_Change() {
         case 0x6D1CC710: Audio_IQ_Channels = 2; break; // 33.555555 MHz
         case 0x5055D510: Audio_IQ_Channels = 3; break; // 33.666666 MHz
     }
-    
-    if (Prev_IQ_Channels != Audio_IQ_Channels) {
-        Prev_IQ_Channels = Audio_IQ_Channels;
-        Audio_Reset();
+}
+
+// This implements similar logic as USBFS_LoadInEP. It does not init the DMA,
+// safety check, or support memory management other than automatic. Our custom
+// version provides the endian swap needed for I2S<>USB and IQ channel switching.
+void Audio_USB_LoadInEP(uint8 epNumber, uint8 *pData, uint16 length)
+{
+    uint8 ri, td_config;
+    uint8 *p;
+
+    ri = ((epNumber - USBFS_EP1) << USBFS_EPX_CNTX_ADDR_SHIFT);
+    p = (uint8 *)&USBFS_ARB_RW1_DR_PTR[ri];
+    if (Audio_IQ_Channels & 0x01) {
+        td_config = TD_TERMIN_EN | TD_INC_SRC_ADR | TD_SWAP_EN;
+    } else {
+        td_config = TD_TERMIN_EN | TD_INC_SRC_ADR | TD_SWAP_EN | TD_SWAP_SIZE4;
     }
+    CY_SET_REG8(&USBFS_SIE_EP1_CNT0_PTR[ri], (length >> 8u) | (USBFS_EP[epNumber].epToggle));
+    CY_SET_REG8(&USBFS_SIE_EP1_CNT1_PTR[ri],  length & 0xFFu);
+    CyDmaChDisable(USBFS_DmaChan[epNumber]);
+    CyDmaTdSetConfiguration(USBFS_DmaTd[epNumber], length, USBFS_DmaTd[epNumber], td_config);
+    CyDmaTdSetAddress(USBFS_DmaTd[epNumber],  LO16((uint32)pData), LO16((uint32)p));
+    CyDmaClearPendingDrq(USBFS_DmaChan[epNumber]);
+    CyDmaChSetInitialTd(USBFS_DmaChan[epNumber], USBFS_DmaTd[epNumber]);
+    CyDmaChEnable(USBFS_DmaChan[epNumber], 1);
+    USBFS_EP[epNumber].apiEpState = USBFS_NO_EVENT_PENDING;
+    USBFS_ARB_EP1_CFG_PTR[ri] |= USBFS_ARB_EPX_CFG_IN_DATA_RDY;
 }
 
 void Audio_Main(void) {
@@ -107,16 +125,14 @@ void Audio_Main(void) {
     if(USBFS_IsConfigurationChanged()) {
         USBFS_EnableOutEP(TX_ENDPOINT);
     }
-
     
     if (USBFS_GetEPState(TX_ENDPOINT) == USBFS_OUT_BUFFER_FULL) {
-        USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_Buf_Size);
+        USBFS_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), I2S_BUF_SIZE);
         USBFS_EnableOutEP(TX_ENDPOINT);
     }
 
     if (USBFS_GetEPState(RX_ENDPOINT) == USBFS_IN_BUFFER_EMPTY) {
-		USBFS_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_Buf_Size);
-		USBFS_LoadInEP(RX_ENDPOINT, 0, I2S_Buf_Size);
+		Audio_USB_LoadInEP(RX_ENDPOINT, PCM3060_RxBuf(), I2S_BUF_SIZE);
 	}
 
 }
