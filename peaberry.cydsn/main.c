@@ -49,6 +49,7 @@ void main()
         Settings_Main();
         Audio_Main();
         Si570_Main();
+        TX_Main();
             
     }
 }

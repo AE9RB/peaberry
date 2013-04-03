@@ -21,17 +21,18 @@
 #define STATUS_KEY_0  0x01
 #define STATUS_KEY_1  0x02
 #define STATUS_BOOT   0x04
-#define STATUS_ATU_0  0x08
+#define STATUS_BEAT   0x08
+#define STATUS_ATU_0  0x10
 
 // Control register bits
-#define CONTROL_TX       0x01
-#define CONTROL_XK       0x02
-#define CONTROL_ATU_0    0x04
-#define CONTROL_ATU_0_OE 0x08
-#define CONTROL_ATU_1    0x10
-#define CONTROL_GPIO_0   0x20
-#define CONTROL_GPIO_1   0x40
-#define CONTROL_GPIO_2   0x80
+#define CONTROL_LED      0x01
+#define CONTROL_RX       0x02
+#define CONTROL_TX       0x04
+#define CONTROL_AMP      0x08
+#define CONTROL_XK       0x10
+#define CONTROL_ATU_0    0x20
+#define CONTROL_ATU_0_OE 0x40
+#define CONTROL_ATU_1    0x80
 
 // Max buffer size for 1ms
 #define I2S_BUF_SIZE (96u * 2 * 2)
@@ -80,6 +81,10 @@ uint8* PCM3060_RxBuf(void);
 // settings.c
 void Settings_Start(void);
 void Settings_Main(void);
+
+// tx.c
+extern uint8 TX_Request;
+void TX_Main(void);
 
 
 #endif //PEABERRY_H

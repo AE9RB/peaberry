@@ -22,8 +22,8 @@
 uint8 Audio_IQ_Channels;
 
 #define SOF_CENTER 22000
-#define FRAC_MIN (FracN_DEFAULT-75)
-#define FRAC_MAX (FracN_DEFAULT+75)
+#define FRAC_MIN (FracN_DEFAULT-50)
+#define FRAC_MAX (FracN_DEFAULT+50)
 
 // This is a simplified PID control. It works quite well. The full
 // PID algorithm will be implemented some day for fun and learning.

@@ -9,7 +9,7 @@
     <peripheral>
       <name>Control</name>
       <description>No description available</description>
-      <baseAddress>0x6475</baseAddress>
+      <baseAddress>0x6577</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x1</size>
@@ -30,17 +30,92 @@
     <peripheral>
       <name>I2S</name>
       <description>No description available</description>
-      <baseAddress>0x6472</baseAddress>
+      <baseAddress>0x646A</baseAddress>
       <addressBlock>
         <offset>0</offset>
-        <size>0xF5</size>
+        <size>0xFD</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>CONTROL_REG</name>
+          <name>RX_STATUS_REG</name>
           <description>No description available</description>
           <addressOffset>0x0</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>INT</name>
+              <description>Interrupt bit</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>F1</name>
+              <description>FIFO 1 state</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>EMPTY</name>
+                  <description>No description available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>NOT_EMPTY</name>
+                  <description>No description available</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>F0</name>
+              <description>FIFO 0 state</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>EMPTY</name>
+                  <description>No description available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>NOT_EMPTY</name>
+                  <description>No description available</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>OVRFL</name>
+              <description>FIFO Overflow Error</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NO_OVERFLOW</name>
+                  <description>No description available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OVERFLOW</name>
+                  <description>No description available</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CONTROL_REG</name>
+          <description>No description available</description>
+          <addressOffset>0x7</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -108,7 +183,7 @@
         <register>
           <name>TX_STATUS_REG</name>
           <description>No description available</description>
-          <addressOffset>0xF3</addressOffset>
+          <addressOffset>0xFC</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -173,81 +248,6 @@
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>UNDERFLOW</name>
-                  <description>No description available</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_STATUS_REG</name>
-          <description>No description available</description>
-          <addressOffset>0xF4</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>INT</name>
-              <description>Interrupt bit</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>F1</name>
-              <description>FIFO 1 state</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-only</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>EMPTY</name>
-                  <description>No description available</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>NOT_EMPTY</name>
-                  <description>No description available</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>F0</name>
-              <description>FIFO 0 state</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-only</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>EMPTY</name>
-                  <description>No description available</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>NOT_EMPTY</name>
-                  <description>No description available</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>OVRFL</name>
-              <description>FIFO Overflow Error</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-only</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NO_OVERFLOW</name>
-                  <description>No description available</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>OVERFLOW</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
@@ -1047,7 +1047,7 @@
     <peripheral>
       <name>Status</name>
       <description>No description available</description>
-      <baseAddress>0x6467</baseAddress>
+      <baseAddress>0x6564</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x31</size>
