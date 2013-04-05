@@ -684,16 +684,6 @@
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
             </File>
             <File>
-              <FileName>TxI2S_Swap_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>TxI2S_Swap_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.h</FilePath>
-            </File>
-            <File>
               <FileName>TxI2S_Buff_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Generated_Source\PSoC3\TxI2S_Buff_dma.c</FilePath>
@@ -1492,16 +1482,6 @@
               <FileName>USBFS_VBUS_aliases.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\USBFS_VBUS_aliases.h</FilePath>
-            </File>
-            <File>
-              <FileName>TxI2S_Swap_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>TxI2S_Swap_dma.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Generated_Source\PSoC3\TxI2S_Swap_dma.h</FilePath>
             </File>
             <File>
               <FileName>TxI2S_Buff_dma.c</FileName>

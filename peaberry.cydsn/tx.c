@@ -60,9 +60,4 @@ void TX_Main(void) {
         }
     }       
     
-
-//    Control_Read() & CONTROL_TX
-//    Control_Write(Control_Read() | CONTROL_TX);
-//    Control_Write(Control_Read() & ~CONTROL_TX);
-
 }

@@ -9,7 +9,7 @@
     <peripheral>
       <name>Control</name>
       <description>No description available</description>
-      <baseAddress>0x6577</baseAddress>
+      <baseAddress>0x6576</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x1</size>
@@ -30,15 +30,15 @@
     <peripheral>
       <name>I2S</name>
       <description>No description available</description>
-      <baseAddress>0x646A</baseAddress>
+      <baseAddress>0x6463</baseAddress>
       <addressBlock>
         <offset>0</offset>
-        <size>0xFD</size>
+        <size>0x102</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>RX_STATUS_REG</name>
+          <name>TX_STATUS_REG</name>
           <description>No description available</description>
           <addressOffset>0x0</addressOffset>
           <size>8</size>
@@ -61,12 +61,12 @@
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>EMPTY</name>
+                  <name>FULL</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>NOT_EMPTY</name>
+                  <name>NOT_FULL</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
@@ -80,31 +80,31 @@
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>EMPTY</name>
+                  <name>FULL</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>NOT_EMPTY</name>
+                  <name>NOT_FULL</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
-              <name>OVRFL</name>
-              <description>FIFO Overflow Error</description>
+              <name>UNDFL</name>
+              <description>FIFO Underflow Error</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>NO_OVERFLOW</name>
+                  <name>NO_UNDERFLOW</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>OVERFLOW</name>
+                  <name>UNDERFLOW</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
@@ -115,7 +115,7 @@
         <register>
           <name>CONTROL_REG</name>
           <description>No description available</description>
-          <addressOffset>0x7</addressOffset>
+          <addressOffset>0xD</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -181,9 +181,9 @@
           </fields>
         </register>
         <register>
-          <name>TX_STATUS_REG</name>
+          <name>RX_STATUS_REG</name>
           <description>No description available</description>
-          <addressOffset>0xFC</addressOffset>
+          <addressOffset>0x101</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -204,12 +204,12 @@
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>FULL</name>
+                  <name>EMPTY</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>NOT_FULL</name>
+                  <name>NOT_EMPTY</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
@@ -223,31 +223,31 @@
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>FULL</name>
+                  <name>EMPTY</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>NOT_FULL</name>
+                  <name>NOT_EMPTY</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
-              <name>UNDFL</name>
-              <description>FIFO Underflow Error</description>
+              <name>OVRFL</name>
+              <description>FIFO Overflow Error</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <access>read-only</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>NO_UNDERFLOW</name>
+                  <name>NO_OVERFLOW</name>
                   <description>No description available</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>UNDERFLOW</name>
+                  <name>OVERFLOW</name>
                   <description>No description available</description>
                   <value>1</value>
                 </enumeratedValue>
@@ -1047,7 +1047,7 @@
     <peripheral>
       <name>Status</name>
       <description>No description available</description>
-      <baseAddress>0x6564</baseAddress>
+      <baseAddress>0x6467</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x31</size>
