@@ -17,7 +17,7 @@
 #include "`$INSTANCE_NAME`_api.h"
 #include <device.h>
 
-void `$INSTANCE_NAME`_Start(uint8 dma) {
+void `$INSTANCE_NAME`_Start2(uint8 dma) {
     uint8 td;
     
     `$INSTANCE_NAME`_Set(`$INSTANCE_NAME`_DEFAULT);

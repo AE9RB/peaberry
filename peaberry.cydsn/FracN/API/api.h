@@ -20,9 +20,14 @@
 // 15860 is the computed value for 36.864 MHz
 #define `$INSTANCE_NAME`_DEFAULT 15860
 
-#define `$INSTANCE_NAME`_Enable(dmaP) {`$INSTANCE_NAME`_Start( \
+// Start the fractional PLL using this macro with the name of the DMA block.
+// The 8051 doesn't like function pointers so this help keep app code clean.
+#define `$INSTANCE_NAME`_Start(dmaP) {`$INSTANCE_NAME`_Start2( \
     dmaP##_DmaInitialize(1, 1, HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_FASTCLK_PLL_BASE)) \
 );}
 
-void `$INSTANCE_NAME`_Start(uint8);
+// Use FracN_Start in application code, not this start2
+void `$INSTANCE_NAME`_Start2(uint8);
+
+// Set the fraction to a new value
 void `$INSTANCE_NAME`_Set(uint16);

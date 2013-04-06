@@ -56,11 +56,6 @@ void Audio_Buffer_Sync(void) {
 
 }
 
-void Audio_Start(void) {
-    PCM3060_Setup();
-    PCM3060_Init();
-    PCM3060_Start();
-}
 
 void Audio_Detect_Change() {
     switch (Si570_LO) {
@@ -118,15 +113,15 @@ void Audio_USB_ReadOutEP(uint8 epNumber, uint8 *pData, uint16 length)
 }
 
 
-uint8 TX_Enabled;
+uint8 TX_Enabled = 0;
 
-void Audio_USB_Start(void) {
-    TX_Enabled = 0;
-    USBFS_InitEP_DMA(RX_ENDPOINT, PCM3060_RxBuf());
-    USBFS_InitEP_DMA(TX_ENDPOINT, PCM3060_TxBuf());
+void Audio_Start(void) {
+    if(USBFS_DmaTd[RX_ENDPOINT] == DMA_INVALID_TD)
+        USBFS_InitEP_DMA(RX_ENDPOINT, PCM3060_RxBuf());
+    if(USBFS_DmaTd[TX_ENDPOINT] == DMA_INVALID_TD)
+        USBFS_InitEP_DMA(TX_ENDPOINT, PCM3060_TxBuf());
     Audio_USB_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), 0);
 }
-
 
 void Audio_Main(void) {
     Audio_Buffer_Sync();

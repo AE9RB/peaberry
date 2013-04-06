@@ -14,34 +14,42 @@
 
 #include <peaberry.h>
 
+
+void main_init(void) {
+    CyGlobalIntEnable;
+    SyncSOF_Start();
+    FracN_Start(P_DMA);
+    I2C_Start();
+    Settings_Init();
+    Si570_Init();
+    PCM3060_Init();
+}
+
+void main_start(void) {
+    Audio_Start();
+    PCM3060_Start();
+}
+
+void main_stop(void) {
+    TX_Request = 0;
+    PCM3060_Stop();
+}
+
 void main()
 {
-    CyGlobalIntEnable;
-
-    SyncSOF_Start();
-    FracN_Enable(P_DMA);
+    main_init();
     
-    USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-    while(!USBFS_GetConfiguration());
-    Audio_USB_Start();
-
-    Settings_Start();
-    
-    I2C_Start();
-    Si570_Start();
-    
-    Audio_Start();
+    Control_Write(Control_Read() & ~CONTROL_LED);
 
     for(;;) {
-	
-        // monitor VBUS to comply with USB spec
         if (USBFS_VBusPresent()) {
             if(!USBFS_initVar) {
                 USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-                Audio_USB_Start();
+                main_start();
             }
         } else {
             if(USBFS_initVar) {
+                main_stop();
                 USBFS_Stop();
             }
         }

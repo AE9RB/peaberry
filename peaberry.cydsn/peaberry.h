@@ -61,25 +61,24 @@ uint32 swap32(uint32) CYREENTRANT;
 extern uint8 Audio_IQ_Channels;
 void Audio_Start(void);
 void Audio_Main(void);
-void Audio_USB_Start(void);
 
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
 extern volatile uint32 Si570_Xtal, Si570_LO;
 extern uint8 Si570_Buf[], Si570_Factory[], Si570_OLD[];
-void Si570_Start(void);
+void Si570_Init(void);
 void Si570_Main(void);
 void Si570_Fake_Reset(void);
 
 // pcm3060.c
-void PCM3060_Setup(void);
 void PCM3060_Init(void);
 void PCM3060_Start(void);
+void PCM3060_Stop(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
 
 // settings.c
-void Settings_Start(void);
+void Settings_Init(void);
 void Settings_Main(void);
 
 // tx.c

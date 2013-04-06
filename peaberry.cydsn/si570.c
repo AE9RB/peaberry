@@ -31,7 +31,7 @@ uint8 Si570_Factory[6];
 // Emulate old technique of setting of frequency by reg writes
 uint8 Si570_OLD[6];
 
-void Si570_Start(void) {
+void Si570_Init(void) {
     uint8 hsdiv, n1, i, state = 0;
     uint16 rfreqint;
     uint32 rfreqfrac;

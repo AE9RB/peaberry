@@ -22,7 +22,7 @@ uint8 buffer[CYDEV_EEPROM_ROW_SIZE];
 #define XTAL_DATA(mem) (*(reg32*)(mem+0))
 #define REVERSE_DATA(mem) (*(reg8*)(mem+4))
 
-void Settings_Start(void) {
+void Settings_Init(void) {
     float crystal_freq;
     EEPROM_Start();
     
