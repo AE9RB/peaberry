@@ -14,7 +14,6 @@
 
 #include <peaberry.h>
 
-
 void main_init(void) {
     CyGlobalIntEnable;
     SyncSOF_Start();
@@ -74,3 +73,21 @@ uint32 swap32(uint32 original) CYREENTRANT {
     return ret;
 }
 
+void ERROR(char* msg) {
+    uint8 i, beat;
+    uint16 timer = 0;
+    
+    Control_Write(Control_Read() & ~CONTROL_TX | CONTROL_LED | CONTROL_AMP | CONTROL_RX);
+    Morse_Main(msg);
+    
+    while(1) {
+        i = Status_Read() & STATUS_BEAT;
+        if (beat != i) {
+            beat = i;
+            if (!timer--) {
+                timer = 480; // 5 WPM
+                Morse_Main(0);
+            }
+        }    
+    }
+}

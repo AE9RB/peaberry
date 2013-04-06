@@ -56,6 +56,10 @@ extern uint8 USBFS_DmaChan[USBFS_MAX_EP];
 
 // main.c
 uint32 swap32(uint32) CYREENTRANT;
+void ERROR(char* msg);
+
+// morse.c
+void Morse_Main(char* msg);
 
 // audio.c
 extern uint8 Audio_IQ_Channels;
