@@ -14,49 +14,63 @@
 
 #include <peaberry.h>
 
-void main_init(void) {
-    CyGlobalIntEnable;
-    SyncSOF_Start();
-    FracN_Start(P_DMA);
-    I2C_Start();
-    Settings_Init();
-    Si570_Init();
-    PCM3060_Init();
-}
-
-void main_start(void) {
-    Audio_Start();
-    PCM3060_Start();
-}
-
-void main_stop(void) {
-    TX_Request = 0;
-    PCM3060_Stop();
+// A compliant USB device is required to monitor
+// vbus voltage and shut down if it disappears.
+void main_usb_vbus(void) {
+    if (USBFS_VBusPresent()) {
+        if(!USBFS_initVar) {
+            USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
+            Audio_Start();
+            PCM3060_Start();
+        }
+    } else {
+        if(USBFS_initVar) {
+            TX_Request = 0;
+            PCM3060_Stop();
+            USBFS_Stop();
+        }
+    }
 }
 
 void main()
 {
-    main_init();
+    uint8 i, beat, beater = 0;
+
+    CyDelay(100); //TODO move this to bootloader
+    CyGlobalIntEnable;
+    FracN_Start(P_DMA);
+    SyncSOF_Start();
+    I2C_Start();
+    Settings_Init();
+    Si570_Init();
+    PCM3060_Init();
     
     Control_Write(Control_Read() & ~CONTROL_LED);
 
     for(;;) {
-        if (USBFS_VBusPresent()) {
-            if(!USBFS_initVar) {
-                USBFS_Start(0, USBFS_DWR_VDDD_OPERATION);
-                main_start();
-            }
-        } else {
-            if(USBFS_initVar) {
-                main_stop();
-                USBFS_Stop();
+        // Audio is high priority
+        Audio_Main();
+        // Everything else runs twice per millisecond
+        i = Status_Read() & STATUS_BEAT;
+        if (beat != i) {
+            switch(beater++) {
+            case 0:
+                main_usb_vbus();
+                break;
+            case 1:
+                TX_Main();
+                break;
+            case 2:
+                Settings_Main();
+                break;
+            case 3:
+                Si570_Main();
+                break;
+            default:
+                beater = 0;
+                beat = i;
             }
         }
-        
-        Settings_Main();
-        Audio_Main();
-        Si570_Main();
-        TX_Main();
             
     }
 }
@@ -77,10 +91,11 @@ void ERROR(char* msg) {
     uint8 i, beat;
     uint16 timer = 0;
     
+    if(USBFS_initVar) USBFS_Stop();
     Control_Write(Control_Read() & ~CONTROL_TX | CONTROL_LED | CONTROL_AMP | CONTROL_RX);
     Morse_Main(msg);
     
-    while(1) {
+    for(;;) {
         i = Status_Read() & STATUS_BEAT;
         if (beat != i) {
             beat = i;

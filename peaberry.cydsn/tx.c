@@ -14,50 +14,49 @@
 
 #include <peaberry.h>
 
+#define TX_LED_BLINK_ON_MS 40
+#define TX_LED_BLINK_OFF_MS 50
+
 uint8 TX_Request = 0;
 
 void TX_Main(void) {
-    static uint8 state = 0, beat, blink;
+    static uint8 state = 0, blink;
     uint8 i;
     
-    i = Status_Read() & STATUS_BEAT;
-    if (beat != i) {
-        beat = i;
-        switch (state) {
-            case 0: // receiving
-                if (TX_Request) {
-                    state = 1;
-                    Control_Write(Control_Read() & ~CONTROL_RX);
+    switch (state) {
+        case 0: // receiving
+            if (TX_Request) {
+                state = 1;
+                Control_Write(Control_Read() & ~CONTROL_RX);
+            }
+            break;
+        case 1:
+            Control_Write(Control_Read() | CONTROL_TX);
+            state = 2;
+            break;
+        case 2:
+            Control_Write(Control_Read() & ~CONTROL_AMP);
+            state = 10;
+            blink = 1;
+            break;
+        case 10: // transmitting
+            if (TX_Request) {
+                blink--;
+                if (!blink) {
+                    i = Control_Read();
+                    if (i & CONTROL_LED) blink = TX_LED_BLINK_OFF_MS * 2;
+                    else blink = TX_LED_BLINK_ON_MS * 2;
+                    Control_Write(i ^ CONTROL_LED);
                 }
-                break;
-            case 1:
-                Control_Write(Control_Read() | CONTROL_TX);
-                state = 2;
-                break;
-            case 2:
-                Control_Write(Control_Read() & ~CONTROL_AMP);
-                state = 10;
-                blink = 1;
-                break;
-            case 10: // transmitting
-                if (TX_Request) {
-                    blink--;
-                    if (!blink) {
-                        i = Control_Read();
-                        if (i & CONTROL_LED) blink = 100;
-                        else blink = 75;
-                        Control_Write(i ^ CONTROL_LED);
-                    }
-                } else {
-                    Control_Write(Control_Read() & ~(CONTROL_TX | CONTROL_LED) | CONTROL_AMP);
-                    state = 11;
-                }
-                break;
-            case 11:
-                Control_Write(Control_Read() | CONTROL_RX);
-                state = 0;
-                break;
-        }
-    }       
+            } else {
+                Control_Write(Control_Read() & ~(CONTROL_TX | CONTROL_LED) | CONTROL_AMP);
+                state = 11;
+            }
+            break;
+        case 11:
+            Control_Write(Control_Read() | CONTROL_RX);
+            state = 0;
+            break;
+    }
     
 }

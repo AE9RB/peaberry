@@ -106,7 +106,7 @@ const uint8 code MCODES[] = {
 #define MORSE_WORD (7 - MORSE_CHAR)
 
 // Example usage:
-// Morse_Main("Repeating Message ");while(1){sleep(240);Morse_Main(0);}
+// Morse_Main("Repeating Message ");for(;;){sleep(240);Morse_Main(0);}
 void Morse_Main(char* msg) {
     static uint8 pos, codes, len, state, timer, *message;
     uint8 i;
@@ -141,17 +141,21 @@ void Morse_Main(char* msg) {
         Control_Write(Control_Read() & ~CONTROL_LED);
         state = 2;
     case 2:
-        if (!timer--) {
+        if (!timer) {
             state = 3;
             if (!len) timer = MORSE_CHAR - 1;
             else timer = MORSE_DOT - 1;
             Control_Write(Control_Read() | CONTROL_LED);
         }
-        else break;
+        else {
+            timer--;
+            break;
+        }
     case 3:
-        if (!timer--) {
+        if (!timer) {
             if (!len) state = 0;
             else state = 1;
         }
+        else timer--;
     }
 }
