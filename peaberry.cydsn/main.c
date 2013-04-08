@@ -44,6 +44,7 @@ void main()
     Settings_Init();
     Si570_Init();
     PCM3060_Init();
+    PCM3060_Start();
     
     Control_Write(Control_Read() & ~CONTROL_LED);
 
