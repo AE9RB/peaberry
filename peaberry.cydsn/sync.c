@@ -18,9 +18,16 @@
 #define FRAC_MIN (FracN_DEFAULT-100)
 #define FRAC_MAX (FracN_DEFAULT+100)
 
+void Sync_Start(void) {
+    FracN_Start(P_DMA);
+    SyncSOF_Start();
+    // A pause is needed for the PLL to settle
+    CyDelay(1);
+}
+
 // This is a simplified PID control. It works quite well. The full
 // PID algorithm will be implemented some day for fun and learning.
-void Sync_USB(void) {
+void Sync_Main(void) {
     static uint16 frac = FracN_DEFAULT;
     static uint16 prev_pos;
     uint16 pos;

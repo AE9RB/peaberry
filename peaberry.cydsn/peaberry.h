@@ -36,14 +36,6 @@
 
 // Max buffer size for 1ms
 #define I2S_BUF_SIZE (96u * 2 * 2)
-// Buffer quantity
-#define USB_AUDIO_BUFS 3
-
-// Constants from our USBFS enumeration
-#define RX_ENDPOINT              2
-#define RX_INTERFACE             2
-#define TX_ENDPOINT              3
-#define TX_INTERFACE             3
 
 // Unvisible stuff from Cypress that they expect us to use and don't export
 uint8 USBFS_InitControlRead(void);
@@ -65,10 +57,14 @@ void Morse_Main(char* msg);
 extern uint8 Audio_IQ_Channels;
 void Audio_Start(void);
 void Audio_Main(void);
-void Audio_USB(void);
 
 // sync.c
-void Sync_USB(void);
+void Sync_Start(void);
+void Sync_Main(void);
+
+// band.c
+extern uint8 Band_Number;
+void Band_Main(void);
 
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
@@ -94,6 +90,7 @@ extern uint8 TX_Request;
 void TX_Main(void);
 
 // t1.c
+extern uint8 T1_Tune_Request;
 void T1_Main(void);
 
 #endif //PEABERRY_H

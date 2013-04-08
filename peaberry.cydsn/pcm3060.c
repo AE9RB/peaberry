@@ -15,6 +15,7 @@
 #include <peaberry.h>
 
 #define PCM3060_I2C_ADDR 0x46
+#define USB_AUDIO_BUFS 3
 
 volatile uint8 RxI2S[USB_AUDIO_BUFS][I2S_BUF_SIZE], RxI2S_Stage;
 volatile uint8 TxI2S[USB_AUDIO_BUFS][I2S_BUF_SIZE], TxI2S_Stage, TxI2S_Zero = 0;
@@ -142,6 +143,7 @@ void PCM3060_Init(void) {
     I2S_Start();
     DmaRxInit();
     DmaTxInit();
+    PCM3060_Stop();
 }
 
 void PCM3060_Start(void) {

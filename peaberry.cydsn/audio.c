@@ -14,21 +14,18 @@
 
 #include <peaberry.h>
 
+// Constants from our USBFS enumeration
+#define RX_ENDPOINT     2
+#define RX_INTERFACE    2
+#define TX_ENDPOINT     3
+#define TX_INTERFACE    3
+
 // IQ Reversal option
 // 0: RX=norm TX=norm
 // 1: RX=rev TX=norm
 // 2: RX=norm TX=rev
 // 3: RX=rev TX=rev
 uint8 Audio_IQ_Channels;
-
-void Audio_Main() {
-    switch (Si570_LO) {
-        case 0xA8AAAA10: Audio_IQ_Channels = 0; break; // 33.333333 MHz
-        case 0x8AE3B810: Audio_IQ_Channels = 1; break; // 33.444444 MHz
-        case 0x6D1CC710: Audio_IQ_Channels = 2; break; // 33.555555 MHz
-        case 0x5055D510: Audio_IQ_Channels = 3; break; // 33.666666 MHz
-    }
-}
 
 // This implements similar logic as USBFS_LoadInEP.
 void Audio_USB_LoadInEP(uint8 epNumber, uint8 *pData, uint16 length)
@@ -83,7 +80,7 @@ void Audio_Start(void) {
     Audio_USB_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), 0);
 }
 
-void Audio_USB(void) {
+void Audio_Main(void) {
     if(USBFS_IsConfigurationChanged()) {
         USBFS_EnableOutEP(TX_ENDPOINT);
     }

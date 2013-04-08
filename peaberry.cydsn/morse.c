@@ -117,12 +117,9 @@ void Morse_Main(char* msg) {
     }
     else switch (state) {
     case 0:
-        i = 0;
-        while (!i) {
-            i = message[pos++];
-            if (!i) pos = 0;
-            if (i >= 0x61 && i <= 0x7A) i -= 32;
-        }
+        if (!message[pos]) pos = 0;
+        i = message[pos++];
+        if (i >= 0x61 && i <= 0x7A) i -= 32;
         if (i < 0x22 || i > 0x5A) codes = 7;
         else codes = MCODES[i-0x22];
         len = codes & 0x07;

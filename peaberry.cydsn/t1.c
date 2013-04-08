@@ -16,37 +16,23 @@
 
 // Full support for Elecraft T1 Automatic Antenna Tuner
 
-uint8 T1_Tune_Request = 0;
+uint8 T1_Tune_Request;
 
 void T1_Main(void) {
-    static uint8 state = 0, timer, new_band, band, send, bits, band_request;
+    static uint8 state = 0, timer, band, send, bits, band_request, band_request_timer;
     static uint16 tune_timer; 
-    static uint32 lo;
-    uint32 i;
-
-    if (Si570_LO != lo) {
-        i = swap32(lo = Si570_LO);
-        if (i > 0x1b800000) new_band = 12; // 55.000 MHz
-        else if (i > 0xf800000) new_band = 11; // 31.000 MHz
-        else if (i > 0xd000000) new_band = 10; // 26.000 MHz
-        else if (i > 0xb000000) new_band = 9; // 22.000 MHz
-        else if (i > 0x9800000) new_band = 8; // 19.000 MHz
-        else if (i > 0x8000000) new_band = 7; // 16.000 MHz
-        else if (i > 0x6000000) new_band = 6; // 12.000 MHz
-        else if (i > 0x4800000) new_band = 5; // 9.000 MHz
-        else if (i > 0x3000000) new_band = 4; // 6.000 MHz
-        else if (i > 0x2800000) new_band = 3; // 5.000 MHz
-        else if (i > 0x1800000) new_band = 2; // 3.000 MHz
-        else if (i > 0x0c00000) new_band = 1; // 1.500 MHz
-        else new_band = 0;
-        if (new_band != band) band_request = 1;
-    }
-
+    
     if (tune_timer) {
         tune_timer--;
         if (!tune_timer) {
             Control_Write(Control_Read() & ~CONTROL_ATU_1);
         }
+    }
+
+    if (band_request_timer) band_request_timer--;
+    else if (Band_Number != band) {
+        band_request = 1;
+        band_request_timer = 200;
     }
 
     switch(state) {
@@ -56,7 +42,7 @@ void T1_Main(void) {
             if (timer >= 85 && timer <= 115) {
                 state = 1;
                 timer = 20;
-                send = band = new_band;
+                send = band = Band_Number;
                 bits = 4;
                 Control_Write(Control_Read() & ~CONTROL_ATU_0 | CONTROL_ATU_0_OE);
             }

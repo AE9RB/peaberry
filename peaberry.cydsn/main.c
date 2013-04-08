@@ -38,20 +38,18 @@ void main()
 
     CyDelay(100); //TODO move this to bootloader
     CyGlobalIntEnable;
-    FracN_Start(P_DMA);
-    SyncSOF_Start();
+    Sync_Start();
     I2C_Start();
     Settings_Init();
     Si570_Init();
     PCM3060_Init();
-    PCM3060_Start();
     
     Control_Write(Control_Read() & ~CONTROL_LED);
 
     for(;;) {
         // USB Audio is very high priority
-        Audio_USB();
-        Sync_USB();
+        Audio_Main();
+        Sync_Main();
         // Everything else runs twice per millisecond
         // Keep T1 first for timing accuracy
         i = Status_Read() & STATUS_BEAT;
@@ -70,7 +68,7 @@ void main()
                 Si570_Main();
                 break;
             case 4:
-                Audio_Main();
+                Band_Main();
                 break;
             default:
                 main_usb_vbus();
