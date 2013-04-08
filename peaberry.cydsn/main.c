@@ -48,14 +48,16 @@ void main()
     Control_Write(Control_Read() & ~CONTROL_LED);
 
     for(;;) {
-        // Audio is high priority
-        Audio_Main();
+        // USB Audio is very high priority
+        Audio_USB();
+        Sync_USB();
         // Everything else runs twice per millisecond
+        // Keep T1 first for timing accuracy
         i = Status_Read() & STATUS_BEAT;
         if (beat != i) {
             switch(beater++) {
             case 0:
-                main_usb_vbus();
+                T1_Main();
                 break;
             case 1:
                 TX_Main();
@@ -66,7 +68,11 @@ void main()
             case 3:
                 Si570_Main();
                 break;
+            case 4:
+                Audio_Main();
+                break;
             default:
+                main_usb_vbus();
                 beater = 0;
                 beat = i;
             }

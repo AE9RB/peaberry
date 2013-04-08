@@ -65,6 +65,10 @@ void Morse_Main(char* msg);
 extern uint8 Audio_IQ_Channels;
 void Audio_Start(void);
 void Audio_Main(void);
+void Audio_USB(void);
+
+// sync.c
+void Sync_USB(void);
 
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
@@ -89,5 +93,7 @@ void Settings_Main(void);
 extern uint8 TX_Request;
 void TX_Main(void);
 
+// t1.c
+void T1_Main(void);
 
 #endif //PEABERRY_H
