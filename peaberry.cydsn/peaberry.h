@@ -69,14 +69,14 @@ void Band_Main(void);
 #define SI570_STARTUP_FREQ 56.32
 extern volatile uint32 Si570_Xtal, Si570_LO;
 extern uint8 Si570_Buf[], Si570_Factory[], Si570_OLD[];
-void Si570_Init(void);
+uint8 Si570_Init(void);
 void Si570_Main(void);
 void Si570_Fake_Reset(void);
 
 // pcm3060.c
-void PCM3060_Init(void);
+uint8 PCM3060_Init(void);
 void PCM3060_Start(void);
-void PCM3060_Stop(void);
+uint8 PCM3060_Stop(void);
 uint8* PCM3060_TxBuf(void);
 uint8* PCM3060_RxBuf(void);
 

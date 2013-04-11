@@ -116,8 +116,9 @@ uint8* PCM3060_RxBuf(void) {
     return RxI2S[SyncSOF_USB_Buffer()];
 }
 
-void PCM3060_SetRegister(uint8 reg, uint8 val) {
+uint8 PCM3060_SetRegister(uint8 reg, uint8 val) {
     uint8 pcm3060_cmd[2], i, state = 0;
+    uint16 err = 0;
 
     while (state < 2) {
         switch (state) {
@@ -134,16 +135,18 @@ void PCM3060_SetRegister(uint8 reg, uint8 val) {
             } else if (i & I2C_MSTAT_WR_CMPLT) {
                 state++;
             }
+            if (!--err) return 1;
             break;
         }
     }
+    return 0;
 }
 
-void PCM3060_Init(void) {
+uint8 PCM3060_Init(void) {
     I2S_Start();
     DmaRxInit();
     DmaTxInit();
-    PCM3060_Stop();
+    return PCM3060_Stop();
 }
 
 void PCM3060_Start(void) {
@@ -156,8 +159,9 @@ void PCM3060_Start(void) {
 }
 
 
-void PCM3060_Stop(void) {
-    PCM3060_SetRegister(0x40, 0xF0); // Sleep
+uint8 PCM3060_Stop(void) {
+    uint8 ret;
+    ret = PCM3060_SetRegister(0x40, 0xF0); // Sleep
     I2S_DisableRx();
     I2S_DisableTx();
     CyDmaChDisable(RxI2S_Stage_DmaHandle);
@@ -167,5 +171,6 @@ void PCM3060_Stop(void) {
     CyDmaChDisable(TxI2S_Zero_DmaHandle);
     I2S_ClearRxFIFO();
     I2S_ClearTxFIFO();
+    return ret;
 }
 

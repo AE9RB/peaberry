@@ -14,6 +14,22 @@
 
 #include <peaberry.h>
 
+void main_init() {
+    uint8 si_err, pcm_err;
+
+    CyDelay(100); //TODO move this to bootloader
+    CyGlobalIntEnable;
+    Sync_Start();
+    I2C_Start();
+    Settings_Init();
+    si_err = Si570_Init();
+    pcm_err = PCM3060_Init();
+    if (si_err && pcm_err) ERROR("I2C ");
+    if (si_err) ERROR("Si570 ");
+    if (pcm_err) ERROR("PCM3060 ");
+    Control_Write(Control_Read() & ~CONTROL_LED);
+}
+
 // A compliant USB device is required to monitor
 // vbus voltage and shut down if it disappears.
 void main_usb_vbus(void) {
@@ -35,16 +51,8 @@ void main_usb_vbus(void) {
 void main()
 {
     uint8 i, beat, beater = 0;
-
-    CyDelay(100); //TODO move this to bootloader
-    CyGlobalIntEnable;
-    Sync_Start();
-    I2C_Start();
-    Settings_Init();
-    Si570_Init();
-    PCM3060_Init();
     
-    Control_Write(Control_Read() & ~CONTROL_LED);
+    main_init();
 
     for(;;) {
         // USB Audio is very high priority

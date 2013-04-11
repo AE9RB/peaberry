@@ -31,9 +31,9 @@ uint8 Si570_Factory[6];
 // Emulate old technique of setting of frequency by reg writes
 uint8 Si570_OLD[6];
 
-void Si570_Init(void) {
-    uint8 hsdiv, n1, i, state = 0;
-    uint16 rfreqint;
+uint8 Si570_Init(void) {
+    uint8 hsdiv, n1, i, state = 0;//, err = 0;
+    uint16 rfreqint, err = 0;
     uint32 rfreqfrac;
     float rfreq;
     
@@ -58,6 +58,7 @@ void Si570_Init(void) {
             } else if (i & I2C_MSTAT_WR_CMPLT) {
                 state++;
             }
+            if (!--err) return 1;
             break;
         case 4: // do read registers
             I2C_MasterReadBuf(SI570_ADDR, Si570_Buf + 2, 6, I2C_MODE_REPEAT_START);
@@ -84,6 +85,7 @@ void Si570_Init(void) {
     }
     for (i = 0; i < 6; i++) Si570_Factory[i] = Si570_Buf[i+2];
     Si570_OLD[0]=0;
+    return 0;
 }
 
 // This method of setting frequency is strongly discouraged.
