@@ -148,6 +148,7 @@ void PCM3060_Init(void) {
 
 void PCM3060_Start(void) {
     PCM3060_SetRegister(0x40, 0xC0); // Wakeup
+    PCM3060_SetRegister(0x45, 0x80); // Slow rolloff filter
     DmaRxStart();
     DmaTxStart();
     I2S_EnableRx();
