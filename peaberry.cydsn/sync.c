@@ -15,8 +15,8 @@
 #include <peaberry.h>
 
 #define SOF_CENTER 22000
-#define FRAC_MIN (FracN_DEFAULT-100)
-#define FRAC_MAX (FracN_DEFAULT+100)
+#define FRAC_MIN (FracN_DEFAULT-200)
+#define FRAC_MAX (FracN_DEFAULT+200)
 
 void Sync_Start(void) {
     FracN_Start(P_DMA);
@@ -30,7 +30,7 @@ void Sync_Start(void) {
 void Sync_Main(void) {
     static uint16 frac = FracN_DEFAULT;
     static uint16 prev_pos;
-    uint16 pos;
+    uint16 pos, i;
 
     pos = CY_GET_REG8(SyncSOF_FRAME_POS_LO__STATUS_REG);
     if (pos & 0x01) {
@@ -43,9 +43,11 @@ void Sync_Main(void) {
         }
         
         if (prev_pos < pos) {
-            frac += (pos - prev_pos) / 2;
+            i = pos - prev_pos;
+            if (i < 8000) frac += i / 2;
         } else {
-            frac -= (prev_pos - pos) / 2;
+            i = prev_pos - pos;
+            if (i < 8000) frac -= i / 2;
         }
         prev_pos = pos;
         
