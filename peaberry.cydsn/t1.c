@@ -16,6 +16,7 @@
 
 // Full support for Elecraft T1 Automatic Antenna Tuner
 
+uint8 T1_Band_Number;
 uint8 T1_Tune_Request;
 
 void T1_Main(void) {
@@ -30,7 +31,7 @@ void T1_Main(void) {
     }
 
     if (band_request_timer) band_request_timer--;
-    else if (Band_Number != band) {
+    else if (T1_Band_Number != band) {
         band_request = 1;
         band_request_timer = 200;
     }
@@ -42,7 +43,7 @@ void T1_Main(void) {
             if (timer >= 85 && timer <= 115) {
                 state = 1;
                 timer = 20;
-                send = band = Band_Number;
+                send = band = T1_Band_Number;
                 bits = 4;
                 Control_Write(Control_Read() & ~CONTROL_ATU_0 | CONTROL_ATU_0_OE);
             }

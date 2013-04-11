@@ -100,10 +100,10 @@ const uint8 code MCODES[] = {
     /* 0x5A Z */ MCODE(3311),
 };
 
-#define MORSE_DOT (1)
-#define MORSE_DASH (3)
-#define MORSE_CHAR (3)
-#define MORSE_WORD (7 - MORSE_CHAR)
+#define MORSE_DOT  1
+#define MORSE_DASH 3
+#define MORSE_CHAR 3
+#define MORSE_WORD 7
 
 // Example usage:
 // Morse_Main("Repeating Message ");for(;;){sleep(240);Morse_Main(0);}
@@ -125,7 +125,7 @@ void Morse_Main(char* msg) {
         len = codes & 0x07;
         if (len==0) len = 6;
         if (codes==7) {
-            timer = MORSE_WORD - 2;
+            timer = MORSE_WORD - MORSE_CHAR - 2;
             len = 0;
             state = 3;
             break;

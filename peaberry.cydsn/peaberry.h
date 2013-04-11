@@ -63,7 +63,6 @@ void Sync_Start(void);
 void Sync_Main(void);
 
 // band.c
-extern uint8 Band_Number;
 void Band_Main(void);
 
 // si570.c
@@ -90,6 +89,7 @@ extern uint8 TX_Request;
 void TX_Main(void);
 
 // t1.c
+extern uint8 T1_Band_Number;
 extern uint8 T1_Tune_Request;
 void T1_Main(void);
 
