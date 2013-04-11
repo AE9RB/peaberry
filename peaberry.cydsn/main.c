@@ -70,6 +70,9 @@ void main()
             case 4:
                 Band_Main();
                 break;
+            case 5:
+                if (CyXTAL_ReadStatus()) ERROR("XTAL ");
+                break;
             default:
                 main_usb_vbus();
                 beater = 0;
