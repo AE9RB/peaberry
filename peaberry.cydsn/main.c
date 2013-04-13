@@ -23,6 +23,11 @@ void main_init() {
     I2C_Start();
     Settings_Init();
     si_err = Si570_Init();
+    if (si_err) {
+        I2C_Stop();
+        I2C_Start();
+        I2C_MasterClearStatus();
+    }
     pcm_err = PCM3060_Init();
     if (si_err && pcm_err) ERROR("I2C ");
     if (si_err) ERROR("Si570 ");
