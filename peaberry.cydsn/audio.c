@@ -72,15 +72,32 @@ void Audio_USB_ReadOutEP(uint8 epNumber, uint8 *pData, uint16 length)
     CyDmaChSetInitialTd(USBFS_DmaChan[epNumber], USBFS_DmaTd[epNumber]);
     CyDmaChEnable(USBFS_DmaChan[epNumber], 1);
 }
+
+uint8 TX_Enabled;
+
 void Audio_Start(void) {
     if(USBFS_DmaTd[RX_ENDPOINT] == DMA_INVALID_TD)
         USBFS_InitEP_DMA(RX_ENDPOINT, PCM3060_RxBuf());
     if(USBFS_DmaTd[TX_ENDPOINT] == DMA_INVALID_TD)
         USBFS_InitEP_DMA(TX_ENDPOINT, PCM3060_TxBuf());
+    TX_Enabled = 0;
     Audio_USB_ReadOutEP(TX_ENDPOINT, PCM3060_TxBuf(), 0);
 }
 
 void Audio_Main(void) {
+
+    if (USBFS_GetInterfaceSetting(TX_INTERFACE)) {
+        if (!TX_Enabled) {
+            USBFS_EnableOutEP(TX_ENDPOINT);
+            TX_Enabled = 1;
+        }
+    } else {
+        if (TX_Enabled) {
+            USBFS_DisableOutEP(TX_ENDPOINT);
+            TX_Enabled = 0;
+        }
+    }
+
     if(USBFS_IsConfigurationChanged()) {
         USBFS_EnableOutEP(TX_ENDPOINT);
     }
