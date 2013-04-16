@@ -10,7 +10,7 @@
         <TargetCommonOption>
           <Device>CY8C3246PVI-147</Device>
           <Vendor>Cypress</Vendor>
-          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0xFFFF) CLOCK(50000000) MODDP2"</Cpu>
+          <Cpu>"IRAM(0x00-0xFF) IROM(0x4000-0xFFBF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>C:\Program Files\Cypress\PSoC Creator\2.0\PSoC Creator\export\ide\uVision\4.x\driver\cymp3_c51.dll</FlashDriverDll>
@@ -249,8 +249,8 @@
               </Ocr3>
               <IRO>
                 <Type>1</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <StartAddress>0x4000</StartAddress>
+                <Size>0xBFC0</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -798,6 +798,16 @@
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.h</FilePath>
             </File>
+            <File>
+              <FileName>Bootloadable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Bootloadable.c</FilePath>
+            </File>
+            <File>
+              <FileName>Bootloadable.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Bootloadable.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -810,7 +820,7 @@
         <TargetCommonOption>
           <Device>CY8C3246PVI-147</Device>
           <Vendor>Cypress</Vendor>
-          <Cpu>"IRAM(0x00-0xFF) IROM(0x0-0xFFFF) CLOCK(50000000) MODDP2"</Cpu>
+          <Cpu>"IRAM(0x00-0xFF) IROM(0x4000-0xFFBF) CLOCK(50000000) MODDP2"</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>C:\Program Files\Cypress\PSoC Creator\2.0\PSoC Creator\export\ide\uVision\4.x\driver\cymp3_c51.dll</FlashDriverDll>
@@ -1049,8 +1059,8 @@
               </Ocr3>
               <IRO>
                 <Type>1</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <StartAddress>0x4000</StartAddress>
+                <Size>0xBFC0</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -1597,6 +1607,16 @@
               <FileName>P_DMA_dma.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Generated_Source\PSoC3\P_DMA_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>Bootloadable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Bootloadable.c</FilePath>
+            </File>
+            <File>
+              <FileName>Bootloadable.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Generated_Source\PSoC3\Bootloadable.h</FilePath>
             </File>
           </Files>
         </Group>

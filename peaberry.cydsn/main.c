@@ -17,7 +17,7 @@
 void main_init() {
     uint8 si_err, pcm_err;
 
-    CyDelay(100); //TODO move this to bootloader
+    CyDelay(100);
     CyGlobalIntEnable;
     Sync_Start();
     I2C_Start();
@@ -85,6 +85,9 @@ void main()
                 break;
             case 5:
                 if (CyXTAL_ReadStatus()) ERROR("XTAL ");
+                break;
+            case 6:
+                if (!(Status_Read() & STATUS_BOOT)) Bootloadable_Load();
                 break;
             default:
                 main_usb_vbus();

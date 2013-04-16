@@ -5,7 +5,8 @@
 *.cyfit
 *.rpt
 *_timing.html
-peaberry.cydsn/codegentemp
-peaberry.cydsn/DP8051
-peaberry.cydsn/Generated_Source
-
+*.cydsn/codegentemp
+*.cydsn/DP8051
+*.cydsn/Generated_Source
+!bootloader.cydsn/DP8051/DP8051_Keil_903/Release/bootloader.hex
+!bootloader.cydsn/DP8051/DP8051_Keil_903/Release/bootloader.elf
