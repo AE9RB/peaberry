@@ -67,7 +67,6 @@ int atu_read() {
     //nobreak;
   case 5:
     t = m + 50000;
-    digitalWrite(ATU_0_PIN, LOW);
     state = 6;
     break;
   }
