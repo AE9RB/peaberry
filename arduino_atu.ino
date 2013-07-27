@@ -79,6 +79,8 @@ int atu_read() {
   case 7:
     t = m + 5000;
     digitalWrite(ATU_0_PIN, LOW);
+    pinMode(ATU_0_PIN, OUTPUT);
+    pinMode(ATU_0_PIN, INPUT);
     state = 8;
     break;
   case 8:
