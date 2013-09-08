@@ -14,9 +14,13 @@
 
 #include <peaberry.h>
 
-#define SOF_CENTER 22000
-#define FRAC_MIN (FracN_DEFAULT-300)
-#define FRAC_MAX (FracN_DEFAULT+300)
+#define SYNC_SOF_CENTER 22000
+#define SYNC_FRAC_MIN (FracN_DEFAULT-1000)
+#define SYNC_FRAC_MAX (FracN_DEFAULT+1000)
+#define SYNC_I_GUARD 3000
+#define SYNC_P_GAIN 0.0001
+#define SYNC_I_GAIN 0.001
+#define SYNC_D_GAIN 0.5
 
 void Sync_Start(void) {
     FracN_Start(P_DMA);
@@ -25,35 +29,34 @@ void Sync_Start(void) {
     CyDelay(1);
 }
 
-// This is a simplified PID control. It works quite well. The full
-// PID algorithm will be implemented some day for fun and learning.
 void Sync_Main(void) {
     static uint16 frac = FracN_DEFAULT;
-    static uint16 prev_pos;
-    uint16 pos, i;
-
+    static int16 prev_error = 0, int_error = 0;
+    int16 cur_error, diff, p_term, i_term, d_term;
+    uint16 pos;
     pos = CY_GET_REG8(SyncSOF_FRAME_POS_LO__STATUS_REG);
     if (pos & 0x01) {
         pos += (uint16)CY_GET_REG8(SyncSOF_FRAME_POS_HI__STATUS_REG) << 8;
 
-        if (pos > SOF_CENTER) {
-            frac += (pos - SOF_CENTER) / 128;
-        } else {
-            frac -= (SOF_CENTER - pos) / 128;
-        }
+        cur_error = pos - SYNC_SOF_CENTER;
+        int_error += cur_error;
+        if (int_error < -SYNC_I_GUARD)
+            int_error = -SYNC_I_GUARD;
+        else if (int_error > SYNC_I_GUARD)
+            int_error = SYNC_I_GUARD;
+            
+        diff = cur_error - prev_error;
+        p_term = cur_error * SYNC_P_GAIN;
+        i_term = int_error * SYNC_I_GAIN;
+        d_term = diff * SYNC_D_GAIN;
+        prev_error = cur_error;
+        int_error *= 0.9;
         
-        if (prev_pos < pos) {
-            i = pos - prev_pos;
-            if (i < 100) frac += i / 2;
-        } else {
-            i = prev_pos - pos;
-            if (i < 100) frac -= i / 2;
-        }
-        prev_pos = pos;
-        
-        if (frac > FRAC_MAX) frac = FRAC_MAX;
-        if (frac < FRAC_MIN) frac = FRAC_MIN;
+        frac += p_term + i_term + d_term;
+
+        if (frac > SYNC_FRAC_MAX) frac = SYNC_FRAC_MAX;
+        if (frac < SYNC_FRAC_MIN) frac = SYNC_FRAC_MIN;
         FracN_Set(frac);
     }
-
 }
+
