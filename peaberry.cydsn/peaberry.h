@@ -86,6 +86,7 @@ void Settings_Main(void);
 
 // tx.c
 extern uint8 TX_Request;
+extern uint8 TX_Inhibit;
 void TX_Main(void);
 
 // t1.c

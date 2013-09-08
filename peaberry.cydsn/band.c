@@ -56,7 +56,10 @@ void Band_Main(void) {
             Control_Write(Control_Read() & ~CONTROL_XK);
         else
             Control_Write(Control_Read() | CONTROL_XK);
-        
+
+        // Inhibit transmitter as necessary
+        if (i > 0xC866666 && i < 0xDF99999) TX_Inhibit = 1;
+        else TX_Inhibit = 0;
     }
 
 }

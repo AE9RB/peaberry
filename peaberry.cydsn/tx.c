@@ -18,6 +18,7 @@
 #define TX_LED_BLINK_OFF_MS 50
 
 uint8 TX_Request = 0;
+uint8 TX_Inhibit = 0;
 
 void TX_Main(void) {
     static uint8 state = 0, blink;
@@ -25,7 +26,7 @@ void TX_Main(void) {
     
     switch (state) {
         case 0: // receiving
-            if (TX_Request) {
+            if (TX_Request && !TX_Inhibit) {
                 state = 1;
                 Control_Write(Control_Read() & ~CONTROL_RX);
             }
