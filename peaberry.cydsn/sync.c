@@ -16,7 +16,7 @@
 
 #define SYNC_SOF_CENTER 22000
 #define SYNC_FRAC_MIN (FracN_DEFAULT-1000)
-#define SYNC_FRAC_MAX (FracN_DEFAULT+1000)
+#define SYNC_FRAC_MAX (FracN_DEFAULT+500)
 #define SYNC_I_GUARD 3000
 #define SYNC_P_GAIN 0.0001
 #define SYNC_I_GAIN 0.001
@@ -54,8 +54,8 @@ void Sync_Main(void) {
         
         frac += p_term + i_term + d_term;
 
-        if (frac > SYNC_FRAC_MAX) frac = SYNC_FRAC_MAX;
-        if (frac < SYNC_FRAC_MIN) frac = SYNC_FRAC_MIN;
+        if (frac > SYNC_FRAC_MAX) frac = FracN_DEFAULT;
+        if (frac < SYNC_FRAC_MIN) frac = FracN_DEFAULT;
         FracN_Set(frac);
     }
 }
