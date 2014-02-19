@@ -571,7 +571,7 @@
       </addressBlock>
       <registers>
         <register>
-          <name>_USBFS_PM_USB_CR0</name>
+          <name>USBFS_PM_USB_CR0</name>
           <description>USB Power Mode Control Register 0</description>
           <addressOffset>0x0</addressOffset>
           <size>8</size>

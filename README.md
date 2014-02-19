@@ -13,7 +13,7 @@ Kits available from http://AE9RB.com/
 
 ## Building Firmware
 
-The project was built with PSoC Creator 2.2 Service Pack 1:
+The project was built with PSoC Creator 3.0 Component Pack 7 (3.0.0.1539):
 http://www.cypress.com/
 
 It is normal to get errors about missing files until you have built

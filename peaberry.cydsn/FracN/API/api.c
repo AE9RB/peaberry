@@ -24,7 +24,7 @@ void `$INSTANCE_NAME`_Start2(uint8 dma) {
 
     td = CyDmaTdAllocate();
     CyDmaTdSetConfiguration(td, 1, td, 0);
-    CyDmaTdSetAddress(td, LO16(`$INSTANCE_NAME`_PLL_P__STATUS_REG), LO16(&FASTCLK_PLL_P));
+    CyDmaTdSetAddress(td, LO16((uint32)`$INSTANCE_NAME`_PLL_P__STATUS_REG), LO16((uint32)&FASTCLK_PLL_P));
     CyDmaChSetInitialTd(dma, td);
     CyDmaChEnable(dma, 1);
 }
