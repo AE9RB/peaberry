@@ -25,7 +25,8 @@
 #define SI570_DCO_CENTER ((SI570_DCO_MIN + SI570_DCO_MAX) / 2)
 
 volatile uint32 Si570_Xtal, Si570_LO = STARTUP_LO;
-uint32 Current_Si570_Xtal;
+uint32 Current_LO = STARTUP_LO;
+
 // [0-1] for commands, [2-8] retain registers
 uint8 Si570_Buf[8];
 // A copy of the factory registers used for cfgsr calibration.
@@ -117,24 +118,23 @@ void Si570_Fake_Reset(void) {
 }
 
 void Si570_Main(void) {
-    static uint8 n1 = 0, hsdiv = 0, state = 0;
-    static uint8 prev_n1 = 0, prev_hsdiv = 0;
+    static uint8 smooth, n1, hsdiv = 0, state = 0;
     static float fout, dco;
-    static uint32 Current_LO = STARTUP_LO;
+    static uint32 Current_Si570_Xtal = 0;
     uint8 i;
     uint16 rfreqint;
     uint32 rfreqfrac;
-    float testdco, smooth_limit, smooth_diff;
+    float rfreq, testdco, smooth_limit, smooth_diff;
 
     switch (state) {
     case 0: // idle
         if (Si570_OLD[0]) Si570_LO = FreqFromOLD();
         if ((Current_Si570_Xtal != Si570_Xtal || Current_LO != Si570_LO)) {
             i = CyEnterCriticalSection();
-            fout = (float)swap32(Si570_LO) / 0x200000;
             Current_LO = Si570_LO;
             Current_Si570_Xtal = Si570_Xtal;
             CyExitCriticalSection(i);
+            fout = (float)swap32(Current_LO) / 0x200000;
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
             state = 1;
@@ -142,12 +142,14 @@ void Si570_Main(void) {
         break;
     case 1: // attempt smooth tune
         smooth_limit = dco * SI570_SMOOTH_PPM / 1000000;
-        testdco = fout * (float)(hsdiv * n1);
+        testdco = fout * hsdiv * n1;
         smooth_diff = fabs(testdco - dco);
         if (testdco > SI570_DCO_MIN && testdco < SI570_DCO_MAX && smooth_diff < smooth_limit) {
+            smooth = 1;
             dco = testdco;
             state = 12;
         } else {
+            smooth = 0;
             dco = SI570_DCO_MAX;
             state = 4;
         }
@@ -160,11 +162,9 @@ void Si570_Main(void) {
         state++;
         break;
     case 14: // write new DSPLL config
-        i = CyEnterCriticalSection();
-        testdco = dco / ((float)swap32(Si570_Xtal) / 0x01000000);
-        CyExitCriticalSection(i);
-        rfreqint = testdco;
-        rfreqfrac = (testdco - rfreqint) * 0x10000000;
+        rfreq = dco / ((float)swap32(Current_Si570_Xtal) / 0x01000000);
+        rfreqint = rfreq;
+        rfreqfrac = (rfreq - rfreqint) * 0x10000000;
         // don't trust floats
         if (rfreqfrac > 0x0FFFFFFF) rfreqfrac = 0x0FFFFFFF;
         Si570_Buf[1] = 7;
@@ -181,7 +181,7 @@ void Si570_Main(void) {
         break;
     case 16: // release DSPLL
         Si570_Buf[0] = 135;
-        if (prev_n1 == n1 && prev_hsdiv == hsdiv) Si570_Buf[1] = 0x00;
+        if (smooth) Si570_Buf[1] = 0x00;
         else Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
         state++;
@@ -197,8 +197,6 @@ void Si570_Main(void) {
         }
         break;
     case 18: // all done
-        prev_n1 = n1;
-        prev_hsdiv = hsdiv;
         state = 0;
         break;
     case 8:  // invalid for HS_DIV

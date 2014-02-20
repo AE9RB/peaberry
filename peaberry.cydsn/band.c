@@ -19,8 +19,8 @@ void Band_Main(void) {
     uint32 i;
     uint8 relay;
 
-    if (Si570_LO != lo) {
-        i = swap32(lo = Si570_LO);
+    if (Current_LO != lo) {
+        i = swap32(lo = Current_LO);
         
         // Watch for special IQ reversal frequencies
         switch (i) {

@@ -68,6 +68,7 @@ void Band_Main(void);
 // si570.c
 #define SI570_STARTUP_FREQ 56.32
 extern volatile uint32 Si570_Xtal, Si570_LO;
+extern uint32 Current_LO;
 extern uint8 Si570_Buf[], Si570_Factory[], Si570_OLD[];
 uint8 Si570_Init(void);
 void Si570_Main(void);
