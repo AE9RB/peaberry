@@ -13,10 +13,12 @@
 // limitations under the License.
 
 #include <peaberry.h>
+#include <math.h>
 
 #define STARTUP_LO 0x713D0A07 // 56.32 MHz in byte reversed 11.21 bits (14.080)
 #define MAX_LO 160.0 // maximum for CMOS Si570
 #define MIN_LO 4.0 
+#define SI570_SMOOTH_PPM 3500
 #define SI570_ADDR 0x55
 #define SI570_DCO_MIN 4850.0
 #define SI570_DCO_MAX 5670.0
@@ -115,13 +117,14 @@ void Si570_Fake_Reset(void) {
 }
 
 void Si570_Main(void) {
-    static uint8 n1, hsdiv, state = 0;
+    static uint8 n1 = 0, hsdiv = 0, state = 0;
+    static uint8 prev_n1 = 0, prev_hsdiv = 0;
     static float fout, dco;
     static uint32 Current_LO = STARTUP_LO;
     uint8 i;
     uint16 rfreqint;
     uint32 rfreqfrac;
-    float testdco;
+    float testdco, smooth_limit, smooth_diff;
 
     switch (state) {
     case 0: // idle
@@ -134,6 +137,17 @@ void Si570_Main(void) {
             CyExitCriticalSection(i);
             if (fout < MIN_LO) fout = MIN_LO;
             if (fout > MAX_LO) fout = MAX_LO;
+            state = 1;
+        }
+        break;
+    case 1: // attempt smooth tune
+        smooth_limit = dco * SI570_SMOOTH_PPM / 1000000;
+        testdco = fout * (float)(hsdiv * n1);
+        smooth_diff = fabs(testdco - dco);
+        if (testdco > SI570_DCO_MIN && testdco < SI570_DCO_MAX && smooth_diff < smooth_limit) {
+            dco = testdco;
+            state = 12;
+        } else {
             dco = SI570_DCO_MAX;
             state = 4;
         }
@@ -167,7 +181,8 @@ void Si570_Main(void) {
         break;
     case 16: // release DSPLL
         Si570_Buf[0] = 135;
-        Si570_Buf[1] = 0x40;
+        if (prev_n1 == n1 && prev_hsdiv == hsdiv) Si570_Buf[1] = 0x00;
+        else Si570_Buf[1] = 0x40;
         I2C_MasterWriteBuf(SI570_ADDR, Si570_Buf, 2, I2C_MODE_COMPLETE_XFER);
         state++;
         break;
@@ -182,6 +197,8 @@ void Si570_Main(void) {
         }
         break;
     case 18: // all done
+        prev_n1 = n1;
+        prev_hsdiv = hsdiv;
         state = 0;
         break;
     case 8:  // invalid for HS_DIV
