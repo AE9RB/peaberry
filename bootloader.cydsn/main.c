@@ -105,7 +105,7 @@ void main()
     message = MORSE_BOOT;
     if (Status_Read() & STATUS_BOOT) {
         if (CyXTAL_ReadStatus()) message = MORSE_XTAL;
-        else Bootloader_LaunchApplication();
+        else Bootloader_Start();
     }
     morse_isr_StartEx(&morse_interrupt);
     Morse_Counter_Start();
