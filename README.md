@@ -13,9 +13,13 @@ Kits available from http://AE9RB.com/
 
 ## Building Firmware
 
-The project was built with PSoC Creator 3.0 Component Pack 7 (3.0.0.1539):
+The project was built with PSoC Creator 3.1 (3.1.0.1570):
 http://www.cypress.com/
 
 It is normal to get errors about missing files until you have built
 the project for the first time.  This is because the generated files
 have been excluded from the git repository. 
+
+The bootloader project must be built before you can build the peaberry project.
+
+The bootloader component of the bootloader project must be V1.10.
