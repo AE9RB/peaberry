@@ -105,7 +105,11 @@ void main()
     message = MORSE_BOOT;
     if (Status_Read() & STATUS_BOOT) {
         if (CyXTAL_ReadStatus()) message = MORSE_XTAL;
-        else Bootloader_LaunchApplication();
+        else {
+            if (CYRET_SUCCESS == Bootloader_ValidateBootloadable(0)) {
+                Bootloader_Exit(Bootloader_EXIT_TO_BTLDB);
+            }
+        }
     }
     morse_isr_StartEx(&morse_interrupt);
     Morse_Counter_Start();
