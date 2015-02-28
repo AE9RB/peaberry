@@ -141,7 +141,7 @@ void Si570_Main(void) {
         }
         break;
     case 1: // attempt smooth tune
-        smooth_limit = dco * SI570_SMOOTH_PPM / 1000000;
+        smooth_limit = SI570_DCO_CENTER * SI570_SMOOTH_PPM / 1000000;
         testdco = fout * hsdiv * n1;
         smooth_diff = fabs(testdco - dco);
         if (testdco > SI570_DCO_MIN && testdco < SI570_DCO_MAX && smooth_diff < smooth_limit) {
